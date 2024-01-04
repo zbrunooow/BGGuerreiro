@@ -2,13 +2,10 @@ package me.zbrunooow.bgguerreiro.utils;
 
 import com.cryptomorin.xseries.messages.ActionBar;
 import me.zbrunooow.bgguerreiro.Core;
-import net.minecraft.server.v1_8_R3.ChatComponentText;
-import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -17,6 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class API {
+
+    public static API get() {
+        return Core.getInstance().getApi();
+    }
 
     public List<String> listaTop(String type) {
         List<String> topVitorias = new ArrayList<>();
@@ -197,10 +198,6 @@ public class API {
         float pitch = Float.parseFloat(str.split("\\(\\)")[5]);
 
         return new Location(world, x, y, z, yaw, pitch);
-    }
-
-    public static API get() {
-        return Core.getInstance().getApi();
     }
 
 }
