@@ -36,9 +36,9 @@ public class Death implements Listener {
                 }
 
                 if(Config.get().isAbateGeral()) {
-                    e.setDeathMessage(Mensagens.get().getAbate().replace("{matou}", killer.getName()).replace("{morreu}", victim.getName()).replace("{kills}", String.valueOf(kills)));
+                    e.setDeathMessage(Core.getMessages().getKill().replace("{matou}", killer.getName()).replace("{morreu}", victim.getName()).replace("{kills}", String.valueOf(kills)));
                 } else {
-                    API.get().broadcastParticipantes(Mensagens.get().getAbate().replace("{matou}", killer.getName()).replace("{morreu}", victim.getName()).replace("{kills}", String.valueOf(kills)));
+                    API.get().broadcastParticipantes(Core.getMessages().getKill().replace("{matou}", killer.getName()).replace("{morreu}", victim.getName()).replace("{kills}", String.valueOf(kills)));
                 }
 
                 Evento.get().verificarFinal();

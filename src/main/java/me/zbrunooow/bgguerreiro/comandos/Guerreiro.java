@@ -62,6 +62,7 @@ public class Guerreiro implements CommandExecutor {
             return;
           },
           Core.getMessages().getNoPermission());
+      return false;
     }
 
     // Subcommand: cancel
@@ -70,14 +71,15 @@ public class Guerreiro implements CommandExecutor {
           player,
           "bgguerreiro.admin",
           () -> {
-            if (!eventStatus.equalsIgnoreCase("iniciado")) {
+            if (eventStatus.equalsIgnoreCase("off")) {
+              player.sendMessage(eventStatus);
               player.sendMessage("§cO evento guerreiro não está acontecendo!");
               return;
             }
-            Evento.get().cancelar(false);
-            return;
+            Evento.get().cancelar(true);
           },
           Core.getMessages().getNoPermission());
+      return false;
     }
 
     // Subcommand: forcedm
@@ -91,9 +93,9 @@ public class Guerreiro implements CommandExecutor {
               return;
             }
             Evento.get().forceDm();
-            return;
           },
           Core.getMessages().getNoPermission());
+      return false;
     }
 
     // Subcommand: reload
@@ -111,6 +113,7 @@ public class Guerreiro implements CommandExecutor {
             return;
           },
           Core.getMessages().getNoPermission());
+      return false;
     }
 
     // Subcommand: set
@@ -157,11 +160,17 @@ public class Guerreiro implements CommandExecutor {
             player.sendMessage("§cUse /guerreiro set (entrada/saida/deathmatch)");
           },
           Core.getMessages().getNoPermission());
+      return false;
     }
 
     // Subcommand: join
     ClanPlayer clanPlayer = Core.getSC().getClanManager().getClanPlayer(player);
     if ("entrar".equals(action) || "participar".equals(action) || "join".equals(action)) {
+      if (eventStatus.equalsIgnoreCase("off")) {
+        player.sendMessage("§cO evento guerreiro não está acontecendo!");
+        return false;
+      }
+
       boolean exitIsValid = manager.getSaida() != null;
 
       if (!exitIsValid) {
@@ -207,12 +216,13 @@ public class Guerreiro implements CommandExecutor {
       player.setMetadata("warriorKills", new FixedMetadataValue(Core.getInstance(), 0));
       API.get().equipPlayer(player);
       player.sendMessage("§aVocê entrou no evento guerreiro!");
+      return true;
     }
 
     // Subcommand: leave
     if ("sair".equals(action) || "quit".equals(action)) {
       if (eventStatus.equalsIgnoreCase("off")) {
-        player.sendMessage("§cO evento guerreiro não acontecendo!");
+        player.sendMessage("§cO evento guerreiro não está acontecendo!");
         return false;
       }
 
@@ -230,6 +240,9 @@ public class Guerreiro implements CommandExecutor {
       player.teleport(manager.getSaida());
       player.getInventory().clear();
       player.getInventory().setArmorContents(null);
+      if(eventStatus.equalsIgnoreCase("iniciado")) {
+        Evento.get().verificarFinal();
+      }
       player.sendMessage("§aVocê saiu do evento guerreiro!");
       return true;
     }
@@ -278,6 +291,7 @@ public class Guerreiro implements CommandExecutor {
 
       CamaroteManager.get().joinCamarote(player);
       player.sendMessage(message);
+      return true;
     }
 
     if (action.equalsIgnoreCase("top")) {

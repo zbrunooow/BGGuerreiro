@@ -23,6 +23,11 @@ public class CamaroteManager {
     }
 
     public void joinCamarote(Player p) {
+        String eventStatus = Evento.get().getStartado();
+        if(!eventStatus.equalsIgnoreCase("iniciado")) {
+            return;
+        }
+
         p.getPlayer().teleport(Manager.get().getEntrada());
         p.getPlayer().getInventory().setItem(4, item.build());
 
@@ -35,7 +40,7 @@ public class CamaroteManager {
         }
 
         p.setAllowFlight(true);
-        p.sendMessage(Mensagens.get().getCamaroteJoin());
+        p.sendMessage(Core.getMessages().getCamaroteJoin());
         spectators.add(p);
     }
 
@@ -48,7 +53,7 @@ public class CamaroteManager {
         }
 
         p.setAllowFlight(false);
-        p.sendMessage(Mensagens.get().getCamaroteLeave());
+        p.sendMessage(Core.getMessages().getCamaroteLeave());
         spectators.remove(p);
     }
 

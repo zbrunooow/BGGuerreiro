@@ -2,13 +2,10 @@ package me.zbrunooow.bgguerreiro.utils;
 
 import com.cryptomorin.xseries.messages.ActionBar;
 import me.zbrunooow.bgguerreiro.Core;
-import net.minecraft.server.v1_8_R3.ChatComponentText;
-import net.minecraft.server.v1_8_R3.PacketPlayOutChat;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
