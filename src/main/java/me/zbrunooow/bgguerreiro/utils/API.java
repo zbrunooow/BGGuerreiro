@@ -61,7 +61,7 @@ public class API {
         }
     }
 
-    public void sendActionBarMessage(Player player, String message) { pra ficar chave xo te ensianr a dar commit certihnho no git
+    public void sendActionBarMessage(Player player, String message) {
         ActionBar.sendActionBar(player, message.replace("&", "§"));
     }
 
