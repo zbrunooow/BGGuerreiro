@@ -1,145 +1,75 @@
 package me.zbrunooow.bgguerreiro.utils;
 
+import java.util.List;
+import java.util.stream.Collectors;
+import lombok.Data;
 import me.zbrunooow.bgguerreiro.Core;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.ArrayList;
-import java.util.List;
-
+@Data
 public class Mensagens {
 
-    private String semPerm;
-    private String abate;
-    private String restam;
+    private String noPermission;
+    private String kill;
+    private String survivorsLeft;
     private String ab1;
     private String ab2;
     private String topValue;
     private String camaroteJoin;
     private String camaroteLeave;
-    private List<String> comandoGeral;
+    private List<String> generalCommand;
     private List<String> topHeader;
     private List<String> topFooter;
-    private List<String> iniciando;
-    private List<String> cancelado;
+    private List<String> starting;
+    private List<String> cancelled;
     private List<String> status;
-    private List<String> espera;
-    private List<String> valendo;
+    private List<String> waiting;
+    private List<String> started;
     private List<String> dmChegando;
     private List<String> dmStart;
-    private List<String> finalizado;
+    private List<String> expired;
 
     public Mensagens() {
-        semPerm = replace("Sem-Permissao");
-        abate = replace("Abate");
-        restam = replace("Restam");
-        ab1 = replace("ActionBar-1");
-        ab2 = replace("ActionBar-2");
-        camaroteJoin = replace("Camarote");
-        camaroteLeave = replace("Camarote-Saiu");
-        topValue = replace("Top.Value");
-        topHeader = replaceList("Top.Header");
-        topFooter = replaceList("Top.Footer");
-        iniciando = replaceList("Iniciando");
-        cancelado = replaceList("Cancelado");
-        espera = replaceList("Espera");
-        status = replaceList("Status");
-        dmChegando = replaceList("DM-Chegando");
-        dmStart = replaceList("DM-Start");
-        valendo = replaceList("Valendo");
-        finalizado = replaceList("Finalizado");
-        comandoGeral = replaceList("Geral");
-    }
-
-    private String replace(String linha) {
         FileConfiguration config = Core.getInstance().getConfig();
-        return config.getString("Mensagens." + linha).replace('&', '§');
+        replaceAndSet(config, this::setNoPermission, "Sem-Permissao");
+        replaceAndSet(config, this::setKill, "Abate");
+        replaceAndSet(config, this::setSurvivorsLeft, "Restam");
+        replaceAndSet(config, this::setAb1, "ActionBar-1");
+        replaceAndSet(config, this::setAb2, "ActionBar-2");
+        replaceAndSet(config, this::setCamaroteJoin, "Camarote");
+        replaceAndSet(config, this::setCamaroteLeave, "Camarote-Saiu");
+        replaceAndSet(config, this::setTopValue, "Top.Value");
+
+        replaceAndSetList(config, this::setGeneralCommand, "Geral");
+        replaceAndSetList(config, this::setTopHeader, "Top.Header");
+        replaceAndSetList(config, this::setTopFooter, "Top.Footer");
+        replaceAndSetList(config, this::setStarting, "Iniciando");
+        replaceAndSetList(config, this::setCancelled, "Cancelado");
+        replaceAndSetList(config, this::setStatus, "Status");
+        replaceAndSetList(config, this::setWaiting, "Espera");
+        replaceAndSetList(config, this::setStarted, "Valendo");
+        replaceAndSetList(config, this::setDmChegando, "DM-Chegando");
+        replaceAndSetList(config, this::setDmStart, "DM-Start");
+        replaceAndSetList(config, this::setExpired, "Finalizado");
     }
 
-    private List<String> replaceList(String linha) {
-        FileConfiguration config = Core.getInstance().getConfig();
-        List<String> retornar = new ArrayList<>();
-        for(String str : config.getStringList("Mensagens." + linha)) {
-            retornar.add(str.replace('&', '§'));
-        }
-        return retornar;
+    private void replaceAndSet(FileConfiguration config, Setter setter, String linha) {
+        setter.set(config.getString("Mensagens." + linha).replace('&', '§'));
     }
 
-    public List<String> getComandoGeral() {
-        return comandoGeral;
+    private void replaceAndSetList(FileConfiguration config, ListSetter setter, String linha) {
+        setter.set(
+                config.getStringList("Mensagens." + linha).stream()
+                        .map(str -> str.replace('&', '§'))
+                        .collect(Collectors.toList()));
     }
 
-    public String getSemPerm() {
-        return semPerm;
-    }
-    public String getAbate() {
-        return abate;
+    interface Setter {
+        void set(String value);
     }
 
-    public List<String> getEspera() {
-        return espera;
+    interface ListSetter {
+        void set(List<String> values);
     }
 
-    public List<String> getStatus() {
-        return status;
-    }
-
-    public List<String> getIniciando() {
-        return iniciando;
-    }
-
-    public List<String> getValendo() {
-        return valendo;
-    }
-
-    public String getRestam() {
-        return restam;
-    }
-
-    public List<String> getFinalizado() {
-        return finalizado;
-    }
-
-    public String getAb1() {
-        return ab1;
-    }
-
-    public String getAb2() {
-        return ab2;
-    }
-
-    public String getTopValue() {
-        return topValue;
-    }
-
-    public List<String> getDmChegando() {
-        return dmChegando;
-    }
-
-    public List<String> getDmStart() {
-        return dmStart;
-    }
-
-    public List<String> getTopHeader() {
-        return topHeader;
-    }
-
-    public List<String> getTopFooter() {
-        return topFooter;
-    }
-
-    public List<String> getCancelado() {
-        return cancelado;
-    }
-
-    public static Mensagens get(){
-        return Core.getInstance().getMsgs();
-    }
-
-    public String getCamaroteJoin() {
-        return camaroteJoin;
-    }
-
-    public String getCamaroteLeave() {
-        return camaroteLeave;
-    }
 }
