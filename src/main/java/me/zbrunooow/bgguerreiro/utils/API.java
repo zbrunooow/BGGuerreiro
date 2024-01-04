@@ -1,6 +1,9 @@
 package me.zbrunooow.bgguerreiro.utils;
 
 import com.cryptomorin.xseries.messages.ActionBar;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import me.zbrunooow.bgguerreiro.Core;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -8,10 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class API {
 
