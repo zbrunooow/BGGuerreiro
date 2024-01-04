@@ -35,7 +35,7 @@ public class CamaroteManager {
         }
 
         p.setAllowFlight(true);
-        p.sendMessage(Mensagens.get().getCamaroteJoin());
+        p.sendMessage(Core.getMessages().getCamaroteJoin());
         spectators.add(p);
     }
 
@@ -48,7 +48,7 @@ public class CamaroteManager {
         }
 
         p.setAllowFlight(false);
-        p.sendMessage(Mensagens.get().getCamaroteLeave());
+        p.sendMessage(Core.getMessages().getCamaroteLeave());
         spectators.remove(p);
     }
 

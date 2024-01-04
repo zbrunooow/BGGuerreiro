@@ -40,7 +40,7 @@ public class Evento {
                 if(getStartado().equalsIgnoreCase("anunciando")) {
                     if(segundos > 0) {
                         if (segundos == proximo) {
-                            for (String str : Mensagens.get().getIniciando()) {
+                            for (String str : Core.getMessages().getStarting()) {
                                 API.get().broadcastMessage(str.replace("{seconds}", String.valueOf(segundos)).replace("{tag}", Config.get().getTag()).replace("{valor}", String.valueOf(Config.get().getPremio())).replace("{jogadores}", String.valueOf(Manager.get().getParticipantes().size())));
                             }
                             proximo = proximo - Config.get().getTempoEntreAnuncios();
@@ -56,7 +56,7 @@ public class Evento {
                         }
 
                         setStartado("espera");
-                        for(String str : Mensagens.get().getEspera()) {
+                        for(String str : Core.getMessages().getWaiting()) {
                             API.get().broadcastParticipantes(str.replace("{tempo}", String.valueOf(espera)));
                         }
                         proximo = espera-5;
@@ -65,7 +65,7 @@ public class Evento {
                 if(getStartado().equalsIgnoreCase("espera")) {
                     if(espera > 0) {
                         if(espera == proximo) {
-                            for(String str : Mensagens.get().getEspera()) {
+                            for(String str : Core.getMessages().getWaiting()) {
                                 API.get().broadcastParticipantes(str.replace("{tempo}", String.valueOf(espera)));
                             }
                             proximo = espera-5;
@@ -73,7 +73,7 @@ public class Evento {
                     } else {
                         setStartado("iniciado");
                         setPvp(true);
-                        for(String str : Mensagens.get().getValendo()) {
+                        for(String str : Core.getMessages().getStarted()) {
                             API.get().broadcastParticipantes(str);
                         }
                     }
@@ -83,14 +83,14 @@ public class Evento {
                     Manager.get().setTempoEvento(Manager.get().getTempoEvento() + 1);
                 }
                 if(Manager.get().getTempoEvento() <= 10) {
-                    API.get().broadcastACParticipantes(Mensagens.get().getAb1().replace("{players}", String.valueOf(Manager.get().getParticipantes().size())).replace("{tempo}", API.get().formatTime(Manager.get().getTempoEvento())).replace("{abates}", "0").replace("{status}", (!getStartado().equalsIgnoreCase("iniciado") ? "&cIniciando..." : "&aValendo")));
+                    API.get().broadcastACParticipantes(Core.getMessages().getAb1().replace("{players}", String.valueOf(Manager.get().getParticipantes().size())).replace("{tempo}", API.get().formatTime(Manager.get().getTempoEvento())).replace("{abates}", "0").replace("{status}", (!getStartado().equalsIgnoreCase("iniciado") ? "&cIniciando..." : "&aValendo")));
                 } else {
-                    API.get().broadcastACParticipantes(Mensagens.get().getAb2().replace("{players}", String.valueOf(Manager.get().getParticipantes().size())).replace("{tempo}", API.get().formatTime(Manager.get().getTempoEvento())).replace("{status}", (!getStartado().equalsIgnoreCase("iniciado") ? "&cIniciando..." : "&aValendo")));
+                    API.get().broadcastACParticipantes(Core.getMessages().getAb2().replace("{players}", String.valueOf(Manager.get().getParticipantes().size())).replace("{tempo}", API.get().formatTime(Manager.get().getTempoEvento())).replace("{status}", (!getStartado().equalsIgnoreCase("iniciado") ? "&cIniciando..." : "&aValendo")));
                 }
                 if(Config.get().isDmHabilitado() || dmForcado) {
                     if (!isDm()) {
                         if(Config.get().getDmTempo()-120 == Manager.get().getTempoEvento() || Config.get().getDmTempo()-60 == Manager.get().getTempoEvento()) {
-                            for(String str : Mensagens.get().getDmChegando()) {
+                            for(String str : Core.getMessages().getDmChegando()) {
                                 API.get().broadcastParticipantes(str.replace("{minutos}", Config.get().getDmTempo()-120 == Manager.get().getTempoEvento() ? "2" : "1"));
                             }
                         }
@@ -98,7 +98,7 @@ public class Evento {
                     if(Config.get().getDmTempo() == Manager.get().getTempoEvento()) {
                         setPvp(false);
                         pvpDm = Manager.get().getTempoEvento()+Config.get().getDmSemPvP();
-                        for(String str : Mensagens.get().getDmStart()) {
+                        for(String str : Core.getMessages().getDmStart()) {
                             API.get().broadcastParticipantes(str.replace("{segundos}", String.valueOf(Config.get().getDmSemPvP())));
                         }
                         for(Player vivos : Manager.get().getParticipantes()) {
@@ -124,7 +124,7 @@ public class Evento {
         dmForcado = true;
         setPvp(false);
         pvpDm = Manager.get().getTempoEvento()+Config.get().getDmSemPvP();
-        for(String str : Mensagens.get().getDmStart()) {
+        for(String str : Core.getMessages().getDmStart()) {
             API.get().broadcastParticipantes(str.replace("{segundos}", String.valueOf(Config.get().getDmSemPvP())));
         }
         for(Player vivos : Manager.get().getParticipantes()) {
@@ -145,7 +145,7 @@ public class Evento {
         Manager.get().getParticipantes().clear();
 
         if(broadcast) {
-            for(String str : Mensagens.get().getCancelado()) {
+            for(String str : Core.getMessages().getCancelled()) {
                 API.get().broadcastMessage(str);
             }
         }
@@ -153,13 +153,13 @@ public class Evento {
 
     public void verificarFinal() {
         if(Manager.get().getParticipantes().size() >= 2) {
-            API.get().broadcastParticipantes(Mensagens.get().getRestam().replace("{restam}", String.valueOf(Manager.get().getParticipantes().size())));
+            API.get().broadcastParticipantes(Core.getMessages().getSurvivorsLeft().replace("{restam}", String.valueOf(Manager.get().getParticipantes().size())));
         } else {
             Player vencedor = Manager.get().getParticipantes().get(0);
             vencedor.getInventory().clear();
             vencedor.getInventory().setArmorContents(null);
             int kills = Integer.parseInt(String.valueOf(vencedor.getMetadata("warriorKills").get(0).value()));
-            for(String str : Mensagens.get().getFinalizado()) {
+            for(String str : Core.getMessages().getExpired()) {
                 API.get().broadcastMessage(str.replace("{abates}", String.valueOf(kills)).replace("{duração}", API.get().formatTime(Manager.get().getTempoEvento())).replace("{tag}", Config.get().getTag()).replace("{valor}", String.valueOf(Config.get().getPremio())).replace("{vencedor}", vencedor.getName()));
             }
             for (PotionEffect effect : vencedor.getActivePotionEffects()) {
