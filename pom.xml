@@ -117,13 +117,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.azbh111</groupId>
-            <artifactId>craftbukkit-1.8.8</artifactId>
-            <version>R</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
             <version>9.8.1</version>
