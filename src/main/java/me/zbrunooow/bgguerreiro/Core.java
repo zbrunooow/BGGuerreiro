@@ -156,7 +156,7 @@ public final class Core extends JavaPlugin {
         return api;
     }
 
-    public MySQL getMysql() {
+    public MySQL getMySQL() {
         return mysql;
     }
 

@@ -101,7 +101,7 @@ public class MySQL {
     }
 
     public static MySQL get() {
-        return Core.getInstance().getMysql();
+        return Core.getInstance().getMySQL();
     }
 
 }
