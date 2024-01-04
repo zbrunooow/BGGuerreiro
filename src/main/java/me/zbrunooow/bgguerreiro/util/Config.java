@@ -1,6 +1,6 @@
-package me.zbrunooow.bgguerreiro.utils;
+package me.zbrunooow.bgguerreiro.util;
 
-import me.zbrunooow.bgguerreiro.Core;
+import me.zbrunooow.bgguerreiro.WarriorEngine;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.List;
@@ -64,47 +64,47 @@ public class Config {
     }
 
     private int replaceInt(String linha) {
-        FileConfiguration config = Core.getInstance().getConfig();
+        FileConfiguration config = WarriorEngine.getInstance().getConfig();
         return config.getInt("Config." + linha);
     }
 
     private int replaceTopLimite(String linha) {
-        FileConfiguration config = Core.getInstance().getConfig();
+        FileConfiguration config = WarriorEngine.getInstance().getConfig();
         return config.getInt("Mensagens." + linha);
     }
 
     private List<String> replaceHorarios(String linha) {
-        FileConfiguration config = Core.getInstance().getConfig();
+        FileConfiguration config = WarriorEngine.getInstance().getConfig();
         return config.getStringList("AutoStart." + linha);
     }
 
     private Boolean replaceBool(String linha) {
-        FileConfiguration config = Core.getInstance().getConfig();
+        FileConfiguration config = WarriorEngine.getInstance().getConfig();
         return config.getBoolean("Config." + linha);
     }
 
     private int replaceDouble(String linha) {
-        FileConfiguration config = Core.getInstance().getConfig();
+        FileConfiguration config = WarriorEngine.getInstance().getConfig();
         return config.getInt("Config." + linha);
     }
 
     private String replace(String linha) {
-        FileConfiguration config = Core.getInstance().getConfig();
+        FileConfiguration config = WarriorEngine.getInstance().getConfig();
         return config.getString("Config." + linha).replace('&', '§');
     }
 
     private List<String> replaceList(String linha) {
-        FileConfiguration config = Core.getInstance().getConfig();
+        FileConfiguration config = WarriorEngine.getInstance().getConfig();
         return config.getStringList("Config." + linha);
     }
 
     private Integer replaceIntSql(String linha) {
-        FileConfiguration config = Core.getInstance().getConfig();
+        FileConfiguration config = WarriorEngine.getInstance().getConfig();
         return config.getInt("Armazenamento." + linha);
     }
 
     private String replaceSql(String linha) {
-        FileConfiguration config = Core.getInstance().getConfig();
+        FileConfiguration config = WarriorEngine.getInstance().getConfig();
         return config.getString("Armazenamento." + linha).replace('&', '§');
     }
 
@@ -193,7 +193,7 @@ public class Config {
     }
 
     public static Config get(){
-        return Core.getInstance().getConfiguration();
+        return WarriorEngine.getInstance().getConfiguration();
     }
 
 }

@@ -34,8 +34,8 @@ Config:
     Sem-PvP: 10 # Tempo que vai ficar sem PVP ao puxar o deathmatch
 
 Mensagens:
-  ActionBar-1: "&7Status: {status} &f| &7Abates: &e{abates} &f| &7Tempo: &e{tempo}" # Essa action bar fica visível até o evento completar 10 segundos de PVP habilitado, aí troca pra action bar 2, abaixo.
-  ActionBar-2: "&7Participantes: &e{players} &f| &7Abates: &e{abates} &f| &7Tempo: &e{tempo}"
+  Status-AB: "&7Status: {status} &f| &7Abates: &e{abates} &f| &7Tempo: &e{tempo}" # Essa action bar fica visível até o evento completar 10 segundos de PVP habilitado, aí troca pra action bar 2, abaixo.
+  Informacoes-AB: "&7Participantes: &e{players} &f| &7Abates: &e{abates} &f| &7Tempo: &e{tempo}"
 
   Sem-Permissao: "&cVocê não tem permissão para executar este comando!"
   Abate: "&c[ABATE]&7: &fO jogador &c{morreu} &ffoi morto por &a{matou} &7({kills})&a!"

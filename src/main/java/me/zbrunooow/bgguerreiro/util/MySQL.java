@@ -1,6 +1,6 @@
-package me.zbrunooow.bgguerreiro.utils;
+package me.zbrunooow.bgguerreiro.util;
 
-import me.zbrunooow.bgguerreiro.Core;
+import me.zbrunooow.bgguerreiro.WarriorEngine;
 
 import java.io.File;
 import java.sql.Connection;
@@ -52,7 +52,7 @@ public class MySQL {
     }
 
     public void openConnectionSQLite() {
-        File file = new File(Core.getInstance().getDataFolder(), "database.db");
+        File file = new File(WarriorEngine.getInstance().getDataFolder(), "database.db");
         String URL = "jdbc:sqlite:" + file;
 
         try {
@@ -101,7 +101,7 @@ public class MySQL {
     }
 
     public static MySQL get() {
-        return Core.getInstance().getMySQL();
+        return WarriorEngine.getInstance().getMySQL();
     }
 
 }

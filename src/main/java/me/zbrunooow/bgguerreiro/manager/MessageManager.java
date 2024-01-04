@@ -1,22 +1,22 @@
-package me.zbrunooow.bgguerreiro.utils;
+package me.zbrunooow.bgguerreiro.manager;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Data;
-import me.zbrunooow.bgguerreiro.Core;
+import me.zbrunooow.bgguerreiro.WarriorEngine;
 import org.bukkit.configuration.file.FileConfiguration;
 
 @Data
-public class Mensagens {
+public class MessageManager {
 
     private String noPermission;
     private String kill;
     private String survivorsLeft;
-    private String ab1;
-    private String ab2;
+    private String statusActionbar;
+    private String informationActionbar;
     private String topValue;
-    private String camaroteJoin;
-    private String camaroteLeave;
+    private String boxJoin;
+    private String boxLeave;
     private List<String> generalCommand;
     private List<String> topHeader;
     private List<String> topFooter;
@@ -25,19 +25,19 @@ public class Mensagens {
     private List<String> status;
     private List<String> waiting;
     private List<String> started;
-    private List<String> dmComing;
-    private List<String> dmStart;
+    private List<String> deathmatchComing;
+    private List<String> deathmatchStart;
     private List<String> expired;
 
-    public Mensagens() {
-        FileConfiguration config = Core.getInstance().getConfig();
+    public MessageManager() {
+        FileConfiguration config = WarriorEngine.getInstance().getConfig();
         replaceAndSet(config, this::setNoPermission, "Sem-Permissao");
         replaceAndSet(config, this::setKill, "Abate");
         replaceAndSet(config, this::setSurvivorsLeft, "Restam");
-        replaceAndSet(config, this::setAb1, "ActionBar-1");
-        replaceAndSet(config, this::setAb2, "ActionBar-2");
-        replaceAndSet(config, this::setCamaroteJoin, "Camarote");
-        replaceAndSet(config, this::setCamaroteLeave, "Camarote-Saiu");
+        replaceAndSet(config, this::setStatusActionbar, "Status-AB");
+        replaceAndSet(config, this::setInformationActionbar, "Informacoes-AB");
+        replaceAndSet(config, this::setBoxJoin, "Camarote");
+        replaceAndSet(config, this::setBoxLeave, "Camarote-Saiu");
         replaceAndSet(config, this::setTopValue, "Top.Value");
 
         replaceAndSetList(config, this::setGeneralCommand, "Geral");
@@ -48,8 +48,8 @@ public class Mensagens {
         replaceAndSetList(config, this::setStatus, "Status");
         replaceAndSetList(config, this::setWaiting, "Espera");
         replaceAndSetList(config, this::setStarted, "Valendo");
-        replaceAndSetList(config, this::setDmComing, "DM-Chegando");
-        replaceAndSetList(config, this::setDmStart, "DM-Start");
+        replaceAndSetList(config, this::setDeathmatchComing, "DM-Chegando");
+        replaceAndSetList(config, this::setDeathmatchStart, "DM-Start");
         replaceAndSetList(config, this::setExpired, "Finalizado");
     }
 
