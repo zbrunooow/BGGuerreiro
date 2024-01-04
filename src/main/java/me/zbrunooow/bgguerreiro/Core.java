@@ -25,7 +25,7 @@ public final class Core extends JavaPlugin {
     private AutoUpdater autoUpdate;
 
     private Config configuration;
-    private Mensagens msgs;
+    private static Mensagens messages;
     private Locations locs;
     private VaultHook vaultHook;
     private LegendChatHook lcHook;
@@ -105,14 +105,15 @@ public final class Core extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(prefix + "§aPlugin habilitado com sucesso!");
 
         autoUpdater();
+        messages = new Mensagens();
     }
 
     public void reloadPlugin() {
         reloadConfig();
 
-        locs = new Locations();
-        configuration = new Config();
-        msgs = new Mensagens();
+        this.locs = new Locations();
+        this.configuration = new Config();
+        messages = new Mensagens();
     }
 
     @Override
@@ -144,8 +145,8 @@ public final class Core extends JavaPlugin {
         this.autoUpdate.autoUpdate();
     }
 
-    public Mensagens getMsgs() {
-        return msgs;
+    public static Mensagens getMessages() {
+        return messages;
     }
 
     public static Core getInstance() {

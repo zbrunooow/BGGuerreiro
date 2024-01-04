@@ -56,7 +56,7 @@ public class API {
 
     public void broadcastACParticipantes(String message) {
         for (Player player : Manager.get().getParticipantes()) {
-            ActionBar.sendActionBar(player, message.replace("&", "§").replace("{abates}", String.valueOf(player.getMetadata("gabates").get(0).value())));
+            ActionBar.sendActionBar(player, message.replace("&", "§").replace("{abates}", String.valueOf(player.getMetadata("warriorKills").get(0).value())));
         }
     }
 

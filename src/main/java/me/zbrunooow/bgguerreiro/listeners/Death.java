@@ -21,13 +21,13 @@ public class Death implements Listener {
                 Player killer = e.getEntity().getKiller();
                 Player victim = e.getEntity().getPlayer();
 
-                int kills = Integer.parseInt(String.valueOf(killer.getMetadata("gabates").get(0).value()));
+                int kills = Integer.parseInt(String.valueOf(killer.getMetadata("warriorKills").get(0).value()));
                 kills++;
-                killer.setMetadata("gabates", new FixedMetadataValue(Core.getInstance(), kills));
+                killer.setMetadata("warriorKills", new FixedMetadataValue(Core.getInstance(), kills));
 
-                API.get().salvarStatus(victim, false, Integer.parseInt(String.valueOf(victim.getMetadata("gabates").get(0).value())));
+                API.get().salvarStatus(victim, false, Integer.parseInt(String.valueOf(victim.getMetadata("warriorKills").get(0).value())));
                 Manager.get().getParticipantes().remove(victim);
-                victim.removeMetadata("gabates", Core.getInstance());
+                victim.removeMetadata("warriorKills", Core.getInstance());
 
                 if(Core.getInstance().sc) {
                     if (Core.getSC().getClanManager().getClanPlayer(victim) != null) {

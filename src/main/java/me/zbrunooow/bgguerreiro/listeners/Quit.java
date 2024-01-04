@@ -16,11 +16,11 @@ public class Quit implements Listener {
     public void onQuitEvent(PlayerQuitEvent e) {
         if(Manager.get().getParticipantes().contains(e.getPlayer())) {
             Player p = e.getPlayer();
-            int kills = Integer.parseInt(String.valueOf(p.getMetadata("gabates").get(0).value()));
+            int kills = Integer.parseInt(String.valueOf(p.getMetadata("warriorKills").get(0).value()));
             p.getInventory().clear();
             p.getInventory().setArmorContents(null);
             p.getActivePotionEffects().clear();
-            p.removeMetadata("gabates", Core.getInstance());
+            p.removeMetadata("warriorKills", Core.getInstance());
             if(Core.getInstance().sc) {
                 if (Core.getSC().getClanManager().getClanPlayer(p) != null) {
                     Core.getSC().getClanManager().getClanPlayer(p).setFriendlyFire(false);

@@ -158,14 +158,14 @@ public class Evento {
             Player vencedor = Manager.get().getParticipantes().get(0);
             vencedor.getInventory().clear();
             vencedor.getInventory().setArmorContents(null);
-            int kills = Integer.parseInt(String.valueOf(vencedor.getMetadata("gabates").get(0).value()));
+            int kills = Integer.parseInt(String.valueOf(vencedor.getMetadata("warriorKills").get(0).value()));
             for(String str : Mensagens.get().getFinalizado()) {
                 API.get().broadcastMessage(str.replace("{abates}", String.valueOf(kills)).replace("{duração}", API.get().formatTime(Manager.get().getTempoEvento())).replace("{tag}", Config.get().getTag()).replace("{valor}", String.valueOf(Config.get().getPremio())).replace("{vencedor}", vencedor.getName()));
             }
             for (PotionEffect effect : vencedor.getActivePotionEffects()) {
                 vencedor.removePotionEffect(effect.getType());
             }
-            vencedor.removeMetadata("gabates", Core.getInstance());
+            vencedor.removeMetadata("warriorKills", Core.getInstance());
             API.get().salvarStatus(vencedor, true, kills);
             Manager.get().getParticipantes().clear();
             setStartado("off");
