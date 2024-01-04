@@ -1,27 +1,40 @@
-package me.zbrunooow.bgguerreiro.comandos;
+package me.zbrunooow.bgguerreiro.commands;
 
 import com.google.common.base.Stopwatch;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import me.zbrunooow.bgguerreiro.Core;
-import me.zbrunooow.bgguerreiro.guerreiro.CamaroteManager;
-import me.zbrunooow.bgguerreiro.guerreiro.Evento;
-import me.zbrunooow.bgguerreiro.utils.API;
-import me.zbrunooow.bgguerreiro.utils.Locations;
-import me.zbrunooow.bgguerreiro.utils.Manager;
-import net.sacredlabyrinth.phaed.simpleclans.ClanPlayer;
+import me.zbrunooow.bgguerreiro.WarriorEngine;
+import me.zbrunooow.bgguerreiro.manager.BoxManager;
+import me.zbrunooow.bgguerreiro.manager.EventManager;
+import me.zbrunooow.bgguerreiro.sample.EventStatus;
+import me.zbrunooow.bgguerreiro.util.API;
+import me.zbrunooow.bgguerreiro.util.Locations;
+import me.zbrunooow.bgguerreiro.util.Manager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 
-public class Guerreiro implements CommandExecutor {
+public class WarriorCommand implements CommandExecutor {
+
+  private static void sendHelp(Player player) {
+    for (String str : WarriorEngine.getMessages().getGeneralCommand()) {
+      if (str.contains("force") || str.contains("set")) {
+        if (player.hasPermission("bgguerreiro.admin")) {
+          player.sendMessage(str);
+        }
+      } else {
+        player.sendMessage(str);
+      }
+    }
+  }
 
   @Override
   public boolean onCommand(CommandSender commandSender, Command cmd, String lb, String[] args) {
     if (!(commandSender instanceof Player)) {
-      Core.getMessages().getGeneralCommand().forEach(commandSender::sendMessage);
+      WarriorEngine.getMessages().getGeneralCommand().forEach(commandSender::sendMessage);
       return false;
     }
 
@@ -29,39 +42,30 @@ public class Guerreiro implements CommandExecutor {
 
     // Insufficient Args
     if (args.length == 0) {
-      for (String str : Core.getMessages().getGeneralCommand()) {
-        if (str.contains("force") || str.contains("set")) {
-          if (player.hasPermission("bgguerreiro.admin")) {
-            player.sendMessage(str);
-          }
-        } else {
-          player.sendMessage(str);
-        }
-      }
+      sendHelp(player);
       return false;
     }
 
     String action = args[0].toLowerCase();
 
     // Subcommand: start
-    String eventStatus = Evento.get().getStartado();
+    EventStatus eventStatus = EventManager.getCreated().getStatus();
     if ("iniciar".equals(action) || "forcestart".equals(action) || "start".equals(action)) {
       this.hasPermission(
           player,
-          "bgguerreiro.admin",
           () -> {
             if (args.length > 1) {
               player.sendMessage("§cUse /guerreiro forcestart");
               return;
             }
-            if (!eventStatus.equalsIgnoreCase("off")) {
+            if (eventStatus != EventStatus.OFF) {
               player.sendMessage("§cO evento guerreiro já está começando!");
               return;
             }
-            Evento.get().iniciar();
+            EventManager.getCreated().startEvent();
             return;
           },
-          Core.getMessages().getNoPermission());
+          WarriorEngine.getMessages().getNoPermission());
       return false;
     }
 
@@ -69,32 +73,29 @@ public class Guerreiro implements CommandExecutor {
     if ("cancelar".equals(action) || "forcestop".equals(action) || "stop".equals(action)) {
       this.hasPermission(
           player,
-          "bgguerreiro.admin",
           () -> {
-            if (eventStatus.equalsIgnoreCase("off")) {
-              player.sendMessage(eventStatus);
+            if (eventStatus == EventStatus.OFF) {
               player.sendMessage("§cO evento guerreiro não está acontecendo!");
               return;
             }
-            Evento.get().cancelar(true);
+            EventManager.getCreated().cancelar(true);
           },
-          Core.getMessages().getNoPermission());
+          WarriorEngine.getMessages().getNoPermission());
       return false;
     }
 
     // Subcommand: forcedm
-    if ("forcedm".equals(action)) {
+    if ("forcedm".equals(action) || "forcedeathmatch".equals(action)) {
       this.hasPermission(
           player,
-          "bgguerreiro.admin",
           () -> {
-            if (!eventStatus.equalsIgnoreCase("iniciado")) {
+            if (eventStatus != EventStatus.STARTED) {
               player.sendMessage("§cO evento guerreiro não está acontecendo!");
               return;
             }
-            Evento.get().forceDm();
+            EventManager.getCreated().forceDm();
           },
-          Core.getMessages().getNoPermission());
+          WarriorEngine.getMessages().getNoPermission());
       return false;
     }
 
@@ -103,25 +104,23 @@ public class Guerreiro implements CommandExecutor {
       Stopwatch stopwatch = Stopwatch.createStarted();
       this.hasPermission(
           player,
-          "bgguerreiro.admin",
           () -> {
-            Core.getInstance().reloadPlugin();
+            WarriorEngine.getInstance().reloadPlugin();
             player.sendMessage(
                 "§aA configuração do plugin foi recarregada em "
                     + stopwatch.stop().toString()
                     + "!");
             return;
           },
-          Core.getMessages().getNoPermission());
+          WarriorEngine.getMessages().getNoPermission());
       return false;
     }
 
     // Subcommand: set
-    Manager manager = Manager.get();
+    Manager manager = Manager.getCreated();
     if ("set".equals(action)) {
       this.hasPermission(
           player,
-          "bgguerreiro.admin",
           () -> {
             if (args.length < 2) {
               player.sendMessage("§cUse /guerreiro set (entrada/saida/deathmatch)");
@@ -133,8 +132,8 @@ public class Guerreiro implements CommandExecutor {
             if ("entrada".equals(subAction)) {
               Locations.get()
                   .getLocs()
-                  .set("entrada", API.get().unserializeLocation(player.getLocation()));
-              manager.setEntrada(player.getLocation());
+                  .set("entrada", API.getCreated().unserializeLocation(player.getLocation()));
+              manager.setJoinLocation(player.getLocation());
               player.sendMessage("§aA entrada do evento Guerreiro foi setada com sucesso!");
               return;
             }
@@ -142,8 +141,8 @@ public class Guerreiro implements CommandExecutor {
             if ("saida".equals(subAction)) {
               Locations.get()
                   .getLocs()
-                  .set("saida", API.get().unserializeLocation(player.getLocation()));
-              manager.setSaida(player.getLocation());
+                  .set("saida", API.getCreated().unserializeLocation(player.getLocation()));
+              manager.setExitLocation(player.getLocation());
               player.sendMessage("§aA saída do evento Guerreiro foi setada com sucesso!");
               return;
             }
@@ -151,34 +150,33 @@ public class Guerreiro implements CommandExecutor {
             if ("deathmatch".equals(subAction)) {
               Locations.get()
                   .getLocs()
-                  .set("deathmatch", API.get().unserializeLocation(player.getLocation()));
-              manager.setDeathmatch(player.getLocation());
+                  .set("deathmatch", API.getCreated().unserializeLocation(player.getLocation()));
+              manager.setDeathmatchLocation(player.getLocation());
               player.sendMessage("§aO deathmatch do evento Guerreiro foi setada com sucesso!");
               return;
             }
 
             player.sendMessage("§cUse /guerreiro set (entrada/saida/deathmatch)");
           },
-          Core.getMessages().getNoPermission());
+          WarriorEngine.getMessages().getNoPermission());
       return false;
     }
 
     // Subcommand: join
-    ClanPlayer clanPlayer = Core.getSC().getClanManager().getClanPlayer(player);
     if ("entrar".equals(action) || "participar".equals(action) || "join".equals(action)) {
-      if (eventStatus.equalsIgnoreCase("off")) {
+      if (eventStatus == EventStatus.OFF) {
         player.sendMessage("§cO evento guerreiro não está acontecendo!");
         return false;
       }
 
-      boolean exitIsValid = manager.getSaida() != null;
+      boolean exitIsValid = manager.getExitLocation() != null;
 
       if (!exitIsValid) {
         player.sendMessage("§cA saída do evento Guerreiro não foi setada!");
         return false;
       }
 
-      boolean entranceIsValid = manager.getEntrada() != null;
+      boolean entranceIsValid = manager.getJoinLocation() != null;
 
       if (!entranceIsValid) {
         player.sendMessage("§cA entrada do evento Guerreiro não foi setada!");
@@ -186,19 +184,19 @@ public class Guerreiro implements CommandExecutor {
       }
 
       boolean alreadyStarted =
-          eventStatus.equalsIgnoreCase("espera") || eventStatus.equalsIgnoreCase("iniciado");
+          eventStatus == EventStatus.WAITING || eventStatus == EventStatus.STARTED;
 
       if (alreadyStarted) {
         player.sendMessage("§cA entrada para o evento guerreiro já fechou!");
         return false;
       }
 
-      if (manager.getParticipantes().contains(player)) {
+      if (manager.getParticipants().contains(player)) {
         player.sendMessage("§cVocê está participando do evento Guerreiro!");
         return false;
       }
 
-      if (API.get().getFreeSlots(player) != 36 || API.get().getArmor(player) != 0) {
+      if (API.getCreated().getFreeSlots(player) != 36 || API.getCreated().getArmor(player) != 0) {
         player.sendMessage("§cEsvazie o inventário para entrar no evento!");
         return false;
       }
@@ -206,63 +204,65 @@ public class Guerreiro implements CommandExecutor {
       player
           .getActivePotionEffects()
           .forEach(effect -> player.removePotionEffect(effect.getType()));
-      manager.getParticipantes().add(player);
+      manager.getParticipants().add(player);
 
-      if (Core.getInstance().sc && clanPlayer != null) {
-        clanPlayer.setFriendlyFire(true);
+      if (WarriorEngine.getInstance().isSimpleClans()
+          && WarriorEngine.getSimpleClans().getClanManager().getClanPlayer(player) != null) {
+        WarriorEngine.getSimpleClans().getClanManager().getClanPlayer(player).setFriendlyFire(true);
       }
 
-      player.teleport(manager.getEntrada());
-      player.setMetadata("warriorKills", new FixedMetadataValue(Core.getInstance(), 0));
-      API.get().equipPlayer(player);
+      player.teleport(manager.getJoinLocation());
+      player.setMetadata("warriorKills", new FixedMetadataValue(WarriorEngine.getInstance(), 0));
+      API.getCreated().equipPlayer(player);
       player.sendMessage("§aVocê entrou no evento guerreiro!");
       return true;
     }
 
     // Subcommand: leave
     if ("sair".equals(action) || "quit".equals(action)) {
-      if (eventStatus.equalsIgnoreCase("off")) {
+      if (eventStatus == EventStatus.OFF) {
         player.sendMessage("§cO evento guerreiro não está acontecendo!");
         return false;
       }
 
-      if (!manager.getParticipantes().contains(player)) {
+      if (!manager.getParticipants().contains(player)) {
         player.sendMessage("§cVocê não está participando do evento Guerreiro!");
         return false;
       }
 
-      if (Core.getInstance().sc && clanPlayer != null) {
-        clanPlayer.setFriendlyFire(true);
+      if (WarriorEngine.getInstance().isSimpleClans()
+          && WarriorEngine.getSimpleClans().getClanManager().getClanPlayer(player) != null) {
+        WarriorEngine.getSimpleClans().getClanManager().getClanPlayer(player).setFriendlyFire(true);
       }
 
-      manager.getParticipantes().remove(player);
-      player.removeMetadata("warriorKills", Core.getInstance());
-      player.teleport(manager.getSaida());
+      manager.getParticipants().remove(player);
+      player.removeMetadata("warriorKills", WarriorEngine.getInstance());
+      player.teleport(manager.getExitLocation());
       player.getInventory().clear();
       player.getInventory().setArmorContents(null);
-      if(eventStatus.equalsIgnoreCase("iniciado")) {
-        Evento.get().verificarFinal();
+      if (eventStatus == EventStatus.STARTED) {
+        EventManager.getCreated().verifyLastDuel();
       }
       player.sendMessage("§aVocê saiu do evento guerreiro!");
       return true;
     }
 
-    int participantsSize = manager.getParticipantes().size();
+    int participantsSize = manager.getParticipants().size();
     String formattedEventStatus =
-        eventStatus.equals("off")
+        eventStatus == EventStatus.OFF
             ? "§cNão acontecendo"
-            : eventStatus.equals("iniciado") ? "§aAcontecendo" : "§eIniciando...";
+            : eventStatus == EventStatus.STARTED ? "§aAcontecendo" : "§eIniciando...";
 
     // Subcommand: status
     if (action.equalsIgnoreCase("status") || action.equalsIgnoreCase("info")) {
       List<String> messageFormatted =
-          Core.getMessages().getStatus().stream()
+          WarriorEngine.getMessages().getStatus().stream()
               .map(
                   string -> {
                     return string
                         .replace("{players}", String.valueOf(participantsSize))
-                        .replace("{tempo}", API.get().formatTime(manager.getTempoEvento()))
-                        .replace("", formattedEventStatus);
+                        .replace("{tempo}", API.getCreated().formatTime(manager.getEventTime()))
+                        .replace("{status}", formattedEventStatus);
                   })
               .collect(Collectors.toList());
 
@@ -273,87 +273,68 @@ public class Guerreiro implements CommandExecutor {
     // Subcommand: camarote
     if ("camarote".equals(action)) {
       String message =
-          eventStatus.equals("off")
+          eventStatus == EventStatus.OFF
               ? "§cO evento Guerreiro não está acontecendo!"
-              : eventStatus.equals("iniciado")
+              : eventStatus == EventStatus.STARTED
                   ? "§cAguarde enquanto estamos te enviando para o camarote!"
                   : "§cAguarde enquanto o evento Guerreiro inicia!";
 
-      if (manager.getParticipantes().contains(player)) {
+      if (manager.getParticipants().contains(player)) {
         player.sendMessage("§cVocê já está participando do evento Guerreiro!");
         return false;
       }
 
-      if (API.get().getFreeSlots(player) != 36 || API.get().getArmor(player) != 0) {
+      if (API.getCreated().getFreeSlots(player) != 36 || API.getCreated().getArmor(player) != 0) {
         player.sendMessage("§cEsvazie o inventário para entrar no evento!");
         return false;
       }
 
-      CamaroteManager.get().joinCamarote(player);
+      BoxManager.get().joinCamarote(player);
       player.sendMessage(message);
       return true;
     }
 
-    if (action.equalsIgnoreCase("top")) {
-      if (args.length != 2) {
+    // Subcommand: top
+    if ("top".equals(action)) {
+      if (args.length < 2) {
         player.sendMessage("§cUse /guerreiro top (vitorias/abates)");
         return false;
       }
-      if (args[1].equalsIgnoreCase("vitorias")) {
-        for (String str : Core.getMessages().getTopHeader()) {
-          player.sendMessage(str.replace("{type}", "Vitórias"));
-        }
-        int i = 1;
-        for (String str : API.get().listaTop("vitorias")) {
-          player.sendMessage(
-              Core.getMessages()
-                  .getTopValue()
-                  .replace("{type}", "vitorias")
-                  .replace("{posicao}", String.valueOf(i))
-                  .replace("{nick}", str.split("\\(\\)")[0])
-                  .replace("{amount}", str.split("\\(\\)")[1]));
-          i++;
-        }
-        for (String str : Core.getMessages().getTopFooter()) {
-          player.sendMessage(str);
-        }
-      } else if (args[1].equalsIgnoreCase("kills") || args[1].equalsIgnoreCase("abates")) {
-        for (String str : Core.getMessages().getTopHeader()) {
-          player.sendMessage(str.replace("{type}", "Abates"));
-        }
-        int i = 1;
-        for (String str : API.get().listaTop("kills")) {
-          player.sendMessage(
-              Core.getMessages()
-                  .getTopValue()
-                  .replace("{type}", "abates")
-                  .replace("{posicao}", String.valueOf(i))
-                  .replace("{nick}", str.split("\\(\\)")[0])
-                  .replace("{amount}", str.split("\\(\\)")[1]));
-          i++;
-        }
-        for (String str : Core.getMessages().getTopFooter()) {
-          player.sendMessage(str);
-        }
+
+      String desiredTop = args[1].toLowerCase();
+
+      if (!desiredTop.equals("vitorias") && !desiredTop.equals("abates")) {
+        player.sendMessage("§cUse /guerreiro top (vitorias/abates)");
+        return false;
       }
+      String desiredTopFormat = desiredTop.equals("vitorias") ? "Vitórias" : "Abates";
+
+      AtomicInteger index = new AtomicInteger(1);
+      List<String> fetchedRanking = API.getCreated().fetchRanking(desiredTop);
+      WarriorEngine.getMessages()
+          .getTopHeader()
+          .forEach(string -> player.sendMessage(string.replace("{type}", desiredTopFormat)));
+      fetchedRanking.forEach(
+          string -> {
+            player.sendMessage(
+                WarriorEngine.getMessages()
+                    .getTopValue()
+                    .replace("{type}", desiredTopFormat)
+                    .replace("{posicao}", String.valueOf(index.get()))
+                    .replace("{nick}", string.split("\\(\\)")[0])
+                    .replace("{amount}", string.split("\\(\\)")[1]));
+            index.set(index.get() + 1);
+          });
+
       return true;
-    } else {
-      for (String str : Core.getMessages().getGeneralCommand()) {
-        if (str.contains("force") || str.contains("set")) {
-          if (player.hasPermission("bgguerreiro.admin")) {
-            player.sendMessage(str);
-          }
-        } else {
-          player.sendMessage(str);
-        }
-      }
-      return false;
     }
+
+    sendHelp(player);
+    return false;
   }
 
-  void hasPermission(
-      Player player, String permission, Runnable runnable, String noPermissionMessage) {
-    if (player.hasPermission(permission)) {
+  void hasPermission(Player player, Runnable runnable, String noPermissionMessage) {
+    if (player.hasPermission("bgguerreiro.admin")) {
       runnable.run();
     } else {
       player.sendMessage(noPermissionMessage);

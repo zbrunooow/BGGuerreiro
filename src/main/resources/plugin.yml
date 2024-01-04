@@ -1,6 +1,6 @@
 name: BGGuerreiro
 version: 1.0.3
-main: me.zbrunooow.bgguerreiro.Core
+main: me.zbrunooow.bgguerreiro.WarriorEngine
 authors: [zBrunooow, sync]
 description: Plugin de evento de PVP Guerreiro
 depend: [Vault]

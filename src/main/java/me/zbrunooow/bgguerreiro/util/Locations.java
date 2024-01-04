@@ -1,6 +1,6 @@
-package me.zbrunooow.bgguerreiro.utils;
+package me.zbrunooow.bgguerreiro.util;
 
-import me.zbrunooow.bgguerreiro.Core;
+import me.zbrunooow.bgguerreiro.WarriorEngine;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -13,9 +13,9 @@ public class Locations {
     private FileConfiguration fileConfigurationlocs = null;
 
     public Locations() {
-        File verificarLocs = new File(Core.getInstance().getDataFolder(), "locs.yml");
+        File verificarLocs = new File(WarriorEngine.getInstance().getDataFolder(), "locs.yml");
         if (!verificarLocs.exists()) {
-            Core.getInstance().saveResource("locs.yml", false);
+            WarriorEngine.getInstance().saveResource("locs.yml", false);
         }
 
         reloadLocs();
@@ -23,7 +23,7 @@ public class Locations {
 
     public FileConfiguration getLocs() {
         if (this.fileConfigurationlocs == null) {
-            this.filelocs = new File(Core.getInstance().getDataFolder(), "locs.yml");
+            this.filelocs = new File(WarriorEngine.getInstance().getDataFolder(), "locs.yml");
             this.fileConfigurationlocs = (FileConfiguration) YamlConfiguration.loadConfiguration(this.filelocs);
         }
         return this.fileConfigurationlocs;
@@ -37,7 +37,7 @@ public class Locations {
 
     public void reloadLocs() {
         if (this.filelocs == null)
-            this.filelocs = new File(Core.getInstance().getDataFolder(), "locs.yml");
+            this.filelocs = new File(WarriorEngine.getInstance().getDataFolder(), "locs.yml");
         this.fileConfigurationlocs = (FileConfiguration)YamlConfiguration.loadConfiguration(this.filelocs);
         if (this.fileConfigurationlocs != null) {
             YamlConfiguration locs = YamlConfiguration.loadConfiguration(this.filelocs);
@@ -46,7 +46,7 @@ public class Locations {
     }
 
     public static Locations get() {
-        return Core.getInstance().getLocs();
+        return WarriorEngine.getInstance().getLocations();
     }
 
 }

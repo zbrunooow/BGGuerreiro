@@ -1,10 +1,11 @@
-package me.zbrunooow.bgguerreiro.listeners;
+package me.zbrunooow.bgguerreiro.listener.hooks;
 
 import br.net.fabiozumbi12.UltimateChat.Bukkit.API.SendChannelMessageEvent;
-import me.zbrunooow.bgguerreiro.guerreiro.CamaroteManager;
-import me.zbrunooow.bgguerreiro.guerreiro.Evento;
-import me.zbrunooow.bgguerreiro.utils.Config;
-import me.zbrunooow.bgguerreiro.utils.Manager;
+import me.zbrunooow.bgguerreiro.manager.BoxManager;
+import me.zbrunooow.bgguerreiro.manager.EventManager;
+import me.zbrunooow.bgguerreiro.sample.EventStatus;
+import me.zbrunooow.bgguerreiro.util.Config;
+import me.zbrunooow.bgguerreiro.util.Manager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,13 +18,13 @@ public class UltimateChatListener implements Listener {
 
         Player p = (Player) e.getSender();
 
-        if(!Evento.get().getStartado().equalsIgnoreCase("off")) {
-            if(CamaroteManager.get().getSpectators().contains(p)) {
+        if((EventManager.getCreated().getStatus() != EventStatus.OFF)) {
+            if(BoxManager.get().getSpectators().contains(p)) {
                 e.setCancelled(true);
                 return;
             }
 
-            if(Manager.get().getParticipantes().contains(p)) {
+            if(Manager.getCreated().getParticipants().contains(p)) {
                 if(!Config.get().isChat()) {
                     if(!p.isOp() && !p.hasPermission("bgguerreiro.admin")) {
                         e.setCancelled(true);
@@ -33,7 +34,7 @@ public class UltimateChatListener implements Listener {
             }
         }
 
-        if(Manager.get().getLastWinner().equalsIgnoreCase(p.getName())) {
+        if(Manager.getCreated().getLastWinner().equalsIgnoreCase(p.getName())) {
             e.addTag("{bgguerreiro}", Config.get().getTag() + " ");
         }
     }

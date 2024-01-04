@@ -1,6 +1,6 @@
 package me.zbrunooow.bgguerreiro.hooks;
 
-import me.zbrunooow.bgguerreiro.Core;
+import me.zbrunooow.bgguerreiro.WarriorEngine;
 import org.bukkit.plugin.Plugin;
 
 public class SimpleClansHook {
@@ -10,16 +10,16 @@ public class SimpleClansHook {
             byte b;
             int i;
             Plugin[] arrayOfPlugin;
-            for (i = (arrayOfPlugin = Core.getInstance().getServer().getPluginManager().getPlugins()).length, b = 0; b < i; ) {
+            for (i = (arrayOfPlugin = WarriorEngine.getInstance().getServer().getPluginManager().getPlugins()).length, b = 0; b < i; ) {
                 Plugin plugin = arrayOfPlugin[b];
                 if (plugin instanceof net.sacredlabyrinth.phaed.simpleclans.SimpleClans) {
-                    Core.getInstance().sc = true;
+                    WarriorEngine.getInstance().setSimpleClans(true);
                     return true;
                 }
                 b++;
             }
         } catch (NoClassDefFoundError e) {
-            Core.getInstance().sc = false;
+            WarriorEngine.getInstance().setSimpleClans(false);
             return false;
         }
         return false;
