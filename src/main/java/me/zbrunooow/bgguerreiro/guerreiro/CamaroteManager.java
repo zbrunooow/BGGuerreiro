@@ -23,6 +23,11 @@ public class CamaroteManager {
     }
 
     public void joinCamarote(Player p) {
+        String eventStatus = Evento.get().getStartado();
+        if(!eventStatus.equalsIgnoreCase("iniciado")) {
+            return;
+        }
+
         p.getPlayer().teleport(Manager.get().getEntrada());
         p.getPlayer().getInventory().setItem(4, item.build());
 

@@ -25,7 +25,7 @@ public class Mensagens {
     private List<String> status;
     private List<String> waiting;
     private List<String> started;
-    private List<String> dmChegando;
+    private List<String> dmComing;
     private List<String> dmStart;
     private List<String> expired;
 
@@ -48,7 +48,7 @@ public class Mensagens {
         replaceAndSetList(config, this::setStatus, "Status");
         replaceAndSetList(config, this::setWaiting, "Espera");
         replaceAndSetList(config, this::setStarted, "Valendo");
-        replaceAndSetList(config, this::setDmChegando, "DM-Chegando");
+        replaceAndSetList(config, this::setDmComing, "DM-Chegando");
         replaceAndSetList(config, this::setDmStart, "DM-Start");
         replaceAndSetList(config, this::setExpired, "Finalizado");
     }
