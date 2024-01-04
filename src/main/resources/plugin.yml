@@ -1,0 +1,10 @@
+name: BGGuerreiro
+version: 1.0.3
+main: me.zbrunooow.bgguerreiro.Core
+author: zBrunooow
+description: Plugin de evento de PVP Guerreiro
+depend: [Vault]
+commands:
+  guerreiro:
+    aliases: [bgguerreiro]
+    description: "Comando geral"

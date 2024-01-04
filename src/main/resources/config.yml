@@ -1,0 +1,120 @@
+# AO ALTERAR ISSO REINICIE O SERVIDOR #
+Armazenamento:
+  Tipo: "SQLITE" # Aqui, você pode habilitar o MYSql ("MYSQL") ou deixar então SQLITE ("SQLITE")
+
+  # DESCONSIDERAR CASO USE "SQLITE" ACIMA
+  url: "localhost"
+  port: 3306
+  user: "root"
+  pass: "password"
+  database: "Guerreiro"
+
+AutoStart:
+  Horarios:
+    - "10:00"
+    - "13:00"
+    - "17:00"
+    - "20:00"
+
+Config:
+  Minimo-Participantes: 2 # Aqui você coloca o minimo de participantes pro evento não ser cancelado
+  Tag: "&2[Guerreiro]"
+  Premio: 25000.0
+  Tempo-Anuncios: 60 # Tempo que vai ficar anunciando
+  Tempo-Entre: 10 # Tempo entre cada anuncio
+  Tempo-Espera: 10 # Tempo de espera para os players se prepararem antes de ativar o PVP (MINIMO 10)
+  Abate-Geral: true # Coloque "true" para enviar para todos do servidor quando alguem morrer no evento, ou então "false" para que a mensagem de morte só seja entregue para os participantes do evento.
+  Chat: false # "true" para deixar o chat liberado dentro do evento, e "false" para deixar o chat bloqueado pra quem ta dentro do evento
+  Dropar-Itens: false # "true" para deixar o drop de itens liberado dentro do evento, "false" para deixar o drop bloqueado.
+  Executar-Comandos: false # "true" para deixar os comandos liberados dentro do evento, "false" para deixar os comandos bloqueados (EXCETO OS COMANDOS DO EVENTO, /guerreiro sair, status, etc...).
+
+  Deathmatch:
+    Habilitado: true # "true" para ter deathmatch "false" para não ter
+    Tempo: 900 # Tempo em segundos para iniciar o deathmatch (MINIMO 300)
+    Sem-PvP: 10 # Tempo que vai ficar sem PVP ao puxar o deathmatch
+
+Mensagens:
+  ActionBar-1: "&7Status: {status} &f| &7Abates: &e{abates} &f| &7Tempo: &e{tempo}" # Essa action bar fica visível até o evento completar 10 segundos de PVP habilitado, aí troca pra action bar 2, abaixo.
+  ActionBar-2: "&7Participantes: &e{players} &f| &7Abates: &e{abates} &f| &7Tempo: &e{tempo}"
+
+  Sem-Permissao: "&cVocê não tem permissão para executar este comando!"
+  Abate: "&c[ABATE]&7: &fO jogador &c{morreu} &ffoi morto por &a{matou} &7({kills})&a!"
+  Restam: "&7Restam &f{restam} jogadores &7no evento &aGuerreiro&7!"
+
+  Camarote: "&aVocê entrou no camarote do evento Guerreiro!"
+  Camarote-Saiu: "&aVocê saiu do camarote do evento Guerreiro!"
+
+  Top:
+    Limite: 5 # Coloque aqui qual limite de jogadores que podem aparecer no top
+    Header:
+      - ""
+      - "&aGuerreiro &f- &7Top {type}:" # Essa mensagem fica acima do top vitorias/kills
+    Value: "&2&l[{posicao}] &a- &f{nick} &a- &f{amount} &2{type}"
+    Footer:
+      - ""
+
+  Geral:
+    - "&aGuerreiro &f- &7Comandos Gerais"
+    - ""
+    - "&a/guerreiro entrar &f- &7Entra no evento."
+    - "&a/guerreiro status &f- &7Visualiza o status do evento."
+    - "&a/guerreiro top (kills/vitorias) &f- &7Visualiza os rankings do evento."
+    - "&a/guerreiro set (entrada/saida/deathmatch) &f- &7Seta as posições do evento."
+    - "&a/guerreiro forcestart &f- &7Inicia o evento."
+    - "&a/guerreiro forcestop &f- &7Força a parada do evento."
+    - "&a/guerreiro forcedm &f- &7Força o início do DeathMatch."
+
+  Iniciando:
+    - ""
+    - "&aEvento Guerreiro automático começando!"
+    - "&aPara participar digite: &f/guerreiro participar"
+    - "&aPrêmio: &2${valor} &ae tag {tag}"
+    - "&aTempo restante: &f{seconds} segundos&a!"
+    - "&aJogadores participando: &f{jogadores}"
+    - ""
+
+  Espera:
+    - ""
+    - "&aEvento Guerreiro automático começando!"
+    - "&aTempo inicial para que os jogadores se preparem!"
+    - "&aTempo restante: &f{tempo} segundos!"
+    - ""
+
+  Cancelado:
+    - ""
+    - "&cO Evento Guerreiro foi cancelado!"
+    - "&cTodos os jogadores foram teleportados a saída."
+    - ""
+
+  Valendo:
+    - ""
+    - "&aO evento começou!"
+    - "&aO &cPvP &afoi ativado!"
+    - ""
+
+  Finalizado:
+    - ""
+    - "&aEvento Guerreiro foi finalizado!"
+    - "&aVencedor: &f{vencedor} &acom &f{abates} abate(s)!"
+    - "&aPrêmio: &2${valor} &ae tag {tag}"
+    - "&aDuração do evento: &f{duração}&a."
+    - ""
+
+  DM-Chegando: # essa mensagem aparece duas vezes, uma 2 minutos antes do DM começar e outra 1 minuto antes.
+    - ""
+    - "&aO &cDeathMatch &avai começar em &f{minutos} minutos&a!"
+    - ""
+
+  DM-Start:
+    - ""
+    - "&aO &cDeathMatch &acomeçou, o pvp será ativo em &c{segundos} &asegundos!"
+    - "&aTodos os jogadores foram teleportados para a arena final."
+    - ""
+
+  Status:
+    - ""
+    - "&aEvento Guerreiro"
+    - "&aStatus: &f{status}"
+    - "&aParticipantes: &f{players}"
+    - "&aTempo: &f{tempo}"
+    - ""
