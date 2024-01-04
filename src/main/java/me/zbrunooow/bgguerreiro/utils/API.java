@@ -56,8 +56,7 @@ public class API {
 
     public void broadcastACParticipantes(String message) {
         for (Player player : Manager.get().getParticipantes()) {
-            PacketPlayOutChat packet = new PacketPlayOutChat(new ChatComponentText(message.replace("&", "§").replace("{abates}", String.valueOf(player.getMetadata("gabates").get(0).value()))), (byte) 2);
-            ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+            ActionBar.sendActionBar(player, message.replace("&", "§").replace("{abates}", String.valueOf(player.getMetadata("gabates").get(0).value())));
         }
     }
 
