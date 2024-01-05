@@ -7,7 +7,6 @@ import me.zbrunooow.bgguerreiro.sample.EventStatus;
 import me.zbrunooow.bgguerreiro.util.API;
 import me.zbrunooow.bgguerreiro.util.Manager;
 import net.sacredlabyrinth.phaed.simpleclans.ClanPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
