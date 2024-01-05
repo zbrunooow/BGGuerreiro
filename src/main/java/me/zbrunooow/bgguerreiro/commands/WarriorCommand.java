@@ -1,6 +1,7 @@
 package me.zbrunooow.bgguerreiro.commands;
 
 import com.google.common.base.Stopwatch;
+
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -8,13 +9,15 @@ import me.zbrunooow.bgguerreiro.WarriorEngine;
 import me.zbrunooow.bgguerreiro.manager.BoxManager;
 import me.zbrunooow.bgguerreiro.manager.EventManager;
 import me.zbrunooow.bgguerreiro.sample.EventStatus;
-import me.zbrunooow.bgguerreiro.util.API;
-import me.zbrunooow.bgguerreiro.util.Locations;
-import me.zbrunooow.bgguerreiro.util.Manager;
+import me.zbrunooow.bgguerreiro.util.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 
 public class WarriorCommand implements CommandExecutor {
@@ -58,8 +61,12 @@ public class WarriorCommand implements CommandExecutor {
               player.sendMessage("§cUse /guerreiro forcestart");
               return;
             }
+            if (Manager.getCreated().getItems() == null) {
+              player.sendMessage("§cO kit do evento Guerreiro não foi definido!");
+              return;
+            }
             if (eventStatus != EventStatus.OFF) {
-              player.sendMessage("§cO evento guerreiro já está começando!");
+              player.sendMessage("§cO evento Guerreiro já está acontecendo!");
               return;
             }
             EventManager.getCreated().startEvent();
@@ -75,7 +82,7 @@ public class WarriorCommand implements CommandExecutor {
           player,
           () -> {
             if (eventStatus == EventStatus.OFF) {
-              player.sendMessage("§cO evento guerreiro não está acontecendo!");
+              player.sendMessage("§cO evento Guerreiro não está acontecendo!");
               return;
             }
             EventManager.getCreated().cancelar(true);
@@ -90,7 +97,7 @@ public class WarriorCommand implements CommandExecutor {
           player,
           () -> {
             if (eventStatus != EventStatus.STARTED) {
-              player.sendMessage("§cO evento guerreiro não está acontecendo!");
+              player.sendMessage("§cO evento Guerreiro não está acontecendo!");
               return;
             }
             EventManager.getCreated().forceDm();
@@ -123,7 +130,7 @@ public class WarriorCommand implements CommandExecutor {
           player,
           () -> {
             if (args.length < 2) {
-              player.sendMessage("§cUse /guerreiro set (entrada/saida/deathmatch)");
+              player.sendMessage("§cUse /guerreiro set (entrada/saida/deathmatch/kit)");
               return;
             }
 
@@ -134,6 +141,7 @@ public class WarriorCommand implements CommandExecutor {
                   .getLocs()
                   .set("entrada", API.getCreated().unserializeLocation(player.getLocation()));
               manager.setJoinLocation(player.getLocation());
+              Locations.get().saveLocs();
               player.sendMessage("§aA entrada do evento Guerreiro foi setada com sucesso!");
               return;
             }
@@ -142,6 +150,7 @@ public class WarriorCommand implements CommandExecutor {
               Locations.get()
                   .getLocs()
                   .set("saida", API.getCreated().unserializeLocation(player.getLocation()));
+              Locations.get().saveLocs();
               manager.setExitLocation(player.getLocation());
               player.sendMessage("§aA saída do evento Guerreiro foi setada com sucesso!");
               return;
@@ -151,12 +160,33 @@ public class WarriorCommand implements CommandExecutor {
               Locations.get()
                   .getLocs()
                   .set("deathmatch", API.getCreated().unserializeLocation(player.getLocation()));
+              Locations.get().saveLocs();
               manager.setDeathmatchLocation(player.getLocation());
               player.sendMessage("§aO deathmatch do evento Guerreiro foi setada com sucesso!");
               return;
             }
 
-            player.sendMessage("§cUse /guerreiro set (entrada/saida/deathmatch)");
+            if("kit".equals(subAction)) {
+              for(ItemStack item : player.getInventory().getContents()) {
+                if(item != null && item.getType() != Material.AIR) {
+                  ItemMeta im = item.getItemMeta();
+                  im.setDisplayName(Config.get().getItems());
+                  item.setItemMeta(im);
+                }
+              }
+
+              Kit.get().getKitFile().set("armor", API.getCreated().serializeItems(player.getInventory().getArmorContents()));
+              Manager.getCreated().setArmor(API.getCreated().serializeItems(player.getInventory().getArmorContents()));
+              Kit.get().getKitFile().set("items", API.getCreated().serializeItems(player.getInventory().getContents()));
+              Manager.getCreated().setItems(API.getCreated().serializeItems(player.getInventory().getContents()));
+              Kit.get().saveKitFile();
+              player.getInventory().clear();
+              player.getInventory().setArmorContents(null);
+              player.sendMessage("§aVocê setou os itens do evento Guerreiro!");
+              return;
+            }
+
+            player.sendMessage("§cUse /guerreiro set (entrada/saida/deathmatch/kit)");
           },
           WarriorEngine.getMessages().getNoPermission());
       return false;
@@ -165,7 +195,7 @@ public class WarriorCommand implements CommandExecutor {
     // Subcommand: join
     if ("entrar".equals(action) || "participar".equals(action) || "join".equals(action)) {
       if (eventStatus == EventStatus.OFF) {
-        player.sendMessage("§cO evento guerreiro não está acontecendo!");
+        player.sendMessage("§cO evento Guerreiro não está acontecendo!");
         return false;
       }
 
@@ -187,7 +217,7 @@ public class WarriorCommand implements CommandExecutor {
           eventStatus == EventStatus.WAITING || eventStatus == EventStatus.STARTED;
 
       if (alreadyStarted) {
-        player.sendMessage("§cA entrada para o evento guerreiro já fechou!");
+        player.sendMessage("§cA entrada para o evento Guerreiro já fechou!");
         return false;
       }
 
@@ -196,9 +226,16 @@ public class WarriorCommand implements CommandExecutor {
         return false;
       }
 
-      if (API.getCreated().getFreeSlots(player) != 36 || API.getCreated().getArmor(player) != 0) {
-        player.sendMessage("§cEsvazie o inventário para entrar no evento!");
-        return false;
+      if(Bukkit.getVersion().toString().contains("1.8")) {
+        if (API.getCreated().getFreeSlots(player) != 36 || API.getCreated().getArmor(player) != 0) {
+          player.sendMessage("§cEsvazie o inventário para entrar no evento!");
+          return false;
+        }
+      } else {
+        if (API.getCreated().getFreeSlots(player) != 41 || API.getCreated().getArmor(player) != 0) {
+          player.sendMessage("§cEsvazie o inventário para entrar no evento!");
+          return false;
+        }
       }
 
       player
@@ -214,14 +251,30 @@ public class WarriorCommand implements CommandExecutor {
       player.teleport(manager.getJoinLocation());
       player.setMetadata("warriorKills", new FixedMetadataValue(WarriorEngine.getInstance(), 0));
       API.getCreated().equipPlayer(player);
-      player.sendMessage("§aVocê entrou no evento guerreiro!");
+      player.sendMessage("§aVocê entrou no evento Guerreiro!");
       return true;
+    }
+
+    if("resetkit".equals(action)) {
+      this.hasPermission(
+          player,
+          () -> {
+            if (args.length > 1) {
+              player.sendMessage("§cUse /guerreiro resetkit");
+              return;
+            }
+            Kit.get().resetKit();
+            player.sendMessage("§aVocê redefiniu o kit do evento Guerreiro!");
+            return;
+          },
+          WarriorEngine.getMessages().getNoPermission());
+      return false;
     }
 
     // Subcommand: leave
     if ("sair".equals(action) || "quit".equals(action)) {
       if (eventStatus == EventStatus.OFF) {
-        player.sendMessage("§cO evento guerreiro não está acontecendo!");
+        player.sendMessage("§cO evento Guerreiro não está acontecendo!");
         return false;
       }
 
@@ -243,7 +296,7 @@ public class WarriorCommand implements CommandExecutor {
       if (eventStatus == EventStatus.STARTED) {
         EventManager.getCreated().verifyLastDuel();
       }
-      player.sendMessage("§aVocê saiu do evento guerreiro!");
+      player.sendMessage("§aVocê saiu do evento Guerreiro!");
       return true;
     }
 
@@ -284,13 +337,20 @@ public class WarriorCommand implements CommandExecutor {
         return false;
       }
 
-      if (API.getCreated().getFreeSlots(player) != 36 || API.getCreated().getArmor(player) != 0) {
-        player.sendMessage("§cEsvazie o inventário para entrar no evento!");
-        return false;
+      if(Bukkit.getVersion().toString().contains("1.8")) {
+        if (API.getCreated().getFreeSlots(player) != 36 || API.getCreated().getArmor(player) != 0) {
+          player.sendMessage("§cEsvazie o inventário para entrar no camarote evento!");
+          return false;
+        }
+      } else {
+        if (API.getCreated().getFreeSlots(player) != 41 || API.getCreated().getArmor(player) != 0) {
+          player.sendMessage("§cEsvazie o inventário para entrar no camarote evento!");
+          return false;
+        }
       }
 
-      BoxManager.get().joinCamarote(player);
       player.sendMessage(message);
+      BoxManager.get().joinBox(player);
       return true;
     }
 

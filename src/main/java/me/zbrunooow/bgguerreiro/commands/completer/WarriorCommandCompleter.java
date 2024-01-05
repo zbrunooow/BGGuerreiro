@@ -20,6 +20,7 @@ public class WarriorCommandCompleter implements TabCompleter {
         completions.addAll(
             Arrays.asList(
                 "iniciar",
+                "resetkit",
                 "forcestart",
                 "start",
                 "cancelar",
@@ -32,7 +33,7 @@ public class WarriorCommandCompleter implements TabCompleter {
     } else if (args.length == 2) {
       String subAction = args[0];
       if (subAction.equals("set")) {
-        completions.addAll(Arrays.asList("entrada", "saida", "deathmatch"));
+        completions.addAll(Arrays.asList("entrada", "saida", "deathmatch", "kit"));
       } else if (subAction.equals("top") || subAction.equals("ranking")) {
         completions.addAll(Arrays.asList("vitorias", "abates"));
       }
