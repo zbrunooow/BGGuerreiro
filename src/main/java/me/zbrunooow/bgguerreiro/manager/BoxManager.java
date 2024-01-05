@@ -2,37 +2,41 @@ package me.zbrunooow.bgguerreiro.manager;
 
 import java.util.ArrayList;
 
+import com.cryptomorin.xseries.XEnchantment;
+import com.cryptomorin.xseries.XMaterial;
 import lombok.Getter;
 import me.zbrunooow.bgguerreiro.WarriorEngine;
 import me.zbrunooow.bgguerreiro.sample.EventStatus;
-import me.zbrunooow.bgguerreiro.util.Item;
 import me.zbrunooow.bgguerreiro.util.Manager;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 @Getter
 public class BoxManager {
 
   private final ArrayList<Player> spectators;
-  private final Item item = new Item(Material.REDSTONE);
+  private final ItemStack leaveBox = new ItemStack(XMaterial.RED_DYE.parseItem());
 
   public BoxManager() {
     this.spectators = new ArrayList<>();
-    item.setDisplayName("§c§lSAIR");
-    item.addEnchantment(34, 1);
+    ItemMeta im = leaveBox.getItemMeta();
+    im.setDisplayName("§c§lSAIR");
+    im.addEnchant(XEnchantment.DURABILITY.getEnchant(), 10, true);
+    leaveBox.setItemMeta(im);
   }
 
   public static BoxManager get() {
     return WarriorEngine.getInstance().getBoxManager();
   }
 
-  public void joinCamarote(Player player) {
+  public void joinBox(Player player) {
     EventStatus eventStatus = EventManager.getCreated().getStatus();
     if (eventStatus != EventStatus.STARTED) return;
 
     player.getPlayer().teleport(Manager.getCreated().getJoinLocation());
-    player.getPlayer().getInventory().setItem(4, item.build());
+    player.getPlayer().getInventory().setItem(4, leaveBox.clone());
 
     for (Player online : Bukkit.getOnlinePlayers()) {
       online.hidePlayer(player);
@@ -47,7 +51,7 @@ public class BoxManager {
     spectators.add(player);
   }
 
-  public void leaveCamarote(Player player) {
+  public void leaveBox(Player player) {
     player.getPlayer().teleport(Manager.getCreated().getExitLocation());
     player.getPlayer().getInventory().clear();
 
