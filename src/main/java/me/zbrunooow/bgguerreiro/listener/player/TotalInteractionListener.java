@@ -12,7 +12,7 @@ public class TotalInteractionListener implements Listener {
         if(e.getAction().toString().startsWith("RIGHT")) {
             if(BoxManager.get().getSpectators().contains(e.getPlayer())) {
                 if(e.getPlayer().getItemInHand().getItemMeta().getDisplayName().contains("SAIR")) {
-                    BoxManager.get().leaveCamarote(e.getPlayer());
+                    BoxManager.get().leaveBox(e.getPlayer());
                 }
             }
         }
