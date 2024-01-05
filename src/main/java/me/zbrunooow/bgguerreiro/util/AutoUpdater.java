@@ -35,6 +35,7 @@ public class AutoUpdater {
             .sendMessage(
                 WarriorEngine.getInstance().getPrefix()
                     + "§cAcesse a GB: https://gamersboard.com.br/profile/41269-zbrunooow/");
+        WarriorEngine.getInstance().setUpdateVersion(text);
         WarriorEngine.getInstance().setUpdate(true);
       }
       in.close();
