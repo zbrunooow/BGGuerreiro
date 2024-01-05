@@ -89,7 +89,7 @@ public class EventManager {
         return message
             .replace("{seconds}", String.valueOf(seconds))
             .replace("{tag}", Config.get().getTag())
-            .replace("{valor}", String.valueOf(Config.get().getPremio()))
+            .replace("{valor}", Config.get().isFormatPrize() ? API.formatPrize(Config.get().getPremio()) : String.valueOf(Config.get().getPremio()))
             .replace("{jogadores}", String.valueOf(Manager.getCreated().getParticipants().size()));
       }
 
@@ -302,17 +302,17 @@ public class EventManager {
       winner.sendMessage(str.replace("{tempo}", String.valueOf(Config.get().getTempoFinal())));
     }
     for (String str : WarriorEngine.getMessages().getExpired()) {
-      API.getCreated().broadcastMessage(formatWinnerMessage(str, winner, kills));
+      API.getCreated().broadcastMessage(formatWinnerMessage(str, winner, kills, Config.get().isFormatPrize()));
     }
   }
 
-  private String formatWinnerMessage(String message, Player winner, int kills) {
+  private String formatWinnerMessage(String message, Player winner, int kills, boolean formatPrize) {
     return message
         .replace("{abates}", String.valueOf(kills))
         .replace("{duração}", API.getCreated().formatTime(Manager.getCreated().getEventTime()))
         .replace("{tag}", Config.get().getTag())
-        .replace("{valor}", String.valueOf(Config.get().getPremio()))
-        .replace("{vencedor}", winner.getName());
+        .replace("{vencedor}", winner.getName())
+        .replace("{valor}", formatPrize ? API.formatPrize(Config.get().getPremio()) : String.valueOf(Config.get().getPremio()));
   }
 
   private void clearEffectsAndMetadata(Player player) {

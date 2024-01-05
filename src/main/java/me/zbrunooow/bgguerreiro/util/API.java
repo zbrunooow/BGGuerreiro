@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
 import me.zbrunooow.bgguerreiro.WarriorEngine;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -105,6 +106,48 @@ public class API {
     for (Player p : Manager.getCreated().getParticipants()) {
       p.sendMessage(msg);
     }
+  }
+
+  public static String formatPrize(Double number) {
+
+    String nb = String.valueOf(number);
+    if(nb.contains("E")) {
+      int i = Integer.parseInt(nb.split("E")[1]);
+      int i2 = Integer.parseInt(nb.split("E")[1]);
+      while(i > 0) {
+        nb = nb + "0";
+        i--;
+      }
+      nb = nb.replace(".0E" + i2, "");
+    }
+    if(nb.endsWith(".0")) { nb = nb.replace(".0", ""); }
+    int nbL = nb.length();
+    nb = nb.substring(0, nbL%3 == 0 ? 3 : nbL%3);
+
+    if(nbL >= 65){return nb + "UVG";}
+    if(nbL >= 62){return nb + "VG";}
+    if(nbL >= 59){return nb + "ND";}
+    if(nbL >= 56){return nb + "OD";}
+    if(nbL >= 53){return nb + "SPD";}
+    if(nbL >= 51){return nb + "SD";}
+    if(nbL >= 49){return nb + "QD";}
+    if(nbL >= 46){return nb + "QR";}
+    if(nbL >= 43){return nb + "TR";}
+    if(nbL >= 40){return nb + "DD";}
+    if(nbL >= 37){return nb + "UN";}
+    if(nbL >= 34){return nb + "D";}
+    if(nbL >= 31){return nb + "N";}
+    if(nbL >= 28){return nb + "OC";}
+    if(nbL >= 25){return nb + "SS";}
+    if(nbL >= 22){return nb + "S";}
+    if(nbL >= 19){return nb + "QQ";}
+    if(nbL >= 16){return nb + "Q";}
+    if(nbL >= 13){return nb + "T";}
+    if(nbL >= 10){return nb + "B";}
+    if(nbL >= 7){return nb + "M";}
+    if(nbL >= 4){return nb + "K";}
+    return String.valueOf(number);
+
   }
 
   public int getFreeSlots(Player player) {
@@ -292,6 +335,7 @@ public class API {
     p.getInventory().setArmorContents(API.getCreated().unserializeItems(Manager.getCreated().getArmor()));
     p.getInventory().setContents(API.getCreated().unserializeItems(Manager.getCreated().getItems()));
   }
+
 
   public Location serializeLocation(String str) {
     World world = WarriorEngine.getInstance().getServer().getWorld(str.split("\\(\\)")[0]);
