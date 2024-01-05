@@ -17,6 +17,7 @@ public class MessageManager {
     private String topValue;
     private String boxJoin;
     private String boxLeave;
+    private String deathWithoutReason;
     private List<String> youWin;
     private List<String> generalCommand;
     private List<String> topHeader;
@@ -40,6 +41,7 @@ public class MessageManager {
         replaceAndSet(config, this::setBoxJoin, "Camarote");
         replaceAndSet(config, this::setBoxLeave, "Camarote-Saiu");
         replaceAndSet(config, this::setTopValue, "Top.Value");
+        replaceAndSet(config, this::setDeathWithoutReason, "Morreu-Sem-Player");
 
         replaceAndSetList(config, this::setGeneralCommand, "Geral");
         replaceAndSetList(config, this::setYouWin, "Venceu");
