@@ -293,6 +293,7 @@ public class WarriorCommand implements CommandExecutor {
       player.teleport(manager.getExitLocation());
       player.getInventory().clear();
       player.getInventory().setArmorContents(null);
+      player.getActivePotionEffects().clear();
       if (eventStatus == EventStatus.STARTED) {
         EventManager.getCreated().verifyLastDuel();
       }
@@ -379,7 +380,7 @@ public class WarriorCommand implements CommandExecutor {
             player.sendMessage(
                 WarriorEngine.getMessages()
                     .getTopValue()
-                    .replace("{type}", desiredTopFormat)
+                    .replace("{type}", Integer.parseInt(string.split("\\(\\)")[1]) > 1 ? desiredTopFormat : desiredTopFormat.substring(0, desiredTopFormat.length()-1))
                     .replace("{posicao}", String.valueOf(index.get()))
                     .replace("{nick}", string.split("\\(\\)")[0])
                     .replace("{amount}", string.split("\\(\\)")[1]));
