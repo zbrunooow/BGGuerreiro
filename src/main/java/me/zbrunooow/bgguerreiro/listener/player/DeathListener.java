@@ -1,6 +1,7 @@
 package me.zbrunooow.bgguerreiro.listener.player;
 
 import me.zbrunooow.bgguerreiro.WarriorEngine;
+import me.zbrunooow.bgguerreiro.lang.LanguageRegistry;
 import me.zbrunooow.bgguerreiro.manager.EventManager;
 import me.zbrunooow.bgguerreiro.sample.EventStatus;
 import me.zbrunooow.bgguerreiro.util.API;
@@ -19,7 +20,7 @@ public class DeathListener implements Listener {
     if (EventManager.getCreated().getStatus() == EventStatus.STARTED) {
       boolean killerIsPlayer = true;
       int kills = 0;
-      if(!(e.getEntity().getKiller() instanceof Player)) {
+      if (!(e.getEntity().getKiller() instanceof Player)) {
         killerIsPlayer = false;
       }
       Player killer = null;
@@ -29,56 +30,59 @@ public class DeathListener implements Listener {
         if (killerIsPlayer) {
           killer = e.getEntity().getKiller();
           kills =
-                  Integer.parseInt(String.valueOf(killer.getMetadata("warriorKills").get(0).value()));
+              Integer.parseInt(String.valueOf(killer.getMetadata("warriorKills").get(0).value()));
           kills++;
           killer.setMetadata(
-                  "warriorKills", new FixedMetadataValue(WarriorEngine.getInstance(), kills));
+              "warriorKills", new FixedMetadataValue(WarriorEngine.getInstance(), kills));
         }
 
         API.getCreated()
-                .salvarStatus(
-                        victim,
-                        false,
-                        Integer.parseInt(
-                                String.valueOf(victim.getMetadata("warriorKills").get(0).value())));
+            .salvarStatus(
+                victim,
+                false,
+                Integer.parseInt(
+                    String.valueOf(victim.getMetadata("warriorKills").get(0).value())));
         Manager.getCreated().getParticipants().remove(victim);
         victim.removeMetadata("warriorKills", WarriorEngine.getInstance());
 
         if (WarriorEngine.getInstance().isSimpleClans()) {
           if (WarriorEngine.getSimpleClans().getClanManager().getClanPlayer(victim) != null) {
             WarriorEngine.getSimpleClans()
-                    .getClanManager()
-                    .getClanPlayer(victim)
-                    .setFriendlyFire(false);
+                .getClanManager()
+                .getClanPlayer(victim)
+                .setFriendlyFire(false);
           }
         }
 
-
         if (Config.get().isAbateGeral()) {
-          if(killerIsPlayer) {
+          if (killerIsPlayer) {
             e.setDeathMessage(
-                    WarriorEngine.getMessages()
-                            .getKill()
-                            .replace("{matou}", killer.getName())
-                            .replace("{morreu}", victim.getName())
-                            .replace("{kills}", String.valueOf(kills)));
+                LanguageRegistry.getDefined()
+                    .getKill()
+                    .replace("{matou}", killer.getName())
+                    .replace("{morreu}", victim.getName())
+                    .replace("{kills}", String.valueOf(kills)));
           } else {
             e.setDeathMessage(
-                    WarriorEngine.getMessages().getDeathWithoutReason().replace("{morreu}", victim.getName()));
+                LanguageRegistry.getDefined()
+                    .getDeathWithoutReason()
+                    .replace("{morreu}", victim.getName()));
           }
 
         } else {
-          if(killerIsPlayer) {
+          if (killerIsPlayer) {
             API.getCreated()
-                    .broadcastMessageToParticipants(
-                            WarriorEngine.getMessages()
-                                    .getKill()
-                                    .replace("{matou}", killer.getName())
-                                    .replace("{morreu}", victim.getName())
-                                    .replace("{kills}", String.valueOf(kills)));
+                .broadcastMessageToParticipants(
+                    LanguageRegistry.getDefined()
+                        .getKill()
+                        .replace("{matou}", killer.getName())
+                        .replace("{morreu}", victim.getName())
+                        .replace("{kills}", String.valueOf(kills)));
           } else {
             e.setDeathMessage(
-                    WarriorEngine.getMessages().getDeathWithoutReason().replace("{morreu}", victim.getName()));
+                LanguageRegistry.getDefined()
+                    .getDeathWithoutReason()
+                    .replace("{morreu}", victim.getName()));
           }
         }
 

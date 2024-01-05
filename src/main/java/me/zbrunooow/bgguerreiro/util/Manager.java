@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import lombok.Data;
 import lombok.Getter;
 import me.zbrunooow.bgguerreiro.WarriorEngine;
+import me.zbrunooow.bgguerreiro.manager.KitManager;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 @Getter
@@ -44,11 +44,11 @@ public class Manager {
           API.getCreated().serializeLocation(Locations.get().getLocs().getString("deathmatch"));
     }
 
-    if(Kit.get().getKitFile().getString("armor") != null && Kit.get().getKitFile().getString("armor").length() > 5) {
-      armor = Kit.get().getKitFile().getString("armor");
+    if(KitManager.get().getKitFile().getString("armor") != null && KitManager.get().getKitFile().getString("armor").length() > 5) {
+      armor = KitManager.get().getKitFile().getString("armor");
     }
-    if(Kit.get().getKitFile().getString("items") != null && Kit.get().getKitFile().getString("items").length() > 5) {
-      items = Kit.get().getKitFile().getString("items");
+    if(KitManager.get().getKitFile().getString("items") != null && KitManager.get().getKitFile().getString("items").length() > 5) {
+      items = KitManager.get().getKitFile().getString("items");
     }
 
   }
