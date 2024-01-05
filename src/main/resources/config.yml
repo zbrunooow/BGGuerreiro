@@ -19,10 +19,12 @@ AutoStart:
 Config:
   Minimo-Participantes: 2 # Aqui você coloca o minimo de participantes pro evento não ser cancelado
   Tag: "&2[Guerreiro]"
+  Itens: "&a&lGUERREIRO" # Todos os itens virão com esse nome
   Premio: 25000.0
   Tempo-Anuncios: 60 # Tempo que vai ficar anunciando
   Tempo-Entre: 10 # Tempo entre cada anuncio
   Tempo-Espera: 10 # Tempo de espera para os players se prepararem antes de ativar o PVP (MINIMO 10)
+  Tempo-Final: 10 # Tempo que vai demorar para teleportar o vencedor para a saida do evento
   Abate-Geral: true # Coloque "true" para enviar para todos do servidor quando alguem morrer no evento, ou então "false" para que a mensagem de morte só seja entregue para os participantes do evento.
   Chat: false # "true" para deixar o chat liberado dentro do evento, e "false" para deixar o chat bloqueado pra quem ta dentro do evento
   Dropar-Itens: false # "true" para deixar o drop de itens liberado dentro do evento, "false" para deixar o drop bloqueado.
@@ -44,6 +46,11 @@ Mensagens:
   Camarote: "&aVocê entrou no camarote do evento Guerreiro!"
   Camarote-Saiu: "&aVocê saiu do camarote do evento Guerreiro!"
 
+  Venceu:
+    - "&aVocê venceu o evento Guerreiro!"
+    - "&aParabéns pelo seu desempenho!"
+    - "&aVocê será teleportado para a saída em &f{tempo} segundos!"
+
   Top:
     Limite: 5 # Coloque aqui qual limite de jogadores que podem aparecer no top
     Header:
@@ -59,10 +66,11 @@ Mensagens:
     - "&a/guerreiro entrar &f- &7Entra no evento."
     - "&a/guerreiro status &f- &7Visualiza o status do evento."
     - "&a/guerreiro top (kills/vitorias) &f- &7Visualiza os rankings do evento."
-    - "&a/guerreiro set (entrada/saida/deathmatch) &f- &7Seta as posições do evento."
+    - "&a/guerreiro set (entrada/saida/deathmatch/kit) &f- &7Seta as posições/itens do evento."
     - "&a/guerreiro forcestart &f- &7Inicia o evento."
     - "&a/guerreiro forcestop &f- &7Força a parada do evento."
     - "&a/guerreiro forcedm &f- &7Força o início do DeathMatch."
+    - "&a/guerreiro resetkit &f- &7Redefine o kit do evento."
 
   Iniciando:
     - ""

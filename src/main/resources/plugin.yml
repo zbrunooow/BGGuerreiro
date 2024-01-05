@@ -1,9 +1,10 @@
 name: BGGuerreiro
-version: 1.0.3
+version: 1.1
 main: me.zbrunooow.bgguerreiro.WarriorEngine
 authors: [zBrunooow, sync]
 description: Plugin de evento de PVP Guerreiro
 depend: [Vault]
+softdepend: [WorldGuard, Multiverse-Core, LegendChat, nChat, UltimateChat, SimpleClans]
 commands:
   guerreiro:
     aliases: [bgguerreiro]
