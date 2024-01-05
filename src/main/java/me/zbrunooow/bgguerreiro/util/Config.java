@@ -3,6 +3,7 @@ package me.zbrunooow.bgguerreiro.util;
 import me.zbrunooow.bgguerreiro.WarriorEngine;
 import org.bukkit.configuration.file.FileConfiguration;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public class Config {
@@ -18,6 +19,7 @@ public class Config {
     private boolean chat;
     private boolean drop;
     private boolean comandos;
+    private boolean formatPrize;
 
     private String armazenamento;
     private String url;
@@ -33,7 +35,7 @@ public class Config {
 
     private List<String> horarios;
 
-    private double premio;
+    private Double premio;
     private String tag;
 
     public Config() {
@@ -58,6 +60,7 @@ public class Config {
 
         tag = replace("Tag");
         items = replace("Itens");
+        formatPrize = replaceBool("Formatar-Premio");
         abateGeral = replaceBool("Abate-Geral");
         dmHabilitado = replaceBool("Deathmatch.Habilitado");
         comandos = replaceBool("Executar-Comandos");
@@ -87,9 +90,9 @@ public class Config {
         return config.getBoolean("Config." + linha);
     }
 
-    private int replaceDouble(String linha) {
+    private double replaceDouble(String linha) {
         FileConfiguration config = WarriorEngine.getInstance().getConfig();
-        return config.getInt("Config." + linha);
+        return config.getDouble("Config." + linha);
     }
 
     private String replace(String linha) {
@@ -160,7 +163,7 @@ public class Config {
         return tempoEntreAnuncios;
     }
 
-    public double getPremio() {
+    public Double getPremio() {
         return premio;
     }
 
@@ -182,6 +185,10 @@ public class Config {
 
     public int getTopLimite() {
         return topLimite;
+    }
+
+    public boolean isFormatPrize() {
+        return formatPrize;
     }
 
     public boolean isDrop() {
