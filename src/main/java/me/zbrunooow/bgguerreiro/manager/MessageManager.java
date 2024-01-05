@@ -17,6 +17,7 @@ public class MessageManager {
     private String topValue;
     private String boxJoin;
     private String boxLeave;
+    private List<String> youWin;
     private List<String> generalCommand;
     private List<String> topHeader;
     private List<String> topFooter;
@@ -41,6 +42,7 @@ public class MessageManager {
         replaceAndSet(config, this::setTopValue, "Top.Value");
 
         replaceAndSetList(config, this::setGeneralCommand, "Geral");
+        replaceAndSetList(config, this::setYouWin, "Venceu");
         replaceAndSetList(config, this::setTopHeader, "Top.Header");
         replaceAndSetList(config, this::setTopFooter, "Top.Footer");
         replaceAndSetList(config, this::setStarting, "Iniciando");
