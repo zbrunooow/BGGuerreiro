@@ -7,6 +7,7 @@ import me.zbrunooow.bgguerreiro.sample.EventStatus;
 import me.zbrunooow.bgguerreiro.util.API;
 import me.zbrunooow.bgguerreiro.util.Manager;
 import net.sacredlabyrinth.phaed.simpleclans.ClanPlayer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,9 +17,19 @@ import org.bukkit.event.player.PlayerQuitEvent;
 public class ConnectionListener implements Listener {
 
   private static void handleLeavePlaying(PlayerQuitEvent event) {
+
     EventStatus eventStatus = EventManager.getCreated().getStatus();
     Manager manager = Manager.getCreated();
     Player player = event.getPlayer();
+
+    if(player.hasMetadata("waitingLeave")) {
+      player.teleport(Manager.getCreated().getExitLocation());
+      player.getInventory().clear();
+      player.getInventory().setArmorContents(null);
+      player.updateInventory();
+      player.removeMetadata("waitingLeave", WarriorEngine.getInstance());
+    }
+
     boolean isParticipant = manager.getParticipants().contains(player);
 
     if (isParticipant) {
@@ -42,14 +53,14 @@ public class ConnectionListener implements Listener {
       manager.getParticipants().remove(player);
       API.getCreated().salvarStatus(player, false, kills);
 
-      if (eventStatus == EventStatus.STARTED) {
+      if (eventStatus == EventStatus.STARTED || eventStatus == EventStatus.WAITING) {
         EventManager.getCreated().verifyLastDuel();
       }
     }
 
     if (eventStatus == EventStatus.STARTED) {
       if (BoxManager.get().getSpectators().contains(event.getPlayer())) {
-        BoxManager.get().leaveCamarote(event.getPlayer());
+        BoxManager.get().leaveBox(event.getPlayer());
       }
     }
   }
@@ -75,7 +86,7 @@ public class ConnectionListener implements Listener {
   }
 
   void notifyUpdates(Player player) {
-    if (isUpdated()) {
+    if (!isUpdated()) {
       player.sendMessage(
           WarriorEngine.getInstance().getPrefix()
               + "§cAtualização disponível! Versão: "
