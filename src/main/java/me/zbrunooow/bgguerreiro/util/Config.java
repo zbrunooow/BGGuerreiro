@@ -8,6 +8,7 @@ import java.util.List;
 public class Config {
 
     private int tempoAnuncios;
+    private int tempoFinal;
     private int tempoEntreAnuncios;
     private int tempoEspera;
     private int minimoParticipantes;
@@ -20,6 +21,7 @@ public class Config {
 
     private String armazenamento;
     private String url;
+    private String items;
     private Integer port;
     private String user;
     private String pass;
@@ -46,6 +48,7 @@ public class Config {
 
         tempoAnuncios = replaceInt("Tempo-Anuncios");
         tempoEntreAnuncios = replaceInt("Tempo-Entre");
+        tempoFinal = replaceInt("Tempo-Final");
         tempoEspera = replaceInt("Tempo-Espera");
         dmTempo = replaceInt("Deathmatch.Tempo");
         dmSemPvP = replaceInt("Deathmatch.Sem-PvP");
@@ -54,6 +57,7 @@ public class Config {
         horarios = replaceHorarios("Horarios");
 
         tag = replace("Tag");
+        items = replace("Itens");
         abateGeral = replaceBool("Abate-Geral");
         dmHabilitado = replaceBool("Deathmatch.Habilitado");
         comandos = replaceBool("Executar-Comandos");
@@ -164,6 +168,10 @@ public class Config {
         return tag;
     }
 
+    public int getTempoFinal() {
+        return tempoFinal;
+    }
+
     public boolean isChat() {
         return chat;
     }
@@ -190,6 +198,10 @@ public class Config {
 
     public List<String> getHorarios() {
         return horarios;
+    }
+
+    public String getItems() {
+        return items;
     }
 
     public static Config get(){
