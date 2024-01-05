@@ -20,14 +20,8 @@ public class Manager {
   public String lastWinner;
   public int eventTime;
 
-  public Item helmet = new Item(Material.IRON_HELMET);
-  public Item chestplate = new Item(Material.IRON_CHESTPLATE);
-  public Item leggins = new Item(Material.IRON_LEGGINGS);
-  public Item boots = new Item(Material.IRON_BOOTS);
-  public Item sword = new Item(Material.IRON_SWORD);
-  public Item gapple = new Item(Material.GOLDEN_APPLE);
-  public Item bow = new Item(Material.BOW);
-  public Item arrow = new Item(Material.ARROW);
+  public String items;
+  public String armor;
 
   public Manager() {
     participants = new ArrayList<>();
@@ -50,16 +44,13 @@ public class Manager {
           API.getCreated().serializeLocation(Locations.get().getLocs().getString("deathmatch"));
     }
 
-    helmet.setDisplayName("§a§lGUERREIRO");
-    chestplate.setDisplayName("§a§lGUERREIRO");
-    leggins.setDisplayName("§a§lGUERREIRO");
-    boots.setDisplayName("§a§lGUERREIRO");
-    sword.setDisplayName("§a§lGUERREIRO");
-    gapple.setDisplayName("§a§lGUERREIRO");
-    gapple.setAmount(2);
-    bow.setDisplayName("§a§lGUERREIRO");
-    arrow.setDisplayName("§a§lGUERREIRO");
-    arrow.setAmount(10);
+    if(Kit.get().getKitFile().getString("armor") != null && Kit.get().getKitFile().getString("armor").length() > 5) {
+      armor = Kit.get().getKitFile().getString("armor");
+    }
+    if(Kit.get().getKitFile().getString("items") != null && Kit.get().getKitFile().getString("items").length() > 5) {
+      items = Kit.get().getKitFile().getString("items");
+    }
+
   }
 
   public static Manager getCreated() {
