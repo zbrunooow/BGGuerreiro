@@ -9,6 +9,7 @@ import me.zbrunooow.bgguerreiro.util.API;
 import me.zbrunooow.bgguerreiro.util.Config;
 import me.zbrunooow.bgguerreiro.util.Manager;
 import org.bukkit.entity.Player;
+import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -185,7 +186,6 @@ public class EventManager {
         return message
             .replace("{players}", String.valueOf(Manager.getCreated().getParticipants().size()))
             .replace("{tempo}", API.getCreated().formatTime(Manager.getCreated().getEventTime()))
-            .replace("{abates}", "0")
             .replace(
                 "{status}",
                 (!(getStatus() == EventStatus.STARTED) ? "&cIniciando..." : "&aValendo"));
@@ -265,12 +265,32 @@ public class EventManager {
   }
 
   private void handleWinner(Manager manager) {
-    Player vencedor = manager.getParticipants().get(0);
-    int kills = getWarriorKillsMetadata(vencedor);
-    broadcastWinnerMessages(vencedor, kills);
-    clearEffectsAndMetadata(vencedor);
-    savePlayerStatus(vencedor, true, kills);
-    handleParticipantsAndEconomy(vencedor);
+    Player winner = manager.getParticipants().get(0);
+    int kills = getWarriorKillsMetadata(winner);
+    broadcastWinnerMessages(winner, kills);
+    clearEffectsAndMetadata(winner);
+    savePlayerStatus(winner, true, kills);
+    handleParticipantsAndEconomy(winner);
+    winner.setMetadata("waitingLeave", new FixedMetadataValue(WarriorEngine.getInstance(), true));
+    new BukkitRunnable() {
+      @Override
+      public void run() {
+        if(winner.isOnline()) {
+          winner.getInventory().clear();
+          winner.getInventory().setArmorContents(null);
+          winner.updateInventory();
+          new BukkitRunnable() {
+            @Override
+            public void run() {
+              winner.teleport(manager.getExitLocation());
+            }
+          }.runTask(WarriorEngine.getInstance());
+          winner.removeMetadata("waitingLeave", WarriorEngine.getInstance());
+
+          setStatus(EventStatus.OFF);
+        }
+      }
+    }.runTaskLaterAsynchronously(WarriorEngine.getInstance(), 20*Config.get().getTempoFinal());
   }
 
   private int getWarriorKillsMetadata(Player player) {
@@ -278,6 +298,9 @@ public class EventManager {
   }
 
   private void broadcastWinnerMessages(Player winner, int kills) {
+    for(String str : WarriorEngine.getMessages().getYouWin()) {
+      winner.sendMessage(str.replace("{tempo}", String.valueOf(Config.get().getTempoFinal())));
+    }
     for (String str : WarriorEngine.getMessages().getExpired()) {
       API.getCreated().broadcastMessage(formatWinnerMessage(str, winner, kills));
     }
@@ -310,7 +333,6 @@ public class EventManager {
 
   private void clearParticipantsListAndEconomy(Player winner) {
     Manager.getCreated().getParticipants().clear();
-    winner.teleport(Manager.getCreated().getExitLocation());
     VaultHook.eco.depositPlayer(winner, Config.get().getPremio());
     manager.setLastWinner(winner.getName());
   }
