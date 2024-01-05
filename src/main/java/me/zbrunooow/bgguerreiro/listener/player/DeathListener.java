@@ -17,49 +17,69 @@ public class DeathListener implements Listener {
   @EventHandler
   public void onDeath(PlayerDeathEvent e) {
     if (EventManager.getCreated().getStatus() == EventStatus.STARTED) {
-      if (Manager.getCreated().getParticipants().contains(e.getEntity().getKiller())) {
-        Player killer = e.getEntity().getKiller();
+      boolean killerIsPlayer = true;
+      int kills = 0;
+      if(!(e.getEntity().getKiller() instanceof Player)) {
+        killerIsPlayer = false;
+      }
+      Player killer = null;
+      if (Manager.getCreated().getParticipants().contains(e.getEntity().getPlayer())) {
         Player victim = e.getEntity().getPlayer();
 
-        int kills =
-            Integer.parseInt(String.valueOf(killer.getMetadata("warriorKills").get(0).value()));
-        kills++;
-        killer.setMetadata(
-            "warriorKills", new FixedMetadataValue(WarriorEngine.getInstance(), kills));
+        if (killerIsPlayer) {
+          killer = e.getEntity().getKiller();
+          kills =
+                  Integer.parseInt(String.valueOf(killer.getMetadata("warriorKills").get(0).value()));
+          kills++;
+          killer.setMetadata(
+                  "warriorKills", new FixedMetadataValue(WarriorEngine.getInstance(), kills));
+        }
 
         API.getCreated()
-            .salvarStatus(
-                victim,
-                false,
-                Integer.parseInt(
-                    String.valueOf(victim.getMetadata("warriorKills").get(0).value())));
+                .salvarStatus(
+                        victim,
+                        false,
+                        Integer.parseInt(
+                                String.valueOf(victim.getMetadata("warriorKills").get(0).value())));
         Manager.getCreated().getParticipants().remove(victim);
         victim.removeMetadata("warriorKills", WarriorEngine.getInstance());
 
         if (WarriorEngine.getInstance().isSimpleClans()) {
           if (WarriorEngine.getSimpleClans().getClanManager().getClanPlayer(victim) != null) {
             WarriorEngine.getSimpleClans()
-                .getClanManager()
-                .getClanPlayer(victim)
-                .setFriendlyFire(false);
+                    .getClanManager()
+                    .getClanPlayer(victim)
+                    .setFriendlyFire(false);
           }
         }
 
+
         if (Config.get().isAbateGeral()) {
-          e.setDeathMessage(
-              WarriorEngine.getMessages()
-                  .getKill()
-                  .replace("{matou}", killer.getName())
-                  .replace("{morreu}", victim.getName())
-                  .replace("{kills}", String.valueOf(kills)));
+          if(killerIsPlayer) {
+            e.setDeathMessage(
+                    WarriorEngine.getMessages()
+                            .getKill()
+                            .replace("{matou}", killer.getName())
+                            .replace("{morreu}", victim.getName())
+                            .replace("{kills}", String.valueOf(kills)));
+          } else {
+            e.setDeathMessage(
+                    WarriorEngine.getMessages().getDeathWithoutReason().replace("{morreu}", victim.getName()));
+          }
+
         } else {
-          API.getCreated()
-              .broadcastMessageToParticipants(
-                  WarriorEngine.getMessages()
-                      .getKill()
-                      .replace("{matou}", killer.getName())
-                      .replace("{morreu}", victim.getName())
-                      .replace("{kills}", String.valueOf(kills)));
+          if(killerIsPlayer) {
+            API.getCreated()
+                    .broadcastMessageToParticipants(
+                            WarriorEngine.getMessages()
+                                    .getKill()
+                                    .replace("{matou}", killer.getName())
+                                    .replace("{morreu}", victim.getName())
+                                    .replace("{kills}", String.valueOf(kills)));
+          } else {
+            e.setDeathMessage(
+                    WarriorEngine.getMessages().getDeathWithoutReason().replace("{morreu}", victim.getName()));
+          }
         }
 
         EventManager.getCreated().verifyLastDuel();
