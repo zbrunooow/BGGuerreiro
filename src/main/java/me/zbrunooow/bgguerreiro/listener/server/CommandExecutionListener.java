@@ -28,6 +28,7 @@ public class CommandExecutionListener implements Listener {
             if (!e.getMessage().startsWith("/guerreiro")) {
               e.getPlayer()
                   .sendMessage("§cOs comandos estão bloqueados durante o evento Guerreiro.");
+              e.setCancelled(true);
             }
           }
         }
