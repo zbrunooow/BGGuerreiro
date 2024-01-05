@@ -21,6 +21,7 @@ Config:
   Tag: "&2[Guerreiro]"
   Itens: "&a&lGUERREIRO" # Todos os itens virão com esse nome
   Premio: 25000.0
+  Formatar-Premio: true # "true" para formatar o prêmio ao anunciar a vitória (exmplo: 25K, 25M, 25B, 25T, 25Q)
   Tempo-Anuncios: 60 # Tempo que vai ficar anunciando
   Tempo-Entre: 10 # Tempo entre cada anuncio
   Tempo-Espera: 10 # Tempo de espera para os players se prepararem antes de ativar o PVP (MINIMO 10)
@@ -41,6 +42,7 @@ Mensagens:
 
   Sem-Permissao: "&cVocê não tem permissão para executar este comando!"
   Abate: "&c[ABATE]&7: &fO jogador &c{morreu} &ffoi morto por &a{matou} &7({kills})&a!"
+  Morreu-Sem-Player: "&c[ABATE]&7: &fO jogador &c{morreu} &ffoi eliminado do evento!" # Morte para lava/(/kill)/etc...
   Restam: "&7Restam &f{restam} jogadores &7no evento &aGuerreiro&7!"
 
   Camarote: "&aVocê entrou no camarote do evento Guerreiro!"
