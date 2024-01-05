@@ -17,6 +17,7 @@ import me.zbrunooow.bgguerreiro.listener.player.DeathListener;
 import me.zbrunooow.bgguerreiro.listener.player.ItemInteractionListener;
 import me.zbrunooow.bgguerreiro.listener.player.TotalInteractionListener;
 import me.zbrunooow.bgguerreiro.listener.server.CommandExecutionListener;
+import me.zbrunooow.bgguerreiro.listener.server.ConnectionListener;
 import me.zbrunooow.bgguerreiro.manager.BoxManager;
 import me.zbrunooow.bgguerreiro.manager.EventManager;
 import me.zbrunooow.bgguerreiro.manager.MessageManager;
@@ -43,6 +44,7 @@ public final class WarriorEngine extends JavaPlugin {
   private AutoUpdater autoUpdate;
   private Config configuration;
   private Locations locations;
+  private Kit kit;
   private VaultHook vaultHook;
   private LegendChatHook legendChatHook;
   private Manager manager;
@@ -69,6 +71,7 @@ public final class WarriorEngine extends JavaPlugin {
     instance = this;
     this.api = new API();
     this.locations = new Locations();
+    this.kit = new Kit();
     this.manager = new Manager();
     this.eventManager = new EventManager();
     this.boxManager = new BoxManager();
@@ -85,7 +88,8 @@ public final class WarriorEngine extends JavaPlugin {
         new DeathListener(),
         new CommandExecutionListener(),
         new TotalInteractionListener(),
-        new ItemInteractionListener());
+        new ItemInteractionListener(),
+        new ConnectionListener());
 
     PluginCommand warriorCommand = this.getCommand("guerreiro");
     warriorCommand.setExecutor(new WarriorCommand());
@@ -154,9 +158,10 @@ public final class WarriorEngine extends JavaPlugin {
   public void reloadPlugin() {
     this.reloadConfig();
 
+    this.kit = new Kit();
     this.locations = new Locations();
     this.configuration = new Config();
-    messages = new MessageManager();
+    this.messages = new MessageManager();
   }
 
   @Override
