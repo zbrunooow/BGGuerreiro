@@ -1,6 +1,10 @@
 package me.zbrunooow.bgguerreiro.util;
 
 import com.cryptomorin.xseries.messages.ActionBar;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +15,9 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.io.BukkitObjectInputStream;
+import org.bukkit.util.io.BukkitObjectOutputStream;
+import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 public class API {
 
@@ -60,6 +67,7 @@ public class API {
 
   public void broadcastActionbarToParticipants(String message) {
     for (Player player : Manager.getCreated().getParticipants()) {
+
       ActionBar.sendActionBar(
           player,
           message
@@ -156,6 +164,66 @@ public class API {
     return nick;
   }
 
+  public ItemStack[] unserializeItems(String data) {
+    try {
+      ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Coder.decodeLines(data));
+      BukkitObjectInputStream dataInput = null;
+      try {
+        dataInput = new BukkitObjectInputStream(inputStream);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+      ItemStack[] items = null;
+      try {
+        items = new ItemStack[dataInput.readInt()];
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+
+      for (int i = 0; i < items.length; i++) {
+        try {
+          items[i] = (ItemStack) dataInput.readObject();
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
+      }
+
+      try {
+        dataInput.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+
+      return items.clone();
+    } catch (ClassNotFoundException e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  public String serializeItems(ItemStack[] items) {
+    try {
+      ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+      BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
+
+      // Write the size of the inventory
+      dataOutput.writeInt(items.clone().length);
+
+      // Save every element in the list
+      for (int i = 0; i < items.length; i++) {
+        dataOutput.writeObject(items[i]);
+      }
+
+      // Serialize that array
+      dataOutput.close();
+      return Base64Coder.encodeLines(outputStream.toByteArray());
+    } catch (Exception e) {
+      return null;
+    }
+  }
+
+
+
   public void salvarStatus(Player player, boolean venceu, int kills) {
     try {
       MySQL.get().openConnection();
@@ -221,14 +289,8 @@ public class API {
   }
 
   public void equipPlayer(Player p) {
-    p.getInventory().setHelmet(Manager.getCreated().getHelmet().build());
-    p.getInventory().setChestplate(Manager.getCreated().getChestplate().build());
-    p.getInventory().setLeggings(Manager.getCreated().getLeggins().build());
-    p.getInventory().setBoots(Manager.getCreated().getBoots().build());
-    p.getInventory().addItem(Manager.getCreated().getSword().build());
-    p.getInventory().addItem(Manager.getCreated().getGapple().build());
-    p.getInventory().addItem(Manager.getCreated().getBow().build());
-    p.getInventory().addItem(Manager.getCreated().getArrow().build());
+    p.getInventory().setArmorContents(API.getCreated().unserializeItems(Manager.getCreated().getArmor()));
+    p.getInventory().setContents(API.getCreated().unserializeItems(Manager.getCreated().getItems()));
   }
 
   public Location serializeLocation(String str) {
