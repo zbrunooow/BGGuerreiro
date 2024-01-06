@@ -1,47 +1,47 @@
 no-permission: "&c您没有执行此命令的权限！"
-kill: "&c[击杀]&7：&f玩家 &c{死者} &f被 &a{杀手} &7({击杀数})&a 击败了！"
-survivors-left: "&7还剩下 &f{剩余} 名玩家 &7在战士事件中&7！"
-status-actionbar: "&7状态：{状态} &f| &7击杀数：&e{击杀数} &f| &7时间：&e{时间}" # 这个动作条在事件启用PVP 10秒后可见，然后切换到下面的动作条2。
-info-actionbar: "&7参与者：&e{玩家} &f| &7击杀数：&e{击杀数} &f| &7时间：&e{时间}"
-kill-without-player: "&c[击杀]&7：&f玩家 &c{死者} &f被淘汰出事件！" # 死于岩浆/(/kill)/等...
+kill: "&c[击杀]&7：&f玩家 &c{died} &f被 &a{killer} &7({kills})&a 击败了！"
+survivors-left: "&7还剩下 &f{remaining} 名玩家 &7在战士事件中&7！"
+status-actionbar: "&7状态：{status} &f| &7击杀数：&e{kills} &f| &7时间：&e{time}" # 这个动作条在事件启用PVP 10秒后可见，然后切换到下面的动作条2。
+info-actionbar: "&7参与者：&e{players} &f| &7击杀数：&e{kills} &f| &7时间：&e{time}"
+kill-without-player: "&c[击杀]&7：&f玩家 &c{died} &f被淘汰出事件！" # 死于岩浆/(/击杀)/等...
 box-join: "&a您已进入战士事件的观众席！"
 box-leave: "&a您已离开战士事件的观众席！"
 you-won:
   - "&a您赢得了战士事件！"
   - "&a祝贺您的表现！"
-  - "&a您将在 &f{时间} 秒内传送到出口！"
+  - "&a您将在 &f{time} 秒内传送到出口！"
 ranking:
   limit: 5 # 设置在榜单中显示的玩家数限制
   header:
     - ""
-    - "&a战士 &f- &7排行榜 {类型}：" # 此消息在最高胜利/击杀之上
-  value: "&2&l[{位置}] &a- &f{昵称} &a- &f{数量} &2{类型}"
+    - "&a战士 &f- &7排行榜 {type}：" # 此消息在最高胜利/击杀之上
+  value: "&2&l[{position}] &a- &f{nickname} &a- &f{amount} &2{type}"
   footer:
     - ""
 general:
   - "&a战士 &f- &7常用命令"
   - ""
-  - "&a/战士 加入 &f- &7加入事件。"
-  - "&a/战士 状态 &f- &7查看事件状态。"
-  - "&a/战士 排行榜 (击杀/胜利) &f- &7查看事件排名。"
-  - "&a/战士 设置 (入口/出口/死斗/套装) &f- &7设置事件位置/物品。"
-  - "&a/战士 强制开始 &f- &7强制开始事件。"
-  - "&a/战士 强制停止 &f- &7强制停止事件。"
-  - "&a/战士 强制死斗 &f- &7强制开始死斗。"
-  - "&a/战士 重置套装 &f- &7重置事件套装。"
+  - "&a/warrior join &f- &7加入事件。"
+  - "&a/warrior status &f- &7查看事件状态。"
+  - "&a/warrior top (击杀/胜利) &f- &7查看事件排名。"
+  - "&a/warrior set (入口/出口/死斗/套装) &f- &7设置事件位置/物品。"
+  - "&a/warrior forcestart &f- &7强制开始事件。"
+  - "&a/warrior forcestop &f- &7强制停止事件。"
+  - "&a/warrior forcedm &f- &7强制开始死斗。"
+  - "&a/warrior resetkit &f- &7重置事件套装。"
 starting:
   - ""
   - "&a自动开始战士事件！"
-  - "&a要参与，请键入：&f/战士 加入"
-  - "&a奖励：&2${价值} &a和标签 {标签}"
-  - "&a剩余时间：&f{秒} 秒&a！"
-  - "&a参与者：&f{玩家}"
+  - "&a要参与，请键入：&f/warrior join"
+  - "&a奖励：&2${prize} &a和标签 {tag}"
+  - "&a剩余时间：&f{seconds} 秒&a！"
+  - "&a参与者：&f{players}"
   - ""
 waiting:
   - ""
   - "&a自动开始战士事件！"
   - "&a为玩家准备的初始时间！"
-  - "&a剩余时间：&f{时间} 秒！"
+  - "&a剩余时间：&f{time} 秒！"
   - ""
 cancelled:
   - ""
@@ -56,23 +56,23 @@ started:
 finalized:
   - ""
   - "&a战士事件已结束！"
-  - "&a获胜者：&f{获胜者} &a以 &f{击杀数} 击败！"
-  - "&a奖励：&2${价值} &a和标签 {标签}"
-  - "&a事件持续时间：&f{持续时间}&a。"
+  - "&a获胜者：&f{winner} &a以 &f{kills} 击败！"
+  - "&a奖励：&2${prize} &a和标签 {tag}"
+  - "&a事件持续时间：&f{time}&a。"
   - ""
 deathmatch-coming: # 此消息在DM开始前2分钟和1分钟时分别出现两次。
   - ""
-  - "&a死斗将在 &f{分钟} 分钟后开始！"
+  - "&a死斗将在 &f{minutes} 分钟后开始！"
   - ""
 deathmatch-started:
   - ""
-  - "&a死斗已开始，PVP将在 &c{秒} 秒后激活！"
+  - "&a死斗已开始，PVP将在 &c{seconds} 秒后激活！"
   - "&a所有玩家已被传送至最终竞技场。"
   - ""
 status:
   - ""
   - "&a战士事件"
-  - "&a状态：&f{状态}"
-  - "&a参与者：&f{玩家}"
-  - "&a时间：&f{时间}"
+  - "&a状态：&f{status}"
+  - "&a参与者：&f{players}"
+  - "&a时间：&f{time}"
   - ""
