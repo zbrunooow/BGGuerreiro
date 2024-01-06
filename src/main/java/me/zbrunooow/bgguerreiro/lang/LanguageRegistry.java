@@ -115,6 +115,9 @@ public class LanguageRegistry {
             }
 
             @Override
+            public String getReactivatingDeathMatchPvP() { return getFile().getString("deathmatch-reactivating-pvp").replace("&", "§"); }
+
+            @Override
             public String getDeathWithoutReason() {
               return getFile().getString("kill-without-player").replace("&", "§");
             }
@@ -124,6 +127,20 @@ public class LanguageRegistry {
               return getFile().getStringList("you-won").stream()
                   .map(s -> s.replace("&", "§"))
                   .collect(Collectors.toList());
+            }
+
+            @Override
+            public List<String> getPvpEnabledDeathMatch() {
+                return getFile().getStringList("deathmatch-pvp-enabled").stream()
+                        .map(s -> s.replace("&", "§"))
+                        .collect(Collectors.toList());
+            }
+
+            @Override
+            public List<String> getDeathmatchComing() {
+                return getFile().getStringList("deathmatch-coming").stream()
+                        .map(s -> s.replace("&", "§"))
+                        .collect(Collectors.toList());
             }
 
             @Override
@@ -178,13 +195,6 @@ public class LanguageRegistry {
             @Override
             public List<String> getStarted() {
               return getFile().getStringList("started").stream()
-                  .map(s -> s.replace("&", "§"))
-                  .collect(Collectors.toList());
-            }
-
-            @Override
-            public List<String> getDeathmatchComing() {
-              return getFile().getStringList("deathmatch-coming").stream()
                   .map(s -> s.replace("&", "§"))
                   .collect(Collectors.toList());
             }
