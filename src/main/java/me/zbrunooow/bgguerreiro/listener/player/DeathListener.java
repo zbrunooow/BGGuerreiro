@@ -17,7 +17,8 @@ public class DeathListener implements Listener {
 
   @EventHandler
   public void onDeath(PlayerDeathEvent e) {
-    if (EventManager.getCreated().getStatus() == EventStatus.STARTED) {
+    EventStatus eventStatus = EventManager.getCreated().getStatus();
+    if (eventStatus == EventStatus.STARTED || eventStatus == EventStatus.DEATHMATCH) {
       boolean killerIsPlayer = true;
       int kills = 0;
       if (!(e.getEntity().getKiller() instanceof Player)) {
@@ -59,14 +60,14 @@ public class DeathListener implements Listener {
             e.setDeathMessage(
                 LanguageRegistry.getDefined()
                     .getKill()
-                    .replace("{matou}", killer.getName())
-                    .replace("{morreu}", victim.getName())
+                    .replace("{killer}", killer.getName())
+                    .replace("{died}", victim.getName())
                     .replace("{kills}", String.valueOf(kills)));
           } else {
             e.setDeathMessage(
                 LanguageRegistry.getDefined()
                     .getDeathWithoutReason()
-                    .replace("{morreu}", victim.getName()));
+                    .replace("{died}", victim.getName()));
           }
 
         } else {
@@ -75,14 +76,14 @@ public class DeathListener implements Listener {
                 .broadcastMessageToParticipants(
                     LanguageRegistry.getDefined()
                         .getKill()
-                        .replace("{matou}", killer.getName())
-                        .replace("{morreu}", victim.getName())
+                        .replace("{killer}", killer.getName())
+                        .replace("{died}", victim.getName())
                         .replace("{kills}", String.valueOf(kills)));
           } else {
             e.setDeathMessage(
                 LanguageRegistry.getDefined()
                     .getDeathWithoutReason()
-                    .replace("{morreu}", victim.getName()));
+                    .replace("{died}", victim.getName()));
           }
         }
 
