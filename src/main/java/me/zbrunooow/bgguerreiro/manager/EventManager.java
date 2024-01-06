@@ -4,6 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 import me.zbrunooow.bgguerreiro.WarriorEngine;
 import me.zbrunooow.bgguerreiro.hooks.VaultHook;
+import me.zbrunooow.bgguerreiro.lang.Language;
+import me.zbrunooow.bgguerreiro.lang.LanguageRegistry;
 import me.zbrunooow.bgguerreiro.sample.EventStatus;
 import me.zbrunooow.bgguerreiro.util.API;
 import me.zbrunooow.bgguerreiro.util.Config;
@@ -23,6 +25,7 @@ public class EventManager {
   private boolean pvp = false;
   private boolean deathMatch = false;
   private boolean forcedDeathmatch = false;
+  private Language language = LanguageRegistry.getDefined();
 
   public static EventManager getCreated() {
     return WarriorEngine.getInstance().getEventManager();
@@ -80,7 +83,7 @@ public class EventManager {
       }
 
       private void broadcastAnnouncementMessages() {
-        for (String str : WarriorEngine.getMessages().getStarting()) {
+        for (String str : language.getStarted()) {
           API.getCreated().broadcastMessage(formatAnnouncementMessage(str));
         }
       }
@@ -89,7 +92,11 @@ public class EventManager {
         return message
             .replace("{seconds}", String.valueOf(seconds))
             .replace("{tag}", Config.get().getTag())
-            .replace("{valor}", Config.get().isFormatPrize() ? API.formatPrize(Config.get().getPremio()) : String.valueOf(Config.get().getPremio()))
+            .replace(
+                "{valor}",
+                Config.get().isFormatPrize()
+                    ? API.formatPrize(Config.get().getPremio())
+                    : String.valueOf(Config.get().getPremio()))
             .replace("{jogadores}", String.valueOf(Manager.getCreated().getParticipants().size()));
       }
 
@@ -114,7 +121,7 @@ public class EventManager {
       }
 
       private void broadcastWaitingMessages() {
-        for (String str : WarriorEngine.getMessages().getWaiting()) {
+        for (String str : language.getWaiting()) {
           API.getCreated()
               .broadcastMessageToParticipants(
                   str.replace("{tempo}", String.valueOf(Config.get().getTempoEspera())));
@@ -128,7 +135,7 @@ public class EventManager {
 
         if (waitTime > 0) {
           if (waitTime == next) {
-            for (String str : WarriorEngine.getMessages().getWaiting()) {
+            for (String str : language.getWaiting()) {
               API.getCreated()
                   .broadcastMessageToParticipants(str.replace("{tempo}", String.valueOf(waitTime)));
             }
@@ -137,7 +144,7 @@ public class EventManager {
         } else {
           setStatus(EventStatus.STARTED);
           setPvp(true);
-          for (String str : WarriorEngine.getMessages().getStarted()) {
+          for (String str : language.getStarted()) {
             API.getCreated().broadcastMessageToParticipants(str);
           }
         }
@@ -151,7 +158,7 @@ public class EventManager {
         int newValue = Manager.getCreated().getEventTime() + Config.get().getDmSemPvP();
         setPvpDeathMatch(newValue);
 
-        for (String str : WarriorEngine.getMessages().getDeathmatchStart()) {
+        for (String str : language.getDeathmatchStart()) {
           API.getCreated()
               .broadcastMessageToParticipants(
                   str.replace("{segundos}", String.valueOf(Config.get().getDmSemPvP())));
@@ -176,8 +183,8 @@ public class EventManager {
       private void broadcastActionbar() {
         String actionbarMessage =
             Manager.getCreated().getEventTime() <= 10
-                ? WarriorEngine.getMessages().getStatusActionbar()
-                : WarriorEngine.getMessages().getInformationActionbar();
+                ? language.getStatusActionbar()
+                : language.getInfoActionbar();
 
         API.getCreated().broadcastActionbarToParticipants(formatActionbarMessage(actionbarMessage));
       }
@@ -203,7 +210,7 @@ public class EventManager {
   }
 
   private void broadcastDeathmatchStartMessages() {
-    for (String str : WarriorEngine.getMessages().getDeathmatchStart()) {
+    for (String str : language.getDeathmatchStart()) {
       API.getCreated()
           .broadcastMessageToParticipants(
               str.replace("{segundos}", String.valueOf(Config.get().getDmSemPvP())));
@@ -241,7 +248,7 @@ public class EventManager {
   }
 
   private void broadcastCancellationMessages() {
-    for (String str : WarriorEngine.getMessages().getCancelled()) {
+    for (String str : language.getCancelled()) {
       API.getCreated().broadcastMessage(str);
     }
   }
@@ -259,9 +266,7 @@ public class EventManager {
   private void broadcastSurvivorsLeftMessage(int participantsCount) {
     API.getCreated()
         .broadcastMessageToParticipants(
-            WarriorEngine.getMessages()
-                .getSurvivorsLeft()
-                .replace("{restam}", String.valueOf(participantsCount)));
+            language.getSurvivorsLeft().replace("{restam}", String.valueOf(participantsCount)));
   }
 
   private void handleWinner(Manager manager) {
@@ -275,7 +280,7 @@ public class EventManager {
     new BukkitRunnable() {
       @Override
       public void run() {
-        if(winner.isOnline()) {
+        if (winner.isOnline()) {
           winner.getInventory().clear();
           winner.getInventory().setArmorContents(null);
           winner.updateInventory();
@@ -290,7 +295,7 @@ public class EventManager {
           setStatus(EventStatus.OFF);
         }
       }
-    }.runTaskLaterAsynchronously(WarriorEngine.getInstance(), 20*Config.get().getTempoFinal());
+    }.runTaskLaterAsynchronously(WarriorEngine.getInstance(), 20 * Config.get().getTempoFinal());
   }
 
   private int getWarriorKillsMetadata(Player player) {
@@ -298,21 +303,27 @@ public class EventManager {
   }
 
   private void broadcastWinnerMessages(Player winner, int kills) {
-    for(String str : WarriorEngine.getMessages().getYouWin()) {
+    for (String str : language.getYouWin()) {
       winner.sendMessage(str.replace("{tempo}", String.valueOf(Config.get().getTempoFinal())));
     }
-    for (String str : WarriorEngine.getMessages().getExpired()) {
-      API.getCreated().broadcastMessage(formatWinnerMessage(str, winner, kills, Config.get().isFormatPrize()));
+    for (String str : language.getExpired()) {
+      API.getCreated()
+          .broadcastMessage(formatWinnerMessage(str, winner, kills, Config.get().isFormatPrize()));
     }
   }
 
-  private String formatWinnerMessage(String message, Player winner, int kills, boolean formatPrize) {
+  private String formatWinnerMessage(
+      String message, Player winner, int kills, boolean formatPrize) {
     return message
         .replace("{abates}", String.valueOf(kills))
         .replace("{duração}", API.getCreated().formatTime(Manager.getCreated().getEventTime()))
         .replace("{tag}", Config.get().getTag())
         .replace("{vencedor}", winner.getName())
-        .replace("{valor}", formatPrize ? API.formatPrize(Config.get().getPremio()) : String.valueOf(Config.get().getPremio()));
+        .replace(
+            "{valor}",
+            formatPrize
+                ? API.formatPrize(Config.get().getPremio())
+                : String.valueOf(Config.get().getPremio()));
   }
 
   private void clearEffectsAndMetadata(Player player) {

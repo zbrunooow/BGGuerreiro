@@ -9,6 +9,7 @@ import me.zbrunooow.bgguerreiro.commands.completer.WarriorCommandCompleter;
 import me.zbrunooow.bgguerreiro.hooks.LegendChatHook;
 import me.zbrunooow.bgguerreiro.hooks.SimpleClansHook;
 import me.zbrunooow.bgguerreiro.hooks.VaultHook;
+import me.zbrunooow.bgguerreiro.lang.LanguageRegistry;
 import me.zbrunooow.bgguerreiro.listener.hooks.LegendChatTagListener;
 import me.zbrunooow.bgguerreiro.listener.hooks.NormalChatListener;
 import me.zbrunooow.bgguerreiro.listener.hooks.UltimateChatListener;
@@ -20,9 +21,8 @@ import me.zbrunooow.bgguerreiro.listener.server.CommandExecutionListener;
 import me.zbrunooow.bgguerreiro.listener.server.ConnectionListener;
 import me.zbrunooow.bgguerreiro.manager.BoxManager;
 import me.zbrunooow.bgguerreiro.manager.EventManager;
-import me.zbrunooow.bgguerreiro.manager.MessageManager;
+import me.zbrunooow.bgguerreiro.manager.KitManager;
 import me.zbrunooow.bgguerreiro.util.*;
-import net.sacredlabyrinth.phaed.simpleclans.SimpleClans;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.PluginCommand;
@@ -34,7 +34,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class WarriorEngine extends JavaPlugin {
 
   public static WarriorEngine instance;
-  private static MessageManager messages;
   private boolean simpleClans;
   private boolean update = false;
   private String updateVersion = "";
@@ -44,7 +43,7 @@ public final class WarriorEngine extends JavaPlugin {
   private AutoUpdater autoUpdate;
   private Config configuration;
   private Locations locations;
-  private Kit kit;
+  private KitManager kitManager;
   private VaultHook vaultHook;
   private LegendChatHook legendChatHook;
   private Manager manager;
@@ -52,18 +51,13 @@ public final class WarriorEngine extends JavaPlugin {
   private EventManager eventManager;
   private BoxManager boxManager;
 
-  public static SimpleClans getSimpleClans() {
-    return SimpleClans.getInstance();
-  }
-
   @Tolerate
   public static WarriorEngine getInstance() {
     return instance;
   }
 
-  @Tolerate
-  public static MessageManager getMessages() {
-    return messages;
+  public static net.sacredlabyrinth.phaed.simpleclans.SimpleClans getSimpleClans() {
+    return instance.isSimpleClans() ? net.sacredlabyrinth.phaed.simpleclans.SimpleClans.getInstance() : null;
   }
 
   @Override
@@ -71,10 +65,6 @@ public final class WarriorEngine extends JavaPlugin {
     instance = this;
     this.api = new API();
     this.locations = new Locations();
-    this.kit = new Kit();
-    this.manager = new Manager();
-    this.eventManager = new EventManager();
-    this.boxManager = new BoxManager();
 
     if (cantHookVault()) return;
     this.checkSimpleClans();
@@ -82,6 +72,11 @@ public final class WarriorEngine extends JavaPlugin {
     this.setupChatHook();
     this.saveDefaultConfig();
     this.reloadPlugin();
+
+    this.kitManager = new KitManager();
+    this.manager = new Manager();
+    this.eventManager = new EventManager();
+    this.boxManager = new BoxManager();
 
     this.registerListeners(
         new DamageListener(),
@@ -158,10 +153,16 @@ public final class WarriorEngine extends JavaPlugin {
   public void reloadPlugin() {
     this.reloadConfig();
 
-    this.kit = new Kit();
+    this.kitManager = new KitManager();
     this.locations = new Locations();
     this.configuration = new Config();
-    this.messages = new MessageManager();
+
+    LanguageRegistry.saveDefaults();
+    LanguageRegistry.registerAll();
+
+    if (LanguageRegistry.getDefined() == null) {
+      Bukkit.getConsoleSender().sendMessage(prefix + "§cA linguagem selecionada não existe! - Selecionada: " + Config.get().getLanguage());
+    }
   }
 
   @Override
@@ -203,4 +204,5 @@ public final class WarriorEngine extends JavaPlugin {
   public boolean isSimpleClans() {
     return simpleClans;
   }
+
 }

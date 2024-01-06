@@ -1,18 +1,19 @@
-package me.zbrunooow.bgguerreiro.util;
+package me.zbrunooow.bgguerreiro.manager;
 
 import me.zbrunooow.bgguerreiro.WarriorEngine;
+import me.zbrunooow.bgguerreiro.util.Manager;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 
-public class Kit {
+public class KitManager {
 
     private File fileKit = null;
     private FileConfiguration fileConfigurationKit = null;
 
-    public Kit() {
+    public KitManager() {
         File verificarKit = new File(WarriorEngine.getInstance().getDataFolder(), "kit.yml");
 
         if (!verificarKit.exists()) {
@@ -36,8 +37,8 @@ public class Kit {
         WarriorEngine.getInstance().saveResource("kit.yml", false);
         WarriorEngine.getInstance().reloadPlugin();
 
-        Manager.getCreated().setItems(Kit.get().getKitFile().getString("items"));
-        Manager.getCreated().setArmor(Kit.get().getKitFile().getString("armor"));
+        Manager.getCreated().setItems(KitManager.get().getKitFile().getString("items"));
+        Manager.getCreated().setArmor(KitManager.get().getKitFile().getString("armor"));
     }
 
     public void saveKitFile() {
@@ -56,8 +57,8 @@ public class Kit {
         }
     }
 
-    public static Kit get() {
-        return WarriorEngine.getInstance().getKit();
+    public static KitManager get() {
+        return WarriorEngine.getInstance().getKitManager();
     }
 
 }

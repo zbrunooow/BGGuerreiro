@@ -1,0 +1,78 @@
+no-permission: "&cNo tienes permiso para ejecutar este comando."
+kill: "&c[MUERTE]&7: &fEl jugador &c{muerto} &ffue asesinado por &a{asesino} &7({asesinatos})&a."
+survivors-left: "&7Quedan &f{quedan} jugadores &7en el evento Guerrero&7."
+status-actionbar: "&7Estado: {estado} &f| &7Asesinatos: &e{asesinatos} &f| &7Tiempo: &e{tiempo}" # Esta barra de acción es visible hasta que el evento alcanza 10 segundos de PVP habilitado, luego cambia a la barra de acción 2 que está a continuación.
+info-actionbar: "&7Participantes: &e{jugadores} &f| &7Asesinatos: &e{asesinatos} &f| &7Tiempo: &e{tiempo}"
+kill-without-player: "&c[MUERTE]&7: &fEl jugador &c{muerto} &ffue eliminado del evento." # Muerte por lava/(/kill)/etc...
+box-join: "&aHas entrado en la zona de espectadores del evento Guerrero."
+box-leave: "&aHas salido de la zona de espectadores del evento Guerrero."
+you-won:
+  - "&aGanaste el evento Guerrero."
+  - "&aFelicidades por tu desempeño."
+  - "&aSerás teleportado a la salida en &f{tiempo} segundos."
+ranking:
+  limit: 5 # Establece el límite de jugadores que aparecerán en la cima
+  header:
+    - ""
+    - "&aGuerrero &f- &7Top {tipo}:" # Este mensaje está sobre las mejores victorias/asesinatos
+  value: "&2&l[{posicion}] &a- &f{apodo} &a- &f{cantidad} &2{tipo}"
+  footer:
+    - ""
+general:
+  - "&aGuerrero &f- &7Comandos Generales"
+  - ""
+  - "&a/guerrero unirse &f- &7Únete al evento."
+  - "&a/guerrero estado &f- &7Ver el estado del evento."
+  - "&a/guerrero top (asesinatos/victorias) &f- &7Ver las clasificaciones del evento."
+  - "&a/guerrero set (entrada/salida/deathmatch/kit) &f- &7Establecer posiciones/elementos del evento."
+  - "&a/guerrero forzarinicio &f- &7Iniciar forzosamente el evento."
+  - "&a/guerrero forzarparar &f- &7Detener forzosamente el evento."
+  - "&a/guerrero forcedm &f- &7Forzar inicio de DeathMatch."
+  - "&a/guerrero resetkit &f- &7Restablecer el kit del evento."
+starting:
+  - ""
+  - "&a¡Comienzo automático del evento Guerrero!"
+  - "&aPara participar, escribe: &f/guerrero unirse"
+  - "&aPremio: &2${valor} &ay etiqueta {etiqueta}"
+  - "&aTiempo restante: &f{segundos} segundos&a."
+  - "&aParticipantes: &f{jugadores}"
+  - ""
+waiting:
+  - ""
+  - "&a¡Comienzo automático del evento Guerrero!"
+  - "&aTiempo inicial para que los jugadores se preparen."
+  - "&aTiempo restante: &f{tiempo} segundos."
+  - ""
+cancelled:
+  - ""
+  - "&cEl evento Guerrero ha sido cancelado."
+  - "&cTodos los jugadores han sido teleportados a la salida."
+  - ""
+started:
+  - ""
+  - "&a¡El evento ha comenzado!"
+  - "&aSe ha activado el PVP."
+  - ""
+finalized:
+  - ""
+  - "&a¡El evento Guerrero ha concluido!"
+  - "&aGanador: &f{ganador} &acon &f{asesinatos} asesinato(s)."
+  - "&aPremio: &2${valor} &ay etiqueta {etiqueta}"
+  - "&aDuración del evento: &f{duracion}."
+  - ""
+deathmatch-coming: # Este mensaje aparece dos veces, una 2 minutos antes de que comience DM y otra 1 minuto antes.
+  - ""
+  - "&aDeathMatch comenzará en &f{minutos} minutos&a."
+  - ""
+deathmatch-started:
+  - ""
+  - "&aDeathMatch ha comenzado, el PVP estará activo en &c{segundos} &asegundos."
+  - "&aTodos los jugadores han sido teleportados a la arena final."
+  - ""
+status:
+  - ""
+  - "&aEvento Guerrero"
+  - "&aEstado: &f{estado}"
+  - "&aParticipantes: &f{jugadores}"
+  - "&aTiempo: &f{tiempo}"
+  - ""

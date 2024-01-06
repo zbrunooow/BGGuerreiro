@@ -6,6 +6,7 @@ import com.cryptomorin.xseries.XEnchantment;
 import com.cryptomorin.xseries.XMaterial;
 import lombok.Getter;
 import me.zbrunooow.bgguerreiro.WarriorEngine;
+import me.zbrunooow.bgguerreiro.lang.LanguageRegistry;
 import me.zbrunooow.bgguerreiro.sample.EventStatus;
 import me.zbrunooow.bgguerreiro.util.Manager;
 import org.bukkit.Bukkit;
@@ -47,7 +48,7 @@ public class BoxManager {
     }
 
     player.setAllowFlight(true);
-    player.sendMessage(WarriorEngine.getMessages().getBoxJoin());
+    player.sendMessage(LanguageRegistry.getDefined().getBoxJoin());
     spectators.add(player);
   }
 
@@ -60,7 +61,7 @@ public class BoxManager {
     }
 
     player.setAllowFlight(false);
-    player.sendMessage(WarriorEngine.getMessages().getBoxLeave());
+    player.sendMessage(LanguageRegistry.getDefined().getBoxLeave());
     spectators.remove(player);
   }
 

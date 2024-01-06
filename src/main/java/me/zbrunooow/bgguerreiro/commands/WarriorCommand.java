@@ -1,13 +1,17 @@
 package me.zbrunooow.bgguerreiro.commands;
 
 import com.google.common.base.Stopwatch;
-
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
+
+import com.google.common.base.Strings;
 import me.zbrunooow.bgguerreiro.WarriorEngine;
+import me.zbrunooow.bgguerreiro.lang.Language;
+import me.zbrunooow.bgguerreiro.lang.LanguageRegistry;
 import me.zbrunooow.bgguerreiro.manager.BoxManager;
 import me.zbrunooow.bgguerreiro.manager.EventManager;
+import me.zbrunooow.bgguerreiro.manager.KitManager;
 import me.zbrunooow.bgguerreiro.sample.EventStatus;
 import me.zbrunooow.bgguerreiro.util.*;
 import org.bukkit.Bukkit;
@@ -22,8 +26,10 @@ import org.bukkit.metadata.FixedMetadataValue;
 
 public class WarriorCommand implements CommandExecutor {
 
+  private static Language language;
+
   private static void sendHelp(Player player) {
-    for (String str : WarriorEngine.getMessages().getGeneralCommand()) {
+    for (String str : language.getGeneralCommand()) {
       if (str.contains("force") || str.contains("set")) {
         if (player.hasPermission("bgguerreiro.admin")) {
           player.sendMessage(str);
@@ -36,8 +42,9 @@ public class WarriorCommand implements CommandExecutor {
 
   @Override
   public boolean onCommand(CommandSender commandSender, Command cmd, String lb, String[] args) {
+    this.language = LanguageRegistry.getDefined();
     if (!(commandSender instanceof Player)) {
-      WarriorEngine.getMessages().getGeneralCommand().forEach(commandSender::sendMessage);
+      language.getGeneralCommand().forEach(commandSender::sendMessage);
       return false;
     }
 
@@ -72,7 +79,7 @@ public class WarriorCommand implements CommandExecutor {
             EventManager.getCreated().startEvent();
             return;
           },
-          WarriorEngine.getMessages().getNoPermission());
+          language.getNoPermission());
       return false;
     }
 
@@ -87,7 +94,7 @@ public class WarriorCommand implements CommandExecutor {
             }
             EventManager.getCreated().cancelar(true);
           },
-          WarriorEngine.getMessages().getNoPermission());
+          language.getNoPermission());
       return false;
     }
 
@@ -102,7 +109,7 @@ public class WarriorCommand implements CommandExecutor {
             }
             EventManager.getCreated().forceDm();
           },
-          WarriorEngine.getMessages().getNoPermission());
+          language.getNoPermission());
       return false;
     }
 
@@ -119,7 +126,7 @@ public class WarriorCommand implements CommandExecutor {
                     + "!");
             return;
           },
-          WarriorEngine.getMessages().getNoPermission());
+          language.getNoPermission());
       return false;
     }
 
@@ -175,11 +182,11 @@ public class WarriorCommand implements CommandExecutor {
                 }
               }
 
-              Kit.get().getKitFile().set("armor", API.getCreated().serializeItems(player.getInventory().getArmorContents()));
+              KitManager.get().getKitFile().set("armor", API.getCreated().serializeItems(player.getInventory().getArmorContents()));
               Manager.getCreated().setArmor(API.getCreated().serializeItems(player.getInventory().getArmorContents()));
-              Kit.get().getKitFile().set("items", API.getCreated().serializeItems(player.getInventory().getContents()));
+              KitManager.get().getKitFile().set("items", API.getCreated().serializeItems(player.getInventory().getContents()));
               Manager.getCreated().setItems(API.getCreated().serializeItems(player.getInventory().getContents()));
-              Kit.get().saveKitFile();
+              KitManager.get().saveKitFile();
               player.getInventory().clear();
               player.getInventory().setArmorContents(null);
               player.sendMessage("§aVocê setou os itens do evento Guerreiro!");
@@ -188,7 +195,7 @@ public class WarriorCommand implements CommandExecutor {
 
             player.sendMessage("§cUse /guerreiro set (entrada/saida/deathmatch/kit)");
           },
-          WarriorEngine.getMessages().getNoPermission());
+          language.getNoPermission());
       return false;
     }
 
@@ -263,11 +270,11 @@ public class WarriorCommand implements CommandExecutor {
               player.sendMessage("§cUse /guerreiro resetkit");
               return;
             }
-            Kit.get().resetKit();
+            KitManager.get().resetKit();
             player.sendMessage("§aVocê redefiniu o kit do evento Guerreiro!");
             return;
           },
-          WarriorEngine.getMessages().getNoPermission());
+          language.getNoPermission());
       return false;
     }
 
@@ -310,7 +317,7 @@ public class WarriorCommand implements CommandExecutor {
     // Subcommand: status
     if (action.equalsIgnoreCase("status") || action.equalsIgnoreCase("info")) {
       List<String> messageFormatted =
-          WarriorEngine.getMessages().getStatus().stream()
+          language.getStatus().stream()
               .map(
                   string -> {
                     return string
@@ -372,14 +379,12 @@ public class WarriorCommand implements CommandExecutor {
 
       AtomicInteger index = new AtomicInteger(1);
       List<String> fetchedRanking = API.getCreated().fetchRanking(desiredTop);
-      WarriorEngine.getMessages()
-          .getTopHeader()
+      language.getTopHeader()
           .forEach(string -> player.sendMessage(string.replace("{type}", desiredTopFormat)));
       fetchedRanking.forEach(
           string -> {
             player.sendMessage(
-                WarriorEngine.getMessages()
-                    .getTopValue()
+                language.getTopValue()
                     .replace("{type}", Integer.parseInt(string.split("\\(\\)")[1]) > 1 ? desiredTopFormat : desiredTopFormat.substring(0, desiredTopFormat.length()-1))
                     .replace("{posicao}", String.valueOf(index.get()))
                     .replace("{nick}", string.split("\\(\\)")[0])

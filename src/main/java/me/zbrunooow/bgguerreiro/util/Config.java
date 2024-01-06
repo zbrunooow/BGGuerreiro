@@ -1,5 +1,6 @@
 package me.zbrunooow.bgguerreiro.util;
 
+import lombok.Getter;
 import me.zbrunooow.bgguerreiro.WarriorEngine;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -38,7 +39,11 @@ public class Config {
     private Double premio;
     private String tag;
 
+    @Getter
+    private String language;
+
     public Config() {
+        language = replace("Language");
         armazenamento = replaceSql("Tipo");
         url = replaceSql("url");
         port = replaceIntSql("port");
@@ -46,7 +51,7 @@ public class Config {
         pass = replaceSql("pass");
         database = replaceSql("database");
 
-        topLimite = replaceTopLimite("Top.Limite");
+        topLimite = 5;
 
         tempoAnuncios = replaceInt("Tempo-Anuncios");
         tempoEntreAnuncios = replaceInt("Tempo-Entre");
@@ -68,6 +73,10 @@ public class Config {
         drop = replaceBool("Dropar-Itens");
         premio = replaceDouble("Premio");
 
+    }
+
+    public static Config get(){
+        return WarriorEngine.getInstance().getConfiguration();
     }
 
     private int replaceInt(String linha) {
@@ -209,10 +218,6 @@ public class Config {
 
     public String getItems() {
         return items;
-    }
-
-    public static Config get(){
-        return WarriorEngine.getInstance().getConfiguration();
     }
 
 }
