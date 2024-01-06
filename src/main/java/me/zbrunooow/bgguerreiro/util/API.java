@@ -36,7 +36,7 @@ public class API {
       String query =
           "SELECT nick, vitorias FROM guerreiro_jogadores ORDER BY vitorias DESC LIMIT "
               + Config.get().getRankingLimit();
-      if (type.equalsIgnoreCase("kills")) {
+      if (type.equalsIgnoreCase("abates") || type.equalsIgnoreCase("kills")) {
         query =
             "SELECT nick, kills FROM guerreiro_jogadores ORDER BY kills DESC LIMIT "
                 + Config.get().getRankingLimit();

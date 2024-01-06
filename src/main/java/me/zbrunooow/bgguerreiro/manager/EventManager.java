@@ -10,10 +10,13 @@ import me.zbrunooow.bgguerreiro.sample.EventStatus;
 import me.zbrunooow.bgguerreiro.util.API;
 import me.zbrunooow.bgguerreiro.util.Config;
 import me.zbrunooow.bgguerreiro.util.Manager;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.io.Console;
 
 @Getter
 @Setter
@@ -300,6 +303,9 @@ public class EventManager {
           winner.teleport(manager.getExitLocation());
           winner.removeMetadata("waitingLeave", WarriorEngine.getInstance());
 
+          for(String cmd : Config.get().getWonCommands()) {
+            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), cmd.replace("{player}", winner.getName()));
+          }
         }
         setStatus(EventStatus.OFF);
       }

@@ -52,7 +52,7 @@ public class ConnectionListener implements Listener {
       manager.getParticipants().remove(player);
       API.getCreated().salvarStatus(player, false, kills);
 
-      if (eventStatus == EventStatus.STARTED || eventStatus == EventStatus.WAITING) {
+      if (eventStatus == EventStatus.STARTED || eventStatus == EventStatus.WAITING || eventStatus == EventStatus.DEATHMATCH) {
         EventManager.getCreated().verifyLastDuel();
       }
     }
