@@ -22,6 +22,9 @@ Config:
   Tag: "&2[Guerreiro]"
   Itens: "&a&lGUERREIRO" # Todos os itens virão com esse nome
   Premio: 25000.0
+  Win-Commands: # comandos ao executar quando o evento terminar (APÓS O DELAY DO FIM DO EVENTO)
+    - "say {player} venceu o evento!"
+    - "say {player} venceu o evento!"
   Formatar-Premio: true # "true" para formatar o prêmio ao anunciar a vitória (exmplo: 25K, 25M, 25B, 25T, 25Q)
   Tempo-Anuncios: 60 # Tempo que vai ficar anunciando
   Tempo-Entre: 10 # Tempo entre cada anuncio

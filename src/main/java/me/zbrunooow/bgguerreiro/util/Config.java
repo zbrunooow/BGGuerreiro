@@ -35,6 +35,7 @@ public class Config {
     private int rankingLimit;
 
     private List<String> horarios;
+    private List<String> wonCommands;
 
     private Double premio;
     private String tag;
@@ -61,6 +62,8 @@ public class Config {
         minimoParticipantes = replaceInt("Minimo-Participantes");
 
         horarios = replaceHorarios("Horarios");
+
+        wonCommands = replaceList("Win-Commands");
 
         tag = replace("Tag");
         items = replace("Itens");
@@ -208,6 +211,9 @@ public class Config {
 
     public List<String> getHorarios() {
         return horarios;
+    }
+    public List<String> getWonCommands() {
+        return wonCommands;
     }
 
     public String getItems() {

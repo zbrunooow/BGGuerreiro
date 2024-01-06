@@ -104,7 +104,7 @@ public final class WarriorEngine extends JavaPlugin {
     this.autoUpdater();
 
     int pluginId = 20664;
-    new Metrics(this, pluginId);
+    Metrics metrics = new Metrics(this, pluginId);
 
     Bukkit.getConsoleSender().sendMessage(prefix + "§aPlugin habilitado com sucesso!");
   }
