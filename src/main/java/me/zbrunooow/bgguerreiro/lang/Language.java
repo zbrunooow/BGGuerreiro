@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public interface Language {
     String getIdentifier();
+    String getReactivatingDeathMatchPvP();
     FileConfiguration getFile();
     String getNoPermission();
     String getKill();
@@ -16,6 +17,9 @@ public interface Language {
     String getBoxLeave();
     String getDeathWithoutReason();
     List<String> getYouWin();
+
+    List<String> getPvpEnabledDeathMatch();
+
     List<String> getGeneralCommand();
     List<String> getTopHeader();
     List<String> getTopFooter();
