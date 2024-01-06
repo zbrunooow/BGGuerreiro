@@ -32,6 +32,8 @@ Config:
   Dropar-Itens: false # "true" para deixar o drop de itens liberado dentro do evento, "false" para deixar o drop bloqueado.
   Executar-Comandos: false # "true" para deixar os comandos liberados dentro do evento, "false" para deixar os comandos bloqueados (EXCETO OS COMANDOS DO EVENTO, /guerreiro sair, status, etc...).
 
+  Ranking-Limit: 5 # Coloque aqui qual limite de jogadores que podem aparecer no top
+
   Deathmatch:
     Habilitado: true # "true" para ter deathmatch "false" para não ter
     Tempo: 900 # Tempo em segundos para iniciar o deathmatch (MINIMO 300)

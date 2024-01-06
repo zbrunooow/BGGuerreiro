@@ -35,11 +35,11 @@ public class API {
 
       String query =
           "SELECT nick, vitorias FROM guerreiro_jogadores ORDER BY vitorias DESC LIMIT "
-              + Config.get().getTopLimite();
+              + Config.get().getRankingLimit();
       if (type.equalsIgnoreCase("kills")) {
         query =
             "SELECT nick, kills FROM guerreiro_jogadores ORDER BY kills DESC LIMIT "
-                + Config.get().getTopLimite();
+                + Config.get().getRankingLimit();
       }
 
       Statement stmt = conn.createStatement();
@@ -74,7 +74,7 @@ public class API {
           message
               .replace("&", "§")
               .replace(
-                  "{abates}", String.valueOf(player.getMetadata("warriorKills").get(0).value())));
+                  "{kills}", String.valueOf(player.getMetadata("warriorKills").get(0).value())));
     }
   }
 

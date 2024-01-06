@@ -14,7 +14,6 @@ public class Config {
     private int tempoEntreAnuncios;
     private int tempoEspera;
     private int minimoParticipantes;
-    private int topLimite;
 
     private boolean abateGeral;
     private boolean chat;
@@ -33,6 +32,7 @@ public class Config {
     private boolean dmHabilitado;
     private int dmTempo;
     private int dmSemPvP;
+    private int rankingLimit;
 
     private List<String> horarios;
 
@@ -51,12 +51,11 @@ public class Config {
         pass = replaceSql("pass");
         database = replaceSql("database");
 
-        topLimite = 5;
-
         tempoAnuncios = replaceInt("Tempo-Anuncios");
         tempoEntreAnuncios = replaceInt("Tempo-Entre");
         tempoFinal = replaceInt("Tempo-Final");
         tempoEspera = replaceInt("Tempo-Espera");
+        rankingLimit = replaceInt("Ranking-Limit");
         dmTempo = replaceInt("Deathmatch.Tempo");
         dmSemPvP = replaceInt("Deathmatch.Sem-PvP");
         minimoParticipantes = replaceInt("Minimo-Participantes");
@@ -84,11 +83,6 @@ public class Config {
         return config.getInt("Config." + linha);
     }
 
-    private int replaceTopLimite(String linha) {
-        FileConfiguration config = WarriorEngine.getInstance().getConfig();
-        return config.getInt("Mensagens." + linha);
-    }
-
     private List<String> replaceHorarios(String linha) {
         FileConfiguration config = WarriorEngine.getInstance().getConfig();
         return config.getStringList("AutoStart." + linha);
@@ -97,6 +91,10 @@ public class Config {
     private Boolean replaceBool(String linha) {
         FileConfiguration config = WarriorEngine.getInstance().getConfig();
         return config.getBoolean("Config." + linha);
+    }
+
+    public int getRankingLimit() {
+        return rankingLimit;
     }
 
     private double replaceDouble(String linha) {
@@ -190,10 +188,6 @@ public class Config {
 
     public boolean isComandos() {
         return comandos;
-    }
-
-    public int getTopLimite() {
-        return topLimite;
     }
 
     public boolean isFormatPrize() {
