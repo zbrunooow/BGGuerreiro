@@ -35,6 +35,7 @@ public class DamageListener implements Listener {
       if (!EventManager.getCreated().isPvp()) {
         e.setCancelled(true);
         attacker.sendMessage("§cO PvP está desativado no momento!");
+      } else {
       }
     }
   }
@@ -50,7 +51,7 @@ public class DamageListener implements Listener {
         }
 
         if (Manager.getCreated().getParticipants().contains(victim)) {
-          if (EventManager.getCreated().getStatus() != EventStatus.STARTED) {
+          if (EventManager.getCreated().getStatus() != EventStatus.STARTED && EventManager.getCreated().getStatus() != EventStatus.DEATHMATCH) {
             e.setCancelled(true);
           }
         }

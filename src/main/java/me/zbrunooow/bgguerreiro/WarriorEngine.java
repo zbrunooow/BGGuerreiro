@@ -23,6 +23,7 @@ import me.zbrunooow.bgguerreiro.manager.BoxManager;
 import me.zbrunooow.bgguerreiro.manager.EventManager;
 import me.zbrunooow.bgguerreiro.manager.KitManager;
 import me.zbrunooow.bgguerreiro.util.*;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.PluginCommand;
@@ -101,6 +102,9 @@ public final class WarriorEngine extends JavaPlugin {
     Manager.getCreated().setLastWinner(API.getCreated().getLW());
     AutoStart.load();
     this.autoUpdater();
+
+    int pluginId = 20664;
+    new Metrics(this, pluginId);
 
     Bukkit.getConsoleSender().sendMessage(prefix + "§aPlugin habilitado com sucesso!");
   }

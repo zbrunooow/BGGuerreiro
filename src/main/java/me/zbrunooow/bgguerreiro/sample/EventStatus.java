@@ -6,6 +6,7 @@ public enum EventStatus {
   ANNOUNCING,
   WAITING,
   STARTED,
+  DEATHMATCH,
   FINALIZED;
 
   public static EventStatus withString(String string) {

@@ -57,7 +57,7 @@ public class ConnectionListener implements Listener {
       }
     }
 
-    if (eventStatus == EventStatus.STARTED) {
+    if (eventStatus == EventStatus.STARTED || eventStatus == EventStatus.DEATHMATCH) {
       if (BoxManager.get().getSpectators().contains(event.getPlayer())) {
         BoxManager.get().leaveBox(event.getPlayer());
       }
@@ -70,7 +70,7 @@ public class ConnectionListener implements Listener {
     if (!player.hasPermission("bgguerreiro.admin")) return;
     this.notifyUpdates(player);
 
-    if (EventManager.getCreated().getStatus() == EventStatus.STARTED) {
+    if (EventManager.getCreated().getStatus() == EventStatus.STARTED || EventManager.getCreated().getStatus() == EventStatus.DEATHMATCH) {
       if (BoxManager.get().getSpectators().isEmpty()) return;
 
       for (Player spec : BoxManager.get().getSpectators()) {

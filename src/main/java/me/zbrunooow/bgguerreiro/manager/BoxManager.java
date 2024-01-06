@@ -34,7 +34,7 @@ public class BoxManager {
 
   public void joinBox(Player player) {
     EventStatus eventStatus = EventManager.getCreated().getStatus();
-    if (eventStatus != EventStatus.STARTED) return;
+    if (eventStatus != EventStatus.STARTED && eventStatus != EventStatus.DEATHMATCH) return;
 
     player.getPlayer().teleport(Manager.getCreated().getJoinLocation());
     player.getPlayer().getInventory().setItem(4, leaveBox.clone());

@@ -63,6 +63,9 @@ public class EventManager {
           case STARTED:
             handleStarted();
             break;
+          case DEATHMATCH:
+            handleDeathMatch();
+            break;
         }
       }
 
@@ -83,7 +86,7 @@ public class EventManager {
       }
 
       private void broadcastAnnouncementMessages() {
-        for (String str : language.getStarted()) {
+        for (String str : language.getStarting()) {
           API.getCreated().broadcastMessage(formatAnnouncementMessage(str));
         }
       }
@@ -93,11 +96,11 @@ public class EventManager {
             .replace("{seconds}", String.valueOf(seconds))
             .replace("{tag}", Config.get().getTag())
             .replace(
-                "{valor}",
+                "{prize}",
                 Config.get().isFormatPrize()
                     ? API.formatPrize(Config.get().getPremio())
                     : String.valueOf(Config.get().getPremio()))
-            .replace("{jogadores}", String.valueOf(Manager.getCreated().getParticipants().size()));
+            .replace("{players}", String.valueOf(Manager.getCreated().getParticipants().size()));
       }
 
       private void startWaiting() {
@@ -124,20 +127,16 @@ public class EventManager {
         for (String str : language.getWaiting()) {
           API.getCreated()
               .broadcastMessageToParticipants(
-                  str.replace("{tempo}", String.valueOf(Config.get().getTempoEspera())));
+                  str.replace("{time}", String.valueOf(Config.get().getTempoEspera())));
         }
       }
 
       private void handleWaiting() {
-        if (Config.get().isDmHabilitado() || forcedDeathmatch) {
-          handleDeathMatch();
-        }
-
         if (waitTime > 0) {
           if (waitTime == next) {
             for (String str : language.getWaiting()) {
               API.getCreated()
-                  .broadcastMessageToParticipants(str.replace("{tempo}", String.valueOf(waitTime)));
+                  .broadcastMessageToParticipants(str.replace("{time}", String.valueOf(waitTime)));
             }
             next = waitTime - 5;
           }
@@ -152,32 +151,37 @@ public class EventManager {
       }
 
       private void handleDeathMatch() {
-        if (Config.get().getDmTempo() != manager.getEventTime()) return;
-        setPvp(false);
+        Manager.getCreated().setEventTime(Manager.getCreated().getEventTime() + 1);
+        broadcastActionbar();
 
-        int newValue = Manager.getCreated().getEventTime() + Config.get().getDmSemPvP();
-        setPvpDeathMatch(newValue);
-
-        for (String str : language.getDeathmatchStart()) {
-          API.getCreated()
-              .broadcastMessageToParticipants(
-                  str.replace("{segundos}", String.valueOf(Config.get().getDmSemPvP())));
+        int now = Manager.getCreated().getEventTime();
+        if (getPvpDeathMatch() - now > 0 && getPvpDeathMatch() - now <= 3) {
+          API.getCreated().broadcastMessageToParticipants(LanguageRegistry.getDefined().getReactivatingDeathMatchPvP().replace("{seconds}", String.valueOf(getPvpDeathMatch()-now)));
         }
-
-        for (Player alive : manager.getParticipants()) {
-          alive.teleport(manager.getDeathmatchLocation());
+        if(getPvpDeathMatch() == Manager.getCreated().getEventTime()) {
+          for(String str : LanguageRegistry.getDefined().getPvpEnabledDeathMatch()) {
+            API.getCreated().broadcastMessageToParticipants(str);
+          }
+          setPvp(true);
         }
-
-        for (Player spectators : BoxManager.get().getSpectators()) {
-          spectators.teleport(manager.getDeathmatchLocation());
-        }
-
-        setDeathMatch(true);
       }
 
       private void handleStarted() {
         Manager.getCreated().setEventTime(Manager.getCreated().getEventTime() + 1);
         broadcastActionbar();
+
+        if(Config.get().isDmHabilitado()) {
+          int now = Manager.getCreated().getEventTime();
+          int dmTime = Config.get().getDmTempo();
+          if(dmTime == now+120 || dmTime == now+60) {
+            for(String str : LanguageRegistry.getDefined().getDeathmatchComing()) {
+              API.getCreated().broadcastMessageToParticipants(str.replace("{minutes}", dmTime == now+120 ? "2" : "1").replace("minutos", dmTime == now+60 ? "minuto" : "minutos"));
+            }
+          }
+          if(dmTime == now) {
+            EventManager.getCreated().forceDm();
+          }
+        }
       }
 
       private void broadcastActionbar() {
@@ -192,7 +196,7 @@ public class EventManager {
       private String formatActionbarMessage(String message) {
         return message
             .replace("{players}", String.valueOf(Manager.getCreated().getParticipants().size()))
-            .replace("{tempo}", API.getCreated().formatTime(Manager.getCreated().getEventTime()))
+            .replace("{time}", API.getCreated().formatTime(Manager.getCreated().getEventTime()))
             .replace(
                 "{status}",
                 (!(getStatus() == EventStatus.STARTED) ? "&cIniciando..." : "&aValendo"));
@@ -201,25 +205,33 @@ public class EventManager {
   }
 
   public void forceDm() {
-    forcedDeathmatch = true;
+    setForcedDeathmatch(true);
+    setDeathMatch(true);
     setPvp(false);
-    pvpDeathMatch = Manager.getCreated().getEventTime() + Config.get().getDmSemPvP();
+    setPvpDeathMatch(Manager.getCreated().getEventTime() + Config.get().getDmSemPvP());
     broadcastDeathmatchStartMessages();
     teleportParticipantsToDeathmatchLocation();
-    setDeathMatch(true);
+    teleportSpectatorsToDeathatchLocation();
+    EventManager.getCreated().setStatus(EventStatus.DEATHMATCH);
   }
 
   private void broadcastDeathmatchStartMessages() {
     for (String str : language.getDeathmatchStart()) {
       API.getCreated()
           .broadcastMessageToParticipants(
-              str.replace("{segundos}", String.valueOf(Config.get().getDmSemPvP())));
+              str.replace("{seconds}", String.valueOf(Config.get().getDmSemPvP())));
     }
   }
 
   private void teleportParticipantsToDeathmatchLocation() {
     for (Player vivos : Manager.getCreated().getParticipants()) {
       vivos.teleport(Manager.getCreated().getDeathmatchLocation());
+    }
+  }
+
+  private void teleportSpectatorsToDeathatchLocation() {
+    for(Player spectator : BoxManager.get().getSpectators()) {
+      spectator.teleport(Manager.getCreated().getDeathmatchLocation());
     }
   }
 
@@ -245,6 +257,7 @@ public class EventManager {
 
   private void clearParticipantsList() {
     Manager.getCreated().getParticipants().clear();
+    Manager.getCreated().setEventTime(0);
   }
 
   private void broadcastCancellationMessages() {
@@ -266,7 +279,7 @@ public class EventManager {
   private void broadcastSurvivorsLeftMessage(int participantsCount) {
     API.getCreated()
         .broadcastMessageToParticipants(
-            language.getSurvivorsLeft().replace("{restam}", String.valueOf(participantsCount)));
+            language.getSurvivorsLeft().replace("{remaining}", String.valueOf(participantsCount)));
   }
 
   private void handleWinner(Manager manager) {
@@ -284,18 +297,13 @@ public class EventManager {
           winner.getInventory().clear();
           winner.getInventory().setArmorContents(null);
           winner.updateInventory();
-          new BukkitRunnable() {
-            @Override
-            public void run() {
-              winner.teleport(manager.getExitLocation());
-            }
-          }.runTask(WarriorEngine.getInstance());
+          winner.teleport(manager.getExitLocation());
           winner.removeMetadata("waitingLeave", WarriorEngine.getInstance());
 
-          setStatus(EventStatus.OFF);
         }
+        setStatus(EventStatus.OFF);
       }
-    }.runTaskLaterAsynchronously(WarriorEngine.getInstance(), 20 * Config.get().getTempoFinal());
+    }.runTaskLater(WarriorEngine.getInstance(), 20 * Config.get().getTempoFinal());
   }
 
   private int getWarriorKillsMetadata(Player player) {
@@ -304,7 +312,7 @@ public class EventManager {
 
   private void broadcastWinnerMessages(Player winner, int kills) {
     for (String str : language.getYouWin()) {
-      winner.sendMessage(str.replace("{tempo}", String.valueOf(Config.get().getTempoFinal())));
+      winner.sendMessage(str.replace("{time}", String.valueOf(Config.get().getTempoFinal())));
     }
     for (String str : language.getExpired()) {
       API.getCreated()
@@ -315,12 +323,12 @@ public class EventManager {
   private String formatWinnerMessage(
       String message, Player winner, int kills, boolean formatPrize) {
     return message
-        .replace("{abates}", String.valueOf(kills))
-        .replace("{duração}", API.getCreated().formatTime(Manager.getCreated().getEventTime()))
+        .replace("{kills}", String.valueOf(kills))
+        .replace("{duration}", API.getCreated().formatTime(Manager.getCreated().getEventTime()))
         .replace("{tag}", Config.get().getTag())
-        .replace("{vencedor}", winner.getName())
+        .replace("{winner}", winner.getName())
         .replace(
-            "{valor}",
+            "{prize}",
             formatPrize
                 ? API.formatPrize(Config.get().getPremio())
                 : String.valueOf(Config.get().getPremio()));
