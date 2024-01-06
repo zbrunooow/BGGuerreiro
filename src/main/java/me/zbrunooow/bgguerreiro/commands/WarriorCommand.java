@@ -61,15 +61,15 @@ public class WarriorCommand implements CommandExecutor {
           sender,
           () -> {
             if (args.length > 1) {
-              sender.sendMessage("§cUse /guerreiro forcestart");
+              sender.sendMessage(LanguageRegistry.getDefined().getForcestartUsage());
               return;
             }
             if (Manager.getCreated().getItems() == null) {
-              sender.sendMessage("§cO kit do evento Guerreiro não foi definido!");
+              sender.sendMessage(LanguageRegistry.getDefined().getUndefinedKit());
               return;
             }
             if (eventStatus != EventStatus.OFF) {
-              sender.sendMessage("§cO evento Guerreiro já está acontecendo!");
+              sender.sendMessage(LanguageRegistry.getDefined().getAlreadyStarted());
               return;
             }
             EventManager.getCreated().startEvent();
@@ -84,8 +84,12 @@ public class WarriorCommand implements CommandExecutor {
       this.hasPermission(
           sender,
           () -> {
+            if (args.length > 1) {
+              sender.sendMessage(LanguageRegistry.getDefined().getForcestopUsage());
+              return;
+            }
             if (eventStatus == EventStatus.OFF) {
-              sender.sendMessage("§cO evento Guerreiro não está acontecendo!");
+              sender.sendMessage(LanguageRegistry.getDefined().getNotStarted());
               return;
             }
             EventManager.getCreated().cancelar(true);
@@ -99,16 +103,20 @@ public class WarriorCommand implements CommandExecutor {
       this.hasPermission(
           sender,
           () -> {
+            if (args.length > 1) {
+              sender.sendMessage(LanguageRegistry.getDefined().getForceDeathmatchUsage());
+              return;
+            }
             if(eventStatus == EventStatus.DEATHMATCH) {
-              sender.sendMessage("§cO evento Guerreiro já está no DeathMatch!");
+              sender.sendMessage(LanguageRegistry.getDefined().getAlreadyDeathmatch());
               return;
             }
             if (eventStatus != EventStatus.STARTED) {
-              sender.sendMessage("§cO evento Guerreiro não está acontecendo!");
+              sender.sendMessage(LanguageRegistry.getDefined().getCantStartDeathmatch());
               return;
             }
             if(Manager.getCreated().getDeathmatchLocation() == null) {
-              sender.sendMessage("§cO DeathMatch do evento Guerreiro não foi setado!!");
+              sender.sendMessage(LanguageRegistry.getDefined().getUndefinedDeathmatch());
               return;
             }
             EventManager.getCreated().forceDm();
@@ -124,10 +132,8 @@ public class WarriorCommand implements CommandExecutor {
           sender,
           () -> {
             WarriorEngine.getInstance().reloadPlugin();
-            sender.sendMessage(
-                "§aA configuração do plugin foi recarregada em "
-                    + stopwatch.stop().toString()
-                    + "!");
+            sender.sendMessage(LanguageRegistry.getDefined().getConfigReloaded()
+                            .replace("{time}", stopwatch.stop().toString()));
             return;
           },
           language.getNoPermission());
@@ -144,7 +150,7 @@ public class WarriorCommand implements CommandExecutor {
               player,
               () -> {
                 if (args.length < 2) {
-                  player.sendMessage("§cUse /guerreiro set (entrada/saida/deathmatch/kit)");
+                  player.sendMessage(LanguageRegistry.getDefined().getSetUsage());
                   return;
                 }
 
@@ -156,7 +162,7 @@ public class WarriorCommand implements CommandExecutor {
                           .set("entrada", API.getCreated().unserializeLocation(player.getLocation()));
                   manager.setJoinLocation(player.getLocation());
                   Locations.get().saveLocs();
-                  player.sendMessage("§aA entrada do evento Guerreiro foi setada com sucesso!");
+                  player.sendMessage(LanguageRegistry.getDefined().getSuccessSetJoin());
                   return;
                 }
 
@@ -166,7 +172,7 @@ public class WarriorCommand implements CommandExecutor {
                           .set("saida", API.getCreated().unserializeLocation(player.getLocation()));
                   Locations.get().saveLocs();
                   manager.setExitLocation(player.getLocation());
-                  player.sendMessage("§aA saída do evento Guerreiro foi setada com sucesso!");
+                  player.sendMessage(LanguageRegistry.getDefined().getSuccessSetLeave());
                   return;
                 }
 
@@ -176,12 +182,19 @@ public class WarriorCommand implements CommandExecutor {
                           .set("deathmatch", API.getCreated().unserializeLocation(player.getLocation()));
                   Locations.get().saveLocs();
                   manager.setDeathmatchLocation(player.getLocation());
-                  player.sendMessage("§aO deathmatch do evento Guerreiro foi setada com sucesso!");
+                  player.sendMessage(LanguageRegistry.getDefined().getSuccessSetDeathmatch());
                   return;
                 }
 
                 if("kit".equals(subAction)) {
                   for(ItemStack item : player.getInventory().getContents()) {
+                    if(item != null && item.getType() != Material.AIR) {
+                      ItemMeta im = item.getItemMeta();
+                      im.setDisplayName(Config.get().getItems());
+                      item.setItemMeta(im);
+                    }
+                  }
+                  for(ItemStack item : player.getInventory().getArmorContents()) {
                     if(item != null && item.getType() != Material.AIR) {
                       ItemMeta im = item.getItemMeta();
                       im.setDisplayName(Config.get().getItems());
@@ -196,11 +209,11 @@ public class WarriorCommand implements CommandExecutor {
                   KitManager.get().saveKitFile();
                   player.getInventory().clear();
                   player.getInventory().setArmorContents(null);
-                  player.sendMessage("§aVocê setou os itens do evento Guerreiro!");
+                  player.sendMessage(LanguageRegistry.getDefined().getSuccessSetKit());
                   return;
                 }
 
-                player.sendMessage("§cUse /guerreiro set (entrada/saida/deathmatch/kit)");
+                player.sendMessage(LanguageRegistry.getDefined().getSetUsage());
               },
               language.getNoPermission());
       return false;
@@ -211,21 +224,21 @@ public class WarriorCommand implements CommandExecutor {
       if(!(sender instanceof Player)) return false;
       Player player = (Player) sender;
       if (eventStatus == EventStatus.OFF) {
-        player.sendMessage("§cO evento Guerreiro não está acontecendo!");
+        player.sendMessage(LanguageRegistry.getDefined().getNotStarted());
         return false;
       }
 
       boolean exitIsValid = manager.getExitLocation() != null;
 
       if (!exitIsValid) {
-        player.sendMessage("§cA saída do evento Guerreiro não foi setada!");
+        player.sendMessage(LanguageRegistry.getDefined().getUndefinedExit());
         return false;
       }
 
       boolean entranceIsValid = manager.getJoinLocation() != null;
 
       if (!entranceIsValid) {
-        player.sendMessage("§cA entrada do evento Guerreiro não foi setada!");
+        player.sendMessage(LanguageRegistry.getDefined().getUndefinedJoin());
         return false;
       }
 
@@ -233,23 +246,23 @@ public class WarriorCommand implements CommandExecutor {
               eventStatus == EventStatus.WAITING || eventStatus == EventStatus.STARTED || eventStatus == EventStatus.DEATHMATCH;
 
       if (alreadyStarted) {
-        player.sendMessage("§cA entrada para o evento Guerreiro já fechou!");
+        player.sendMessage(LanguageRegistry.getDefined().getClosedJoin());
         return false;
       }
 
       if (manager.getParticipants().contains(player)) {
-        player.sendMessage("§cVocê está participando do evento Guerreiro!");
+        player.sendMessage(LanguageRegistry.getDefined().getAlreadyJoin());
         return false;
       }
 
       if(Bukkit.getVersion().toString().contains("1.8")) {
         if (API.getCreated().getFreeSlots(player) != 36 || API.getCreated().getArmor(player) != 0) {
-          player.sendMessage("§cEsvazie o inventário para entrar no evento!");
+          player.sendMessage(LanguageRegistry.getDefined().getClearInventory());
           return false;
         }
       } else {
         if (API.getCreated().getFreeSlots(player) != 41 || API.getCreated().getArmor(player) != 0) {
-          player.sendMessage("§cEsvazie o inventário para entrar no evento!");
+          player.sendMessage(LanguageRegistry.getDefined().getClearInventory());
           return false;
         }
       }
@@ -270,7 +283,7 @@ public class WarriorCommand implements CommandExecutor {
       player.teleport(manager.getJoinLocation());
       player.setMetadata("warriorKills", new FixedMetadataValue(WarriorEngine.getInstance(), 0));
       API.getCreated().equipPlayer(player);
-      player.sendMessage("§aVocê entrou no evento Guerreiro!");
+      player.sendMessage(LanguageRegistry.getDefined().getSuccessJoin());
       return true;
     }
 
@@ -279,11 +292,11 @@ public class WarriorCommand implements CommandExecutor {
               sender,
               () -> {
                 if (args.length > 1) {
-                  sender.sendMessage("§cUse /guerreiro resetkit");
+                  sender.sendMessage(LanguageRegistry.getDefined().getResetkitUsage());
                   return;
                 }
                 KitManager.get().resetKit();
-                sender.sendMessage("§aVocê redefiniu o kit do evento Guerreiro!");
+                sender.sendMessage(LanguageRegistry.getDefined().getSuccessResetkit());
                 return;
               },
               language.getNoPermission());
@@ -295,12 +308,12 @@ public class WarriorCommand implements CommandExecutor {
       if(!(sender instanceof Player)) return false;
       Player player = (Player) sender;
       if (eventStatus == EventStatus.OFF) {
-        player.sendMessage("§cO evento Guerreiro não está acontecendo!");
+        player.sendMessage(LanguageRegistry.getDefined().getNotStarted());
         return false;
       }
 
       if (!manager.getParticipants().contains(player)) {
-        player.sendMessage("§cVocê não está participando do evento Guerreiro!");
+        player.sendMessage(LanguageRegistry.getDefined().getNotJoined());
         return false;
       }
 
@@ -318,15 +331,17 @@ public class WarriorCommand implements CommandExecutor {
       if (eventStatus == EventStatus.STARTED || eventStatus == EventStatus.DEATHMATCH) {
         EventManager.getCreated().verifyLastDuel();
       }
-      player.sendMessage("§aVocê saiu do evento Guerreiro!");
+      player.sendMessage(LanguageRegistry.getDefined().getSuccessLeave());
       return true;
     }
 
     int participantsSize = manager.getParticipants().size();
     String formattedEventStatus =
             eventStatus == EventStatus.OFF
-                    ? "§cNão acontecendo"
-                    : eventStatus == EventStatus.STARTED ? "§aAcontecendo" : eventStatus == EventStatus.DEATHMATCH ? "§4DeathMatch" : "§eIniciando...";
+                    ? LanguageRegistry.getDefined().getInfoNotStarted()
+                    : eventStatus == EventStatus.STARTED ? LanguageRegistry.getDefined().getInfoStarted()
+                    : eventStatus == EventStatus.DEATHMATCH ? LanguageRegistry.getDefined().getInfoDeathmatch()
+                    : LanguageRegistry.getDefined().getInfoStarting();
 
     // Subcommand: status
     if (action.equalsIgnoreCase("status") || action.equalsIgnoreCase("info")) {
@@ -351,24 +366,24 @@ public class WarriorCommand implements CommandExecutor {
       Player player = (Player) sender;
       String message =
               eventStatus == EventStatus.OFF
-                      ? "§cO evento Guerreiro não está acontecendo!"
+                      ? LanguageRegistry.getDefined().getNotStarted()
                       : eventStatus == EventStatus.STARTED || eventStatus == EventStatus.DEATHMATCH
-                      ? "§cAguarde enquanto estamos te enviando para o camarote!"
-                      : "§cAguarde enquanto o evento Guerreiro inicia!";
+                      ? LanguageRegistry.getDefined().getWaitBox()
+                      : LanguageRegistry.getDefined().getWaitStarting();
 
       if (manager.getParticipants().contains(player)) {
-        player.sendMessage("§cVocê já está participando do evento Guerreiro!");
+        player.sendMessage(LanguageRegistry.getDefined().getAlreadyJoin());
         return false;
       }
 
       if(Bukkit.getVersion().toString().contains("1.8")) {
         if (API.getCreated().getFreeSlots(player) != 36 || API.getCreated().getArmor(player) != 0) {
-          player.sendMessage("§cEsvazie o inventário para entrar no camarote evento!");
+          player.sendMessage(LanguageRegistry.getDefined().getClearInventory());
           return false;
         }
       } else {
         if (API.getCreated().getFreeSlots(player) != 41 || API.getCreated().getArmor(player) != 0) {
-          player.sendMessage("§cEsvazie o inventário para entrar no camarote evento!");
+          player.sendMessage(LanguageRegistry.getDefined().getClearInventory());
           return false;
         }
       }
@@ -381,20 +396,24 @@ public class WarriorCommand implements CommandExecutor {
     // Subcommand: top
     if ("top".equals(action)) {
       if (args.length < 2) {
-        sender.sendMessage("§cUse /guerreiro top (vitorias/abates)");
+        sender.sendMessage(LanguageRegistry.getDefined().getTopUsage());
         return false;
       }
 
       String desiredTop = args[1].toLowerCase();
 
-      if (!desiredTop.equals("vitorias") && !desiredTop.equals("abates")) {
-        sender.sendMessage("§cUse /guerreiro top (vitorias/abates)");
+
+      if (!desiredTop.equals("vitorias") && !desiredTop.equals("abates") && !desiredTop.equals("wins") && !desiredTop.equals("kills")) {
+        sender.sendMessage(LanguageRegistry.getDefined().getTopUsage());
         return false;
       }
-      String desiredTopFormat = desiredTop.equals("vitorias") ? "Vitórias" : "Abates";
+      String desiredTopFormat = desiredTop.equals("vitorias") ? "Vitórias"
+              : desiredTop.equals("wins") ? "Wins"
+              : desiredTop.equals("kills") ? "Kills"
+              : "Abates";
 
       AtomicInteger index = new AtomicInteger(1);
-      List<String> fetchedRanking = API.getCreated().fetchRanking(desiredTop);
+      List<String> fetchedRanking = API.getCreated().fetchRanking(desiredTop == "abates" ? "kills" : desiredTop);
       language.getTopHeader()
               .forEach(string -> sender.sendMessage(string.replace("{type}", desiredTopFormat)));
       fetchedRanking.forEach(

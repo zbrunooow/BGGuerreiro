@@ -23,7 +23,7 @@ public class LanguageRegistry {
   }
 
   public static void saveDefaults() {
-    String[] languages = {"en", "es", "pt-br", "ru", "zh"};
+    String[] languages = {"en", "es", "pt-br"};
 
     for (String language : languages) {
       InputStream resourceAsStream =
@@ -110,6 +110,9 @@ public class LanguageRegistry {
             }
 
             @Override
+            public String getConfigReloaded() { return getFile().getString("config-reloaded").replace("&", "§"); }
+
+            @Override
             public String getBoxLeave() {
               return getFile().getString("box-leave").replace("&", "§");
             }
@@ -120,6 +123,161 @@ public class LanguageRegistry {
             @Override
             public String getDeathWithoutReason() {
               return getFile().getString("kill-without-player").replace("&", "§");
+            }
+
+            @Override
+            public String getAlreadyJoin() {
+              return getFile().getString("undefined.already-joined").replace("&", "§");
+            }
+
+            @Override
+            public String getNotJoined() {
+              return getFile().getString("undefined.not-joined").replace("&", "§");
+            }
+
+            @Override
+            public String getClearInventory() {
+              return getFile().getString("undefined.clear-inventory").replace("&", "§");
+            }
+
+            @Override
+            public String getNotStarted() {
+                return getFile().getString("undefined.not-started").replace("&", "§");
+            }
+
+            @Override
+            public String getAlreadyStarted() {
+                return getFile().getString("undefined.already-started").replace("&", "§");
+            }
+
+            @Override
+            public String getAlreadyDeathmatch() {
+                return getFile().getString("undefined.already-deathmmatch").replace("&", "§");
+            }
+
+            @Override
+            public String getClosedJoin() {
+                return getFile().getString("undefined.closed-join").replace("&", "§");
+            }
+
+            @Override
+            public String getCantStartDeathmatch() {
+                return getFile().getString("undefined.cant-start-deathmatch").replace("&", "§");
+            }
+
+            @Override
+            public String getUndefinedJoin() {
+                return getFile().getString("undefined.join").replace("&", "§");
+            }
+
+            @Override
+            public String getUndefinedExit() {
+                return getFile().getString("undefined.exit").replace("&", "§");
+            }
+
+            @Override
+            public String getUndefinedDeathmatch() {
+                return getFile().getString("undefined.deathmatch").replace("&", "§");
+            }
+
+            @Override
+            public String getUndefinedKit() {
+                return getFile().getString("undefined.kit").replace("&", "§");
+            }
+
+            @Override
+            public String getSetUsage() {
+                return getFile().getString("correct-usage.set").replace("&", "§");
+            }
+
+            @Override
+            public String getForcestartUsage() {
+                return getFile().getString("correct-usage.forcestart").replace("&", "§");
+            }
+
+            @Override
+            public String getForcestopUsage() {
+                return getFile().getString("correct-usage.forcestop").replace("&", "§");
+            }
+
+            @Override
+            public String getForceDeathmatchUsage() {
+                return getFile().getString("correct-usage.forcedm").replace("&", "§");
+            }
+
+            @Override
+            public String getResetkitUsage() {
+                return getFile().getString("correct-usage.resetkit").replace("&", "§");
+            }
+
+            @Override
+            public String getTopUsage() {
+                return getFile().getString("correct-usage.top").replace("&", "§");
+            }
+
+            @Override
+            public String getSuccessJoin() {
+                return getFile().getString("success.joined").replace("&", "§");
+            }
+
+            @Override
+            public String getSuccessLeave() {
+                return getFile().getString("success.leave").replace("&", "§");
+            }
+
+            @Override
+            public String getSuccessSetJoin() {
+                return getFile().getString("success.set-join").replace("&", "§");
+            }
+
+            @Override
+            public String getSuccessSetLeave() {
+                return getFile().getString("success.set-exit").replace("&", "§");
+            }
+
+            @Override
+            public String getSuccessSetKit() {
+                return getFile().getString("success.set-kit").replace("&", "§");
+            }
+
+            @Override
+            public String getSuccessSetDeathmatch() {
+                return getFile().getString("success.set-deathmatch").replace("&", "§");
+            }
+
+            @Override
+            public String getSuccessResetkit() {
+                return getFile().getString("success.resetkit").replace("&", "§");
+            }
+
+            @Override
+            public String getWaitBox() {
+                return getFile().getString("wait.box").replace("&", "§");
+            }
+
+            @Override
+            public String getWaitStarting() {
+                return getFile().getString("wait.event-starting").replace("&", "§");
+            }
+
+            @Override
+            public String getInfoStarting() {
+                return getFile().getString("info.starting").replace("&", "§");
+            }
+
+            @Override
+            public String getInfoStarted() {
+                return getFile().getString("info.started").replace("&", "§");
+            }
+
+            @Override
+            public String getInfoNotStarted() {
+                return getFile().getString("info.not-started").replace("&", "§");
+            }
+
+            @Override
+            public String getInfoDeathmatch() {
+                return getFile().getString("info.deathmatch").replace("&", "§");
             }
 
             @Override

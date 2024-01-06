@@ -1,78 +1,122 @@
-no-permission: "&cYou do not have permission to execute this command!"
-kill: "&c[KILL]&7: &fPlayer &c{died} &fwas killed by &a{killer} &7({kills})&a!"
-survivors-left: "&7Remaining &f{remaining} players &7in the Warrior event&7!"
-status-actionbar: "&7Status: {status} &f| &7Kills: &e{kills} &f| &7Time: &e{time}" # This action bar is visible until the event reaches 10 seconds of enabled PVP, then it switches to action bar 2 below.
-info-actionbar: "&7Participants: &e{players} &f| &7Kills: &e{kills} &f| &7Time: &e{time}"
-kill-without-player: "&c[KILL]&7: &fPlayer &c{died} &fwas eliminated from the event!" # Death by lava/(/kill)/etc...
-box-join: "&aYou entered the event's spectator box!"
-box-leave: "&aYou left the event's spectator box!"
+no-permission: '&cYou don''t have permission to execute this command!'
+kill: '&c[KILL]&7: &fPlayer &c{died} &fwas killed by &a{killer} &7({kills})&a!'
+survivors-left: '&7There are &f{remaining} players &7left in the Warrior event&7!'
+status-actionbar: '&7Status: {status} &f| &7Kills: &e{kills} &f| &7Time: &e{time}'
+info-actionbar: '&7Participants: &e{players} &f| &7Kills: &e{kills} &f| &7Time: &e{time}'
+kill-without-player: '&c[KILL]&7: &fPlayer &c{died} &fwas eliminated from the event!'
+box-join: '&aYou have entered the Warrior event box!'
+box-leave: '&aYou have left the Warrior event box!'
+config-reloaded: '&aPlugin configuration reloaded at {time}!'
 you-won:
-  - "&aYou won the Warrior event!"
-  - "&aCongratulations on your performance!"
-  - "&aYou will be teleported to the exit in &f{time} seconds!"
+  - '&aYou won the Warrior event!'
+  - '&aCongratulations on your performance!'
+  - '&aYou will be teleported to the exit in &f{time} seconds!'
 ranking:
-  limit: 5 # Set the limit of players to appear in the top
   header:
-    - ""
-    - "&aWarrior &f- &7Top {type}:" # This message is above the top victories/kills
-  value: "&2&l[{position}] &a- &f{nickname} &a- &f{amount} &2{type}"
+    - ''
+    - '&aWarrior &f- &7Top {type}:'
+  value: '&2&l[{position}] &a- &f{nick} &a- &f{amount} &2{type}'
   footer:
-    - ""
+    - ''
 general:
-  - "&aWarrior &f- &7General Commands"
-  - ""
-  - "&a/warrior join &f- &7Join the event."
-  - "&a/warrior status &f- &7View the event's status."
-  - "&a/warrior top (kills/victories) &f- &7View event rankings."
-  - "&a/warrior set (entry/exit/deathmatch/kit) &f- &7Set event positions/items."
-  - "&a/warrior forcestart &f- &7Force start the event."
-  - "&a/warrior forcestop &f- &7Force stop the event."
-  - "&a/warrior forcedm &f- &7Force start DeathMatch."
-  - "&a/warrior resetkit &f- &7Reset the event's kit."
+  - '&aWarrior &f- &7General Commands'
+  - ''
+  - '&a/warrior join &f- &7Enter the event.'
+  - '&a/warrior leave &f- &7Leave the event.'
+  - '&a/warrior status &f- &7View the event status.'
+  - '&a/warrior top (wins/kills) &f- &7View event rankings.'
+  - '&a/warrior set (join/exit/deathmatch/kit) &f- &7Set event positions/items.'
+  - '&a/warrior forcestart &f- &7Start the event.'
+  - '&a/warrior forcestop &f- &7Force stop the event.'
+  - '&a/warrior forcedm &f- &7Force start the DeathMatch.'
+  - '&a/warrior resetkit &f- &7Reset the event kit.'
 starting:
-  - ""
-  - "&aAutomatic Warrior event starting!"
-  - "&aTo participate, type: &f/warrior join"
-  - "&aPrize: &2${value} &aand tag {tag}"
-  - "&aTime remaining: &f{seconds} seconds&a!"
-  - "&aParticipants: &f{players}"
-  - ""
+  - ''
+  - '&aAutomatic Warrior event starting!'
+  - '&aTo participate, type: &f/warrior join'
+  - '&aPrize: &2${prize} &a and tag {tag}'
+  - '&aTime remaining: &f{seconds} seconds&a!'
+  - '&aParticipating players: &f{players}'
+  - ''
 waiting:
-  - ""
-  - "&aAutomatic Warrior event starting!"
-  - "&aInitial time for players to prepare!"
-  - "&aTime remaining: &f{time} seconds!"
-  - ""
+  - ''
+  - '&aAutomatic Warrior event starting!'
+  - '&aInitial time for players to prepare!'
+  - '&aTime remaining: &f{time} seconds!'
+  - ''
 cancelled:
-  - ""
-  - "&cThe Warrior event has been canceled!"
-  - "&cAll players have been teleported to the exit."
-  - ""
+  - ''
+  - '&cThe Warrior event has been canceled!'
+  - '&cAll players have been teleported to the exit.'
+  - ''
 started:
-  - ""
-  - "&aThe event has started!"
-  - "&aPvP has been activated!"
-  - ""
+  - ''
+  - '&aThe event has started!'
+  - '&aThe &cPvP &ahas been activated!'
+  - ''
 finalized:
-  - ""
-  - "&aWarrior event has concluded!"
-  - "&aWinner: &f{winner} &awith &f{kills} kill(s)!"
-  - "&aPrize: &2${value} &aand tag {tag}"
-  - "&aEvent duration: &f{duration}&a."
-  - ""
-deathmatch-coming: # This message appears twice, one 2 minutes before DM starts and another 1 minute before.
-  - ""
-  - "&aDeathMatch will begin in &f{minutes} minutes&a!"
-  - ""
+  - ''
+  - '&aWarrior event has ended!'
+  - '&aWinner: &f{winner} &awith &f{kills} kill(s)!'
+  - '&aPrize: &2${prize} &a and tag {tag}'
+  - '&aEvent duration: &f{duration}&a.'
+  - ''
+deathmatch-coming:
+  - ''
+  - '&aThe &cDeathMatch &awill start in &f{minutes} minutes&a!'
+  - ''
 deathmatch-started:
-  - ""
-  - "&aDeathMatch has started, PvP will be active in &c{seconds} &aseconds!"
-  - "&aAll players have been teleported to the final arena."
-  - ""
+  - ''
+  - '&aThe &cDeathMatch &ahas started, PvP will be active in &c{seconds} &aseconds!'
+  - '&aAll players have been teleported to the final arena.'
+  - ''
+deathmatch-reactivating-pvp: '&aPvP will be reactivated in &f{seconds} &aseconds!'
+deathmatch-pvp-enabled:
+  - ''
+  - '&aThe &cPvP &ahas been reactivated, good luck!'
+  - '&aThe &cPvP &ahas been reactivated, good luck!'
+  - ''
 status:
-  - ""
-  - "&aWarrior Event"
-  - "&aStatus: &f{status}"
-  - "&aParticipants: &f{players}"
-  - "&aTime: &f{time}"
-  - ""
+  - ''
+  - '&aWarrior Event'
+  - '&aStatus: &f{status}'
+  - '&aParticipants: &f{players}'
+  - '&aTime: &f{time}'
+  - ''
+undefined:
+  already-joined: '&cYou''re already participating in the Warrior event!'
+  not-joined: '&cYou''re not participating in the Warrior event!'
+  clear-inventory: '&cYou need to clear your inventory to participate in the Warrior
+    event!'
+  not-started: '&cThe Warrior event is not happening!'
+  already-started: '&cThe Warrior event has already started!'
+  already-deathmatch: '&cThe Warrior event is already in DeathMatch mode!'
+  closed-join: '&cEntry to the Warrior event is already closed!'
+  cant-start-deathmatch: '&cYou can''t start the DeathMatch now!'
+  join: '&aThe entrance for the Warrior event hasn''t been set!'
+  exit: '&cThe exit for the Warrior event hasn''t been set!'
+  deathmatch: '&cThe DeathMatch for the Warrior event hasn''t been set!'
+  kit: '&cThe kit for the Warrior event hasn''t been defined!'
+correct-usage:
+  set: '&cUse /warrior set (join/exit/deathmatch/kit)'
+  forcestart: '&cUse /warrior forcestart'
+  forcestop: '&cUse /warrior forcestop'
+  forcedm: '&cUse /warrior forcedm'
+  resetkit: '&cUse /warrior resetkit'
+  top: '&cUse /warrior top (wins/kills)'
+success:
+  joined: '&aYou joined the Warrior event!'
+  leave: '&aYou left the Warrior event!'
+  set-join: '&aThe entrance for the Warrior event was successfully set!'
+  set-exit: '&aThe exit for the Warrior event was successfully set!'
+  set-deathmatch: '&aThe DeathMatch for the Warrior event was successfully set!'
+  set-kit: '&aThe kit for the Warrior event was successfully set!'
+  resetkit: '&aThe kit for the Warrior event was successfully reset!'
+wait:
+  box: '&cPlease wait while we''re sending you to the box!'
+  event-starting: '&cPlease wait while the Warrior event starts!'
+info:
+  starting: '&eStarting'
+  started: '&aOngoing'
+  not-started: '&cNot ongoing'
+  deathmatch: '&4DeathMatch'

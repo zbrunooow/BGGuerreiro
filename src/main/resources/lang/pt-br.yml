@@ -1,83 +1,122 @@
-no-permission: "&cVocê não tem permissão para executar este comando!"
-kill: "&c[ABATE]&7: &fO jogador &c{died} &ffoi morto por &a{killer} &7({kills})&a!"
-survivors-left: "&7Restam &f{remaining} jogadores &7no evento &aGuerreiro&7!"
-status-actionbar: "&7Status: {status} &f| &7Abates: &e{kills} &f| &7Tempo: &e{time}" # Essa action bar fica visível até o evento completar 10 segundos de PVP habilitado, aí troca pra action bar 2, abaixo.
-info-actionbar: "&7Participantes: &e{players} &f| &7Abates: &e{kills} &f| &7Tempo: &e{time}"
-kill-without-player: "&c[ABATE]&7: &fO jogador &c{died} &ffoi eliminado do evento!" # Morte para lava/(/kill)/etc...
-box-join: "&aVocê entrou no camarote do evento Guerreiro!"
-box-leave: "&aVocê saiu do camarote do evento Guerreiro!"
+no-permission: '&cVocê não tem permissão para executar este comando!'
+kill: '&c[ABATE]&7: &fO jogador &c{died} &ffoi morto por &a{killer} &7({kills})&a!'
+survivors-left: '&7Restam &f{remaining} jogadores &7no evento &aGuerreiro&7!'
+status-actionbar: '&7Status: {status} &f| &7Abates: &e{kills} &f| &7Tempo: &e{time}'
+info-actionbar: '&7Participantes: &e{players} &f| &7Abates: &e{kills} &f| &7Tempo: &e{time}'
+kill-without-player: '&c[ABATE]&7: &fO jogador &c{died} &ffoi eliminado do evento!'
+box-join: '&aVocê entrou no camarote do evento Guerreiro!'
+box-leave: '&aVocê saiu do camarote do evento Guerreiro!'
+config-reloaded: '&aC configuração do plugin foi recarragada em {time}!'
 you-won:
-  - "&aVocê venceu o evento Guerreiro!"
-  - "&aParabéns pelo seu desempenho!"
-  - "&aVocê será teleportado para a saída em &f{time} segundos!"
+  - '&aVocê venceu o evento Guerreiro!'
+  - '&aParabéns pelo seu desempenho!'
+  - '&aVocê será teleportado para a saída em &f{time} segundos!'
 ranking:
   header:
-    - ""
-    - "&aGuerreiro &f- &7Top {type}:" # Essa mensagem fica acima do top vitorias/kills
-  value: "&2&l[{position}] &a- &f{nick} &a- &f{amount} &2{type}"
+    - ''
+    - '&aGuerreiro &f- &7Top {type}:'
+  value: '&2&l[{position}] &a- &f{nick} &a- &f{amount} &2{type}'
   footer:
-    - ""
+    - ''
 general:
-  - "&aGuerreiro &f- &7Comandos Gerais"
-  - ""
-  - "&a/guerreiro entrar &f- &7Entra no evento."
-  - "&a/guerreiro status &f- &7Visualiza o status do evento."
-  - "&a/guerreiro top (kills/vitorias) &f- &7Visualiza os rankings do evento."
-  - "&a/guerreiro set (entrada/saida/deathmatch/kit) &f- &7Seta as posições/itens do evento."
-  - "&a/guerreiro forcestart &f- &7Inicia o evento."
-  - "&a/guerreiro forcestop &f- &7Força a parada do evento."
-  - "&a/guerreiro forcedm &f- &7Força o início do DeathMatch."
-  - "&a/guerreiro resetkit &f- &7Redefine o kit do evento."
+  - '&aGuerreiro &f- &7Comandos Gerais'
+  - ''
+  - '&a/guerreiro entrar &f- &7Entra no evento.'
+  - '&a/guerreiro saor &f- &7Sai do evento.'
+  - '&a/guerreiro status &f- &7Visualiza o status do evento.'
+  - '&a/guerreiro top (vitorias/abates) &f- &7Visualiza os rankings do evento.'
+  - '&a/guerreiro set (entrada/saida/deathmatch/kit) &f- &7Seta as posições/itens do evento.'
+  - '&a/guerreiro forcestart &f- &7Inicia o evento.'
+  - '&a/guerreiro forcestop &f- &7Força a parada do evento.'
+  - '&a/guerreiro forcedm &f- &7Força o início do DeathMatch.'
+  - '&a/guerreiro resetkit &f- &7Redefine o kit do evento.'
 starting:
-  - ""
-  - "&aEvento Guerreiro automático começando!"
-  - "&aPara participar digite: &f/guerreiro participar"
-  - "&aPrêmio: &2${prize} &ae tag {tag}"
-  - "&aTempo restante: &f{seconds} segundos&a!"
-  - "&aJogadores participando: &f{players}"
-  - ""
+  - ''
+  - '&aEvento Guerreiro automático começando!'
+  - '&aPara participar digite: &f/guerreiro participar'
+  - '&aPrêmio: &2${prize} &ae tag {tag}'
+  - '&aTempo restante: &f{seconds} segundos&a!'
+  - '&aJogadores participando: &f{players}'
+  - ''
 waiting:
-  - ""
-  - "&aEvento Guerreiro automático começando!"
-  - "&aTempo inicial para que os jogadores se preparem!"
-  - "&aTempo restante: &f{time} segundos!"
-  - ""
+  - ''
+  - '&aEvento Guerreiro automático começando!'
+  - '&aTempo inicial para que os jogadores se preparem!'
+  - '&aTempo restante: &f{time} segundos!'
+  - ''
 cancelled:
-  - ""
-  - "&cO Evento Guerreiro foi cancelado!"
-  - "&cTodos os jogadores foram teleportados a saída."
-  - ""
+  - ''
+  - '&cO Evento Guerreiro foi cancelado!'
+  - '&cTodos os jogadores foram teleportados a saída.'
+  - ''
 started:
-  - ""
-  - "&aO evento começou!"
-  - "&aO &cPvP &afoi ativado!"
-  - ""
+  - ''
+  - '&aO evento começou!'
+  - '&aO &cPvP &afoi ativado!'
+  - ''
 finalized:
-  - ""
-  - "&aEvento Guerreiro foi finalizado!"
-  - "&aVencedor: &f{winner} &acom &f{kills} abate(s)!"
-  - "&aPrêmio: &2${prize} &ae tag {tag}"
-  - "&aDuração do evento: &f{duration}&a."
-  - ""
-deathmatch-coming: # essa mensagem aparece duas vezes, uma 2 minutos antes do DM começar e outra 1 minuto antes.
-  - ""
-  - "&aO &cDeathMatch &avai começar em &f{minutes} minutos&a!"
-  - ""
+  - ''
+  - '&aEvento Guerreiro foi finalizado!'
+  - '&aVencedor: &f{winner} &acom &f{kills} abate(s)!'
+  - '&aPrêmio: &2${prize} &ae tag {tag}'
+  - '&aDuração do evento: &f{duration}&a.'
+  - ''
+deathmatch-coming:
+  - ''
+  - '&aO &cDeathMatch &avai começar em &f{minutes} minutos&a!'
+  - ''
 deathmatch-started:
-  - ""
-  - "&aO &cDeathMatch &acomeçou, o pvp será ativo em &c{seconds} &asegundos!"
-  - "&aTodos os jogadores foram teleportados para a arena final."
-  - ""
-deathmatch-reactivating-pvp: "&aO pvp será reativado em &f{seconds} &asegundos!"
+  - ''
+  - '&aO &cDeathMatch &acomeçou, o pvp será ativo em &c{seconds} &asegundos!'
+  - '&aTodos os jogadores foram teleportados para a arena final.'
+  - ''
+deathmatch-reactivating-pvp: '&aO pvp será reativado em &f{seconds} &asegundos!'
 deathmatch-pvp-enabled:
-  - ""
-  - "&aO &cpvp &afoi reativado, boa sorte!"
-  - "&aO &cpvp &afoi reativado, boa sorte!"
-  - ""
+  - ''
+  - '&aO &cpvp &afoi reativado, boa sorte!'
+  - '&aO &cpvp &afoi reativado, boa sorte!'
+  - ''
 status:
-  - ""
-  - "&aEvento Guerreiro"
-  - "&aStatus: &f{status}"
-  - "&aParticipantes: &f{players}"
-  - "&aTempo: &f{time}"
-  - ""
+  - ''
+  - '&aEvento Guerreiro'
+  - '&aStatus: &f{status}'
+  - '&aParticipantes: &f{players}'
+  - '&aTempo: &f{time}'
+  - ''
+undefined:
+  already-joined: '&cVocê já está participando do evento Guerreiro!'
+  not-joined: '&cVocê não está participando do evento Guerreiro!'
+  clear-inventory: '&cVocê precisa esvaziar seu inventario para participar do evento
+    Guerreiro!'
+  not-started: '&cO evento Guerreiro não está acontecendo!'
+  already-started: '&cO evento Guerreiro já está acontecendo!'
+  already-deathmatch: '&cO evento Guerreiro já está no DeathMatch!'
+  closed-join: '&cA entrada para o evento Guerreiro já fechou!'
+  cant-start-deathmatch: '&cVocê não pode iniciar o DeathMatch agora!'
+  join: '&aA entrada do evento Guerreiro não foi setada!'
+  exit: '&cA saída do evento Guerreiro não foi setada!'
+  deathmatch: '&cO DeathMatch do evento Guerreiro não foi setado!'
+  kit: '&cO kit do evento Guerreiro não foi definido!'
+correct-usage:
+  set: '&cUse /guerreiro set (entrada/saida/deathmatch/kit)'
+  forcestart: '&cUse /guerreiro forcestart'
+  forcestop: '&cUse /guerreiro forcestop'
+  forcedm: '&cUse /guerreiro forcedm'
+  resetkit: '&cUse /guerreiro resetkit'
+  top: '&cUse /guerreiro top (vitorias/abates)'
+success:
+  joined: '&aVocê entrou no evento Guerreiro!'
+  leave: '&aVocê saiu do evento Guerreiro!'
+  set-join: '&aA entrada do evento Guerreiro foi setada com sucesso!'
+  set-exit: '&aA saída do evento Guerreiro foi setada com sucesso!'
+  set-deathmatch: '&aO deathmatch do evento Guerreiro foi setado com sucesso!'
+  set-kit: '&aO kit do evento Guerreiro foi setado com sucesso!'
+  resetkit: '&aO kit do evento Guerreiro foi redefinido com sucesso!'
+wait:
+  box: '&cAguarde enquanto estamos te enviando para o camarote!'
+  event-starting: '&cAguarde enquanto o evento Guerreiro inicia!'
+info:
+  starting: '&eIniciando'
+  started: '&aAcontecendo'
+  not-started: '&cNão acontecendo'
+  deathmatch: '&4DeathMatch'

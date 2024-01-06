@@ -1,78 +1,122 @@
-no-permission: "&cNo tienes permiso para ejecutar este comando."
-kill: "&c[MUERTE]&7: &fEl jugador &c{died} &ffue asesinado por &a{killer} &7({kills})&a."
-survivors-left: "&7Quedan &f{remaining} jugadores &7en el evento Guerrero&7."
-status-actionbar: "&7Estado: {status} &f| &7Asesinatos: &e{kills} &f| &7Tiempo: &e{time}" # Esta barra de acción es visible hasta que el evento alcanza 10 segundos de PVP habilitado, luego cambia a la barra de acción 2 que está a continuación.
-info-actionbar: "&7Participantes: &e{players} &f| &7Asesinatos: &e{kills} &f| &7Tiempo: &e{time}"
-kill-without-player: "&c[MUERTE]&7: &fEl jugador &c{died} &ffue eliminado del evento." # Muerte por lava/(/kill)/etc...
-box-join: "&aHas entrado en la zona de espectadores del evento Guerrero."
-box-leave: "&aHas salido de la zona de espectadores del evento Guerrero."
+no-permission: '&c¡No tienes permiso para ejecutar este comando!'
+kill: '&c[MUERTE]&7: &fEl jugador &c{died} &ffa sido asesinado por &a{killer} &7({kills})&a!'
+survivors-left: '&7Quedan &f{remaining} jugadores &7en el evento Guerrero&7!'
+status-actionbar: '&7Estado: {status} &f| &7Muertes: &e{kills} &f| &7Tiempo: &e{time}'
+info-actionbar: '&7Participantes: &e{players} &f| &7Muertes: &e{kills} &f| &7Tiempo: &e{time}'
+kill-without-player: '&c[MUERTE]&7: &fEl jugador &c{died} &ffa sido eliminado del evento!'
+box-join: '&a¡Has entrado en la casilla del evento Guerrero!'
+box-leave: '&a¡Has salido de la casilla del evento Guerrero!'
+config-reloaded: '&a¡La configuración del complemento se recargó en {time}!'
 you-won:
-  - "&aGanaste el evento Guerrero."
-  - "&aFelicidades por tu desempeño."
-  - "&aSerás teleportado a la salida en &f{time} segundos."
+  - '&a¡Has ganado el evento Guerrero!'
+  - '&a¡Felicidades por tu desempeño!'
+  - '&a¡Serás teleportado a la salida en &f{time} segundos!'
 ranking:
-  limit: 5 # Establece el límite de jugadores que aparecerán en top
   header:
-    - ""
-    - "&aGuerrero &f- &7Top {type}:" # Este mensaje está sobre las mejores victorias/asesinatos
-  value: "&2&l[{position}] &a- &f{nickname} &a- &f{amount} &2{type}"
+    - ''
+    - '&aGuerrero &f- &7Top {type}:'
+  value: '&2&l[{position}] &a- &f{nick} &a- &f{amount} &2{type}'
   footer:
-    - ""
+    - ''
 general:
-  - "&aGuerrero &f- &7Comandos Generales"
-  - ""
-  - "&a/guerrero join &f- &7Únete al evento."
-  - "&a/guerrero status &f- &7Ver el estado del evento."
-  - "&a/guerrero top (kills/victorias) &f- &7Ver las clasificaciones del evento."
-  - "&a/guerrero set (entrada/salida/deathmatch/kit) &f- &7Establecer posiciones/elementos del evento."
-  - "&a/guerrero forcestart &f- &7Iniciar forzosamente el evento."
-  - "&a/guerrero forcestop &f- &7Detener forzosamente el evento."
-  - "&a/guerrero forcedm &f- &7Forzar inicio de DeathMatch."
-  - "&a/guerrero resetkit &f- &7Restablecer el kit del evento."
+  - '&aGuerrero &f- &7Comandos Generales'
+  - ''
+  - '&a/guerrero entrar &f- &7Entra en el evento.'
+  - '&a/guerrero leave &f- &7Sai del evento.'
+  - '&a/guerrero status &f- &7Ver el estado del evento.'
+  - '&a/guerrero top (wins/kills) &f- &7Ver las clasificaciones del evento.'
+  - '&a/guerrero set (entrada/exit/deathmatch/kit) &f- &7Establecer posiciones/items del evento.'
+  - '&a/guerrero forcestart &f- &7Iniciar el evento.'
+  - '&a/guerrero forcestop &f- &7Forzar la detención del evento.'
+  - '&a/guerrero forcedm &f- &7Forzar el inicio del DeathMatch.'
+  - '&a/guerrero resetkit &f- &7Restablecer el kit del evento.'
 starting:
-  - ""
-  - "&a¡Comienzo automático del evento Guerrero!"
-  - "&aPara participar, escribe: &f/guerrero join"
-  - "&aPremio: &2${prize} &ay etiqueta {tag}"
-  - "&aTiempo restante: &f{seconds} segundos&a."
-  - "&aParticipantes: &f{players}"
-  - ""
+  - ''
+  - '&a¡Comienza automáticamente el evento Guerrero!'
+  - '&aPara participar, escribe: &f/guerrero entrar'
+  - '&aPremio: &2${prize} &ay etiqueta {tag}'
+  - '&aTiempo restante: &f{seconds} segundos&a!'
+  - '&aJugadores participantes: &f{players}'
+  - ''
 waiting:
-  - ""
-  - "&a¡Comienzo automático del evento Guerrero!"
-  - "&aTiempo inicial para que los jugadores se preparen."
-  - "&aTiempo restante: &f{time} segundos."
-  - ""
+  - ''
+  - '&a¡Comienza automáticamente el evento Guerrero!'
+  - '&aTiempo inicial para que los jugadores se preparen!'
+  - '&aTiempo restante: &f{time} segundos!'
+  - ''
 cancelled:
-  - ""
-  - "&cEl evento Guerrero ha sido cancelado."
-  - "&cTodos los jugadores han sido teleportados a la salida."
-  - ""
+  - ''
+  - '&c¡El evento Guerrero ha sido cancelado!'
+  - '&cTodos los jugadores han sido teletransportados a la salida.'
+  - ''
 started:
-  - ""
-  - "&a¡El evento ha comenzado!"
-  - "&aSe ha activado el PVP."
-  - ""
+  - ''
+  - '&a¡El evento ha comenzado!'
+  - '&a¡El &cPvP &aha sido activado!'
+  - ''
 finalized:
-  - ""
-  - "&a¡El evento Guerrero ha concluido!"
-  - "&aGanador: &f{winner} &acon &f{kills} asesinato(s)."
-  - "&aPremio: &2${prize} &ay etiqueta {tag}"
-  - "&aDuración del evento: &f{time}."
-  - ""
-deathmatch-coming: # Este mensaje aparece dos veces, una 2 minutos antes de que comience DM y otra 1 minuto antes.
-  - ""
-  - "&aDeathMatch comenzará en &f{minutes} minutos&a."
-  - ""
+  - ''
+  - '&a¡El evento Guerrero ha finalizado!'
+  - '&aGanador: &f{winner} &acon &f{kills} muerte(s)!'
+  - '&aPremio: &2${prize} &ay etiqueta {tag}'
+  - '&aDuración del evento: &f{duration}&a.'
+  - ''
+deathmatch-coming:
+  - ''
+  - '&a¡El &cDeathMatch &acomenzará en &f{minutes} minutos&a!'
+  - ''
 deathmatch-started:
-  - ""
-  - "&aDeathMatch ha comenzado, el PVP estará activo en &c{seconds} &asegundos."
-  - "&aTodos los jugadores han sido teleportados a la arena final."
-  - ""
+  - ''
+  - '&a¡El &cDeathMatch &aha comenzado, el PvP estará activo en &c{seconds} &asegundos!'
+  - '&aTodos los jugadores han sido teletransportados a la arena final.'
+  - ''
+deathmatch-reactivating-pvp: '&aEl PvP se reactivará en &f{seconds} &asegundos!'
+deathmatch-pvp-enabled:
+  - ''
+  - '&aEl &cPvP &aha sido reactivado, ¡buena suerte!'
+  - '&aEl &cPvP &aha sido reactivado, ¡buena suerte!'
+  - ''
 status:
-  - ""
-  - "&aEvento Guerrero"
-  - "&aEstado: &f{status}"
-  - "&aParticipantes: &f{players}"
-  - "&aTiempo: &f{time}"
-  - ""
+  - ''
+  - '&aEvento Guerrero'
+  - '&aEstado: &f{status}'
+  - '&aParticipantes: &f{players}'
+  - '&aTiempo: &f{time}'
+  - ''
+undefined:
+  already-joined: '&c¡Ya estás participando en el evento Guerrero!'
+  not-joined: '&c¡No estás participando en el evento Guerrero!'
+  clear-inventory: '&c¡Necesitas vaciar tu inventario para participar en el evento
+    Guerrero!'
+  not-started: '&c¡El evento Guerrero no está ocurriendo!'
+  already-started: '&c¡El evento Guerrero ya ha comenzado!'
+  already-deathmatch: '&c¡El evento Guerrero ya está en modo DeathMatch!'
+  closed-join: '&c¡La entrada al evento Guerrero ya está cerrada!'
+  cant-start-deathmatch: '&c¡No puedes iniciar el DeathMatch ahora!'
+  join: '&a¡La entrada para el evento Guerrero no ha sido establecida!'
+  exit: '&c¡La salida para el evento Guerrero no ha sido establecida!'
+  deathmatch: '&c¡El DeathMatch para el evento Guerrero no ha sido establecido!'
+  kit: '&c¡El kit para el evento Guerrero no ha sido definido!'
+correct-usage:
+  set: '&cUsa /guerrero set (entrada/exit/deathmatch/kit)'
+  forcestart: '&cUsa /guerrero forcestart'
+  forcestop: '&cUsa /guerrero forcestop'
+  forcedm: '&cUsa /guerrero forcedm'
+  resetkit: '&cUsa /guerrero resetkit'
+  top: '&cUsa /guerrero top (wins/kills)'
+success:
+  joined: '&a¡Te has unido al evento Guerrero!'
+  leave: '&a¡Has abandonado el evento Guerrero!'
+  set-join: '&aLa entrada para el evento Guerrero se estableció correctamente!'
+  set-exit: '&aLa salida para el evento Guerrero se estableció correctamente!'
+  set-deathmatch: '&aEl DeathMatch para el evento Guerrero se estableció correctamente!'
+  set-kit: '&aEl kit para el evento Guerrero se estableció correctamente!'
+  resetkit: '&aEl kit para el evento Guerrero se restableció correctamente!'
+wait:
+  box: '&c¡Espere mientras te estamos enviando a la casilla!'
+  event-starting: '&c¡Espere mientras el evento Guerrero comienza!'
+info:
+  starting: '&eComenzando'
+  started: '&aEn curso'
+  not-started: '&cNo en curso'
+  deathmatch: '&4DeathMatch'
