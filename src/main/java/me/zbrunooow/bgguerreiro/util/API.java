@@ -33,12 +33,15 @@ public class API {
       MySQL.get().openConnection();
       Connection conn = MySQL.get().getConnection();
 
-      String query =
-          "SELECT nick, vitorias FROM guerreiro_jogadores ORDER BY vitorias DESC LIMIT "
-              + Config.get().getRankingLimit();
+      String query = "";
+
       if (type.equalsIgnoreCase("abates") || type.equalsIgnoreCase("kills")) {
         query =
-            "SELECT nick, kills FROM guerreiro_jogadores ORDER BY kills DESC LIMIT "
+                "SELECT nick, kills FROM guerreiro_jogadores ORDER BY kills DESC LIMIT "
+                + Config.get().getRankingLimit();
+      } else {
+        query =
+                "SELECT nick, vitorias FROM guerreiro_jogadores ORDER BY vitorias DESC LIMIT "
                 + Config.get().getRankingLimit();
       }
 
@@ -179,7 +182,7 @@ public class API {
       conn.prepareStatement("UPDATE guerreiro_jogadores SET lw = 0 WHERE lw = 1").execute();
       conn.close();
     } catch (Exception e) {
-      Bukkit.getConsoleSender().sendMessage(e.getMessage());
+      e.printStackTrace();
     }
   }
 

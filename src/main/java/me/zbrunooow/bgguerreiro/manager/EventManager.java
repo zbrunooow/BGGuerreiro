@@ -42,6 +42,7 @@ public class EventManager {
     setDeathMatch(false);
     setPvpDeathMatch(0);
     setForcedDeathmatch(false);
+    Manager.getCreated().setEventTime(0);
 
     new BukkitRunnable() {
       int seconds = Config.get().getTempoAnuncios();
@@ -307,6 +308,7 @@ public class EventManager {
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), cmd.replace("{player}", winner.getName()));
           }
         }
+        Manager.getCreated().setEventTime(0);
         setStatus(EventStatus.OFF);
       }
     }.runTaskLater(WarriorEngine.getInstance(), 20 * Config.get().getTempoFinal());

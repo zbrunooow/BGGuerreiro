@@ -413,7 +413,7 @@ public class WarriorCommand implements CommandExecutor {
               : "Abates";
 
       AtomicInteger index = new AtomicInteger(1);
-      List<String> fetchedRanking = API.getCreated().fetchRanking(desiredTop == "abates" ? "kills" : desiredTop);
+      List<String> fetchedRanking = API.getCreated().fetchRanking(desiredTop.equalsIgnoreCase("abates") ? "kills" : desiredTop);
       language.getTopHeader()
               .forEach(string -> sender.sendMessage(string.replace("{type}", desiredTopFormat)));
       fetchedRanking.forEach(
@@ -426,6 +426,8 @@ public class WarriorCommand implements CommandExecutor {
                                 .replace("{amount}", string.split("\\(\\)")[1]));
                 index.set(index.get() + 1);
               });
+      language.getTopFooter()
+              .forEach(string -> sender.sendMessage(string));
 
       return true;
     }

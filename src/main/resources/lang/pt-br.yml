@@ -22,7 +22,7 @@ general:
   - '&aGuerreiro &f- &7Comandos Gerais'
   - ''
   - '&a/guerreiro entrar &f- &7Entra no evento.'
-  - '&a/guerreiro saor &f- &7Sai do evento.'
+  - '&a/guerreiro sair &f- &7Sai do evento.'
   - '&a/guerreiro status &f- &7Visualiza o status do evento.'
   - '&a/guerreiro top (vitorias/abates) &f- &7Visualiza os rankings do evento.'
   - '&a/guerreiro set (entrada/saida/deathmatch/kit) &f- &7Seta as posições/itens do evento.'
