@@ -45,6 +45,11 @@ public class DamageListener implements Listener {
     if (EventManager.getCreated().getStatus() != EventStatus.OFF) {
       if (e.getEntity() instanceof Player) {
         Player victim = (Player) e.getEntity();
+        if(victim.hasMetadata("waitingLeave")) {
+          e.setCancelled(true);
+          return;
+        }
+
         if (BoxManager.get().getSpectators().contains(victim)) {
           e.setCancelled(true);
           return;
